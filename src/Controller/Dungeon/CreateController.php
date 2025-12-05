@@ -12,7 +12,7 @@ use App\Repository\DungeonRepository;
 
 final class CreateController extends AbstractController
 {
-    #[Route('/dungeon/create', name: 'dungeon_create', methods: ['POST'])]
+    #[Route('/api/dungeon/create', name: 'dungeon_create', methods: ['POST'])]
     public function create(Request $request, SerializerInterface $serializer, DungeonRepository $repository): JsonResponse
     {
         $dungeon = $serializer->deserialize(
@@ -24,8 +24,8 @@ final class CreateController extends AbstractController
 
         $repository->save($dungeon);
 
-        return $this->json(
-            $serializer->serialize($dungeon, 'json', ['groups' => ['dungeon:read']]),
+        return new JsonResponse(
+            $serializer->normalize($dungeon, 'json', ['groups' => ['dungeon:read']]),
             201
         );
     }
