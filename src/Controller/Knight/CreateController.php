@@ -23,11 +23,15 @@ final class CreateController extends AbstractController
         );
 
         $knight->setLevel(1);
+        $knight->setUser($this->getUser());
 
         $repository->save($knight);
 
         return new JsonResponse(
-            $serializer->normalize($knight, 'json', ['groups' => ['knight:read']]),
+            array_merge(
+                $serializer->normalize($knight, 'json', ['groups' => ['knight:read']]),
+                ['user' => $this->getUser()->getName()]
+            ),
             201
         );
     }

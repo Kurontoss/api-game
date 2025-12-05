@@ -23,6 +23,10 @@ class Knight
     #[Groups(['knight:read'])]
     private ?int $level = null;
 
+    #[ORM\ManyToOne(inversedBy: 'knights')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -48,6 +52,18 @@ class Knight
     public function setLevel(int $level): static
     {
         $this->level = $level;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
