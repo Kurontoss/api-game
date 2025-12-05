@@ -5,39 +5,23 @@ namespace App\Repository;
 use App\Entity\Knight;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @extends ServiceEntityRepository<Knight>
  */
 class KnightRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $em;
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $em)
     {
         parent::__construct($registry, Knight::class);
+        $this->em = $em;
     }
 
-    //    /**
-    //     * @return Knight[] Returns an array of Knight objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('k')
-    //            ->andWhere('k.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('k.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Knight
-    //    {
-    //        return $this->createQueryBuilder('k')
-    //            ->andWhere('k.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function save(Knight $knight)
+    {
+        $this->em->persist($knight);
+        $this->em->flush();
+    }
 }

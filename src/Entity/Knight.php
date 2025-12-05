@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\KnightRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: KnightRepository::class)]
 class Knight
@@ -11,12 +12,15 @@ class Knight
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['knight:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 256)]
+    #[Groups(['knight:read', 'knight:write'])]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Groups(['knight:read'])]
     private ?int $level = null;
 
     public function getId(): ?int

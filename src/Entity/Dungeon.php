@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\DungeonRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DungeonRepository::class)]
 class Dungeon
@@ -11,12 +12,15 @@ class Dungeon
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['dungeon:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 256)]
+    #[Groups(['dungeon:read', 'dungeon:write'])]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Groups(['dungeon:read', 'dungeon:write'])]
     private ?int $difficulty = null;
 
     public function getId(): ?int
