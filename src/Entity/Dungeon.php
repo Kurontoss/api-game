@@ -21,7 +21,11 @@ class Dungeon
 
     #[ORM\Column]
     #[Groups(['dungeon:read', 'dungeon:write'])]
-    private ?int $difficulty = null;
+    private ?int $level = null;
+
+    #[ORM\Column]
+    #[Groups(['dungeon:read', 'dungeon:write'])]
+    private ?int $exp = null;
 
     public function getId(): ?int
     {
@@ -40,14 +44,26 @@ class Dungeon
         return $this;
     }
 
-    public function getDifficulty(): ?int
+    public function getLevel(): ?int
     {
-        return $this->difficulty;
+        return $this->level;
     }
 
-    public function setDifficulty(int $difficulty): static
+    public function setLevel(int $level): static
     {
-        $this->difficulty = $difficulty;
+        $this->level = $level;
+
+        return $this;
+    }
+
+    public function getExp(): ?int
+    {
+        return $this->exp;
+    }
+
+    public function setExp(int $exp): static
+    {
+        $this->exp = $exp;
 
         return $this;
     }

@@ -27,6 +27,14 @@ class Knight
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\Column]
+    #[Groups(['knight:read'])]
+    private ?int $exp = null;
+
+    #[ORM\Column]
+    #[Groups(['knight:read'])]
+    private ?int $expToNextLevel = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -64,6 +72,30 @@ class Knight
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getExp(): ?int
+    {
+        return $this->exp;
+    }
+
+    public function setExp(int $exp): static
+    {
+        $this->exp = $exp;
+
+        return $this;
+    }
+
+    public function getExpToNextLevel(): ?int
+    {
+        return $this->expToNextLevel;
+    }
+
+    public function setExpToNextLevel(int $expToNextLevel): static
+    {
+        $this->expToNextLevel = $expToNextLevel;
 
         return $this;
     }
