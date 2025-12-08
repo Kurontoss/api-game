@@ -30,6 +30,10 @@ class Enemy
     #[ORM\ManyToOne(inversedBy: 'enemies')]
     private ?Dungeon $dungeon = null;
 
+    #[ORM\Column]
+    #[Groups(['enemy:read', 'enemy:write'])]
+    private ?int $exp = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -79,6 +83,18 @@ class Enemy
     public function setDungeon(?Dungeon $dungeon): static
     {
         $this->dungeon = $dungeon;
+
+        return $this;
+    }
+
+    public function getExp(): ?int
+    {
+        return $this->exp;
+    }
+
+    public function setExp(int $exp): static
+    {
+        $this->exp = $exp;
 
         return $this;
     }

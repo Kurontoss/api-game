@@ -35,6 +35,10 @@ class Knight
     #[Groups(['knight:read'])]
     private ?int $expToNextLevel = null;
 
+    #[ORM\Column]
+    #[Groups(['knight:read'])]
+    private ?int $hp = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,6 +100,18 @@ class Knight
     public function setExpToNextLevel(int $expToNextLevel): static
     {
         $this->expToNextLevel = $expToNextLevel;
+
+        return $this;
+    }
+
+    public function getHp(): ?int
+    {
+        return $this->hp;
+    }
+
+    public function setHp(int $hp): static
+    {
+        $this->hp = $hp;
 
         return $this;
     }

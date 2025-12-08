@@ -27,13 +27,14 @@ final class ExploreController extends AbstractController
         $knight = $knightRepository->find($knightId);
         $dungeon = $dungeonRepository->find($dungeonId);
 
-        $exploreService->explore($knight, $dungeon);
+        $battle = $exploreService->explore($knight, $dungeon);
 
         $knightRepository->save($knight);
 
         return $this->json([
+            'dungeon' => $serializer->normalize($dungeon, 'json',['groups' => ['dungeon:read']]),
+            'battle' => $serializer->normalize($battle, 'json',['groups' => ['knight:read', 'enemy:read']]),
             'knight' => $serializer->normalize($knight, 'json',['groups' => ['knight:read']]),
-            'dungeon' => $serializer->normalize($dungeon, 'json',['groups' => ['dungeon:read']])
         ], 200);
     }
 }

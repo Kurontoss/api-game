@@ -25,6 +25,7 @@ final class CreateController extends AbstractController
         $knight->setLevel(1);
         $knight->setExp(0);
         $knight->setExpToNextLevel(10);
+        $knight->setHp(100);
         $knight->setUser($this->getUser());
 
         $repository->save($knight);

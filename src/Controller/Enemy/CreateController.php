@@ -36,6 +36,7 @@ final class CreateController extends AbstractController
         $enemy->setName($dto->name);
         $enemy->setHp($dto->hp);
         $enemy->setStrength($dto->strength);
+        $enemy->setExp($dto->exp);
         $enemy->setDungeon($dungeon);
 
         $enemyRepository->save($enemy);

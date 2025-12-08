@@ -10,5 +10,7 @@ class EnemyCreateDTO
 
     public ?int $strength = null;
 
+    public ?int $exp = null;
+
     public ?int $dungeonId = null;
 }
