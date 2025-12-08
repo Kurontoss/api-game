@@ -1,0 +1,25 @@
+meta {
+  name: Explore
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://127.0.0.1:8000/api/knight/:knightId/explore/:dungeonId
+  body: none
+  auth: bearer
+}
+
+params:path {
+  dungeonId: 4
+  knightId: 5
+}
+
+auth:bearer {
+  token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NjUxODQ4MjQsImV4cCI6MTc2NTE4ODQyNCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidG9tQHdwLnBsIn0.FRFOfAejPAuq6WCFQfQDgmla87gNfNAHSrW1zetetAqQRk2wr04Y2ErOAd2yXWTcVHunf78CqvnxUq13OuPYDlLD9ndi1eOlZ35anulMrfE1Y2yEM4qtGUPPUgWcI4OoQxwH2kZVrC5i_touJ-d0XesOBB3bDTZTVkQ2RCCSJQBpbcd-t_aXMP5e03iiq18PgpuZe2kivyvODtyIMDdy4CxPz4SENCuJXnQpM5h2UsUX9Zj8Nx01X8yWEtcF3Wznlj8dI3bat7CxrcGMVnAe8MS3paEUbSS3l1xf818X2ZWXXOhcydVNRYH5CHm2bv71jCGMGpL2FLBE_9JUy4zUmw
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

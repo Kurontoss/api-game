@@ -1,0 +1,20 @@
+meta {
+  name: List Enemies
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://127.0.0.1:8000/api/enemy
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NjUxODEyMTQsImV4cCI6MTc2NTE4NDgxNCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidG9tQHdwLnBsIn0.PYu3naQexzIPXQWn4refdqwPtLzaJnWqozmxxUBcBtpzNTRIKHstYKR5ZtrcLPyfPmE9L7AJ7EK7L_Lg1tziH1FghOhce-OZB5ovUi1K-4_mYJhOFI7MNKgWlNVlfbTGy7_zISuGsDDsNJ-cqZi1jkjozNmk5m2w7Pvrm1rIirHQXr1WdOmVtyRX4cQ7onuur5BbuNSXMiVlDLXFuYqJbSffd8vQZwP4SaThx429bSUenan-YPJt1SB9SbXk6As93-QorHxRs4NLUJzEsyFjLFyWj9Pagl2RT9q-6ZjGpGL8N0TjyHQZVT-6IM1EoB0KuNDtDQKmkH_i4C1Qe-N7pQ
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

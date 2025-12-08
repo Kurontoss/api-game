@@ -1,0 +1,20 @@
+meta {
+  name: List Dungeons
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://127.0.0.1:8000/api/dungeon
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NjQ5Mzk2MjksImV4cCI6MTc2NDk0MzIyOSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidG9tQHdwLnBsIn0.uxlEDKGK0D6znpzg9ckadlrisY2ijfjgYzmQz4q5FrLCpO5BCqqm15FuWAUHl4r6lYz70awOlmge-6Qm6TZaAA7qaNjGJrDqi2YDvn6poCkomct11z4nRKox8duKSuFnKb_VHTTdZrpfuyapl_xiUkO4vFmvma5LlhwvjNWX6ILIRrL1nBqgHW3NeN1vIrTzWVWMD2PSsVKE9GqN6mZE3R-N2pbR90P4soz7rePkmXAs7GU8fvJtS7OI0_HDQC5WkUR07dhpPjIl-TjimYcQwNnuzk42vcSOQu1zMwP2fnZ1nL9f4d65xI5c0tfnlnHrnfD1XeLlQioxdE5Vxf5Liw
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

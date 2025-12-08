@@ -1,0 +1,24 @@
+meta {
+  name: Show Enemy
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://127.0.0.1:8000/api/enemy/:id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  id: 10
+}
+
+auth:bearer {
+  token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NjUxODUyOTUsImV4cCI6MTc2NTE4ODg5NSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidG9tQHdwLnBsIn0.FSmaDO0C3fL4-vssykqQ5fPnMKTlUjheW17qf8q4zZaMiggiZ3vpvsuPM6ZX9eCd2rHKTAt8hC6tctD8XcSEqvPXfX58ocCVLwsAEKYA3sKJpEu9fA2LzXBeR52cjtXDmsfrzIdxk5fH8fYRUTekT4H_00MB3pCTx3Jnhm32TCAK_l7xxmMIwsVJd0h7h1aKR3m9wLFFSCUmWOaubene0ptvgTtOhbVgfDB4fYCdKoj_so5Bn_tkNp20ybL20LTWLkUx0BqsJNS-vA9FxiQjBKikkNNubbLL08FVTAuUfNqQomY1ZzC9Adb0Y1CZnNEUay3Z8PIRQDg1atINtJg41g
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
