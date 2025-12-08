@@ -24,4 +24,10 @@ class KnightRepository extends ServiceEntityRepository
         $this->em->persist($knight);
         $this->em->flush();
     }
+
+    public function delete(Knight $knight)
+    {
+        $this->em->remove($knight);
+        $this->em->flush();
+    }
 }

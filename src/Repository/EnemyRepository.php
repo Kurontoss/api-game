@@ -25,4 +25,10 @@ class EnemyRepository extends ServiceEntityRepository
         $this->em->persist($enemy);
         $this->em->flush();
     }
+
+    public function delete(Enemy $enemy)
+    {
+        $this->em->remove($enemy);
+        $this->em->flush();
+    }
 }

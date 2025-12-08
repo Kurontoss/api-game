@@ -25,4 +25,10 @@ class DungeonRepository extends ServiceEntityRepository
         $this->em->persist($dungeon);
         $this->em->flush();
     }
+
+    public function delete(Dungeon $dungeon)
+    {
+        $this->em->remove($dungeon);
+        $this->em->flush();
+    }
 }
