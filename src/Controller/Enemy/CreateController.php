@@ -9,23 +9,39 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use App\Entity\Enemy;
 use App\Repository\EnemyRepository;
+use App\Repository\DungeonRepository;
+use App\DTO\Enemy\EnemyCreateDTO;
 
 final class CreateController extends AbstractController
 {
-    #[Route('/api/enemy/create', name: 'enemy_create', methods: ['POST'])]
-    public function create(Request $request, SerializerInterface $serializer, EnemyRepository $repository): JsonResponse
+    public function __construct(private SerializerInterface $serializer)
     {
-        $enemy = $serializer->deserialize(
+    }
+
+    #[Route('/api/enemy/create', name: 'enemy_create', methods: ['POST'])]
+    public function create(
+        Request $request,
+        EnemyRepository $enemyRepository,
+        DungeonRepository $dungeonRepository
+    ): JsonResponse {
+        $dto = $this->serializer->deserialize(
             $request->getContent(),
-            Enemy::class,
-            'json',
-            ['groups' => ['enemy:write']]
+            EnemyCreateDTO::class,
+            'json'
         );
 
-        $repository->save($enemy);
+        $dungeon = $dungeonRepository->find($dto->dungeonId);
+
+        $enemy = new Enemy();
+        $enemy->setName($dto->name);
+        $enemy->setHp($dto->hp);
+        $enemy->setStrength($dto->strength);
+        $enemy->setDungeon($dungeon);
+
+        $enemyRepository->save($enemy);
 
         return new JsonResponse(
-            $serializer->normalize($enemy, 'json', ['groups' => ['enemy:read']]),
+            $this->serializer->normalize($enemy, 'json', ['groups' => ['enemy:read']]),
             201
         );
     }

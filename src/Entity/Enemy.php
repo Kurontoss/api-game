@@ -27,6 +27,9 @@ class Enemy
     #[Groups(['enemy:read', 'enemy:write'])]
     private ?int $strength = null;
 
+    #[ORM\ManyToOne(inversedBy: 'enemies')]
+    private ?Dungeon $dungeon = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -64,6 +67,18 @@ class Enemy
     public function setStrength(int $strength): static
     {
         $this->strength = $strength;
+
+        return $this;
+    }
+
+    public function getDungeon(): ?Dungeon
+    {
+        return $this->dungeon;
+    }
+
+    public function setDungeon(?Dungeon $dungeon): static
+    {
+        $this->dungeon = $dungeon;
 
         return $this;
     }
