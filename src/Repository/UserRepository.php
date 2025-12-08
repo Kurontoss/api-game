@@ -12,15 +12,14 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class UserRepository extends ServiceEntityRepository
 {
-    private $em;
-
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $em)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private EntityManagerInterface $em
+    ) {
         parent::__construct($registry, User::class);
-        $this->em = $em;
     }
 
-    public function save(User $user)
+    public function save(User $user): void
     {
         $this->em->persist($user);
         $this->em->flush();

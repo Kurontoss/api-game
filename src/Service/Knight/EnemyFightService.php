@@ -12,8 +12,10 @@ class EnemyFightService
         private LevelUpService $levelUpService
     ) {}
 
-    public function fight(Knight $knight, Enemy $enemy)
-    {
+    public function fight(
+        Knight $knight,
+        Enemy $enemy
+    ) {
         $rounds = (int)ceil($enemy->getHp() / $knight->getLevel()) - 1;
         $knight->setHp($knight->getHp() - $enemy->getStrength() * $rounds);
 

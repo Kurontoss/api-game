@@ -14,30 +14,32 @@ use App\Service\User\RegisterService;
 
 final class RegisterController extends AbstractController
 {
+    public function __construct(
+        private SerializerInterface $serializer,
+        private JWTTokenManagerInterface $jwt,
+        private RegisterService $registerService
+    ) {}
+
     #[Route('/api/register', name: 'user_register', methods: ['POST'])]
     public function create(
         Request $request,
-        SerializerInterface $serializer,
-        JWTTokenManagerInterface $jwt,
-        RegisterService $registerService,
-        UserRepository $repository
-    ): JsonResponse
-    {
-        $user = $serializer->deserialize(
+        UserRepository $userRepo
+    ): JsonResponse {
+        $user = $this->serializer->deserialize(
             $request->getContent(),
             User::class,
             'json',
             ['groups' => ['user:write']]
         );
 
-        $registerService->register($user);
+        $this->registerService->register($user);
 
-        $repository->save($user);
+        $userRepo->save($user);
 
-        $token = $jwt->create($user);
+        $token = $this->jwt->create($user);
 
         return $this->json([
-            'user' => $serializer->normalize($user, 'json',['groups' => ['user:read']]),
+            'user' => $this->serializer->normalize($user, 'json',['groups' => ['user:read']]),
             'token' => $token
         ], 201);
     }

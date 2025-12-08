@@ -14,9 +14,9 @@ use App\DTO\Enemy\EnemyCreateDTO;
 
 final class CreateController extends AbstractController
 {
-    public function __construct(private SerializerInterface $serializer)
-    {
-    }
+    public function __construct(
+        private SerializerInterface $serializer
+    ) {}
 
     #[Route('/api/enemy/create', name: 'enemy_create', methods: ['POST'])]
     public function create(
@@ -42,7 +42,10 @@ final class CreateController extends AbstractController
         $enemyRepository->save($enemy);
 
         return new JsonResponse(
-            $this->serializer->normalize($enemy, 'json', ['groups' => ['enemy:read']]),
+            array_merge(
+                $this->serializer->normalize($enemy, 'json', ['groups' => ['enemy:read']]),
+                ['dungeon' => $dungeon->getName()]
+            ),
             201
         );
     }

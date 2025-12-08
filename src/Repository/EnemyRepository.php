@@ -12,21 +12,20 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class EnemyRepository extends ServiceEntityRepository
 {
-    private $em;
-    
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $em)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private EntityManagerInterface $em
+    ) {
         parent::__construct($registry, Enemy::class);
-        $this->em = $em;
     }
 
-    public function save(Enemy $enemy)
+    public function save(Enemy $enemy): void
     {
         $this->em->persist($enemy);
         $this->em->flush();
     }
 
-    public function delete(Enemy $enemy)
+    public function delete(Enemy $enemy): void
     {
         $this->em->remove($enemy);
         $this->em->flush();

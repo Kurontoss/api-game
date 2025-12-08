@@ -10,13 +10,18 @@ use App\Repository\DungeonRepository;
 
 final class ListController extends AbstractController
 {
+    public function __construct(
+        private SerializerInterface $serializer
+    ) {}
+    
     #[Route('/api/dungeon', name: 'dungeon_list', methods: ['GET'])]
-    public function list(SerializerInterface $serializer, DungeonRepository $repository): JsonResponse
-    {
-        $dungeons = $repository->findAll();
+    public function list(
+        DungeonRepository $dungeonRepo
+    ): JsonResponse {
+        $dungeons = $dungeonRepo->findAll();
 
         return new JsonResponse(
-            $serializer->normalize($dungeons, 'json', ['groups' => ['dungeon:read']]),
+            $this->serializer->normalize($dungeons, 'json', ['groups' => ['dungeon:read']]),
             200
         );
     }

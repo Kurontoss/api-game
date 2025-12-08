@@ -10,13 +10,18 @@ use App\Repository\KnightRepository;
 
 final class ListController extends AbstractController
 {
+    public function __construct(
+        private SerializerInterface $serializer
+    ) {}
+
     #[Route('/api/knight', name: 'knight_list', methods: ['GET'])]
-    public function list(SerializerInterface $serializer, KnightRepository $repository): JsonResponse
-    {
-        $knights = $repository->findAll();
+    public function list(
+        KnightRepository $knightRepo
+    ): JsonResponse {
+        $knights = $knightRepo->findAll();
 
         return new JsonResponse(
-            $serializer->normalize($knights, 'json', ['groups' => ['knight:read']]),
+            $this->serializer->normalize($knights, 'json', ['groups' => ['knight:read']]),
             200
         );
     }

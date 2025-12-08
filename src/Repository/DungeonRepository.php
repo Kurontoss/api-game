@@ -12,21 +12,20 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class DungeonRepository extends ServiceEntityRepository
 {
-    private $em;
-    
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $em)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private EntityManagerInterface $em
+    ) {
         parent::__construct($registry, Dungeon::class);
-        $this->em = $em;
     }
 
-    public function save(Dungeon $dungeon)
+    public function save(Dungeon $dungeon): void
     {
         $this->em->persist($dungeon);
         $this->em->flush();
     }
 
-    public function delete(Dungeon $dungeon)
+    public function delete(Dungeon $dungeon): void
     {
         $this->em->remove($dungeon);
         $this->em->flush();

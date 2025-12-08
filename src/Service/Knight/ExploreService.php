@@ -15,8 +15,10 @@ class ExploreService
         private EnemyFightService $enemyFightService
     ) {}
 
-    public function explore(Knight $knight, Dungeon $dungeon)
-    {
+    public function explore(
+        Knight $knight,
+        Dungeon $dungeon
+    ): array {
         if ($knight->getLevel() < $dungeon->getLevel()) {
             throw new BadRequestHttpException('Your level is too low to enter this dungeon.');
         }

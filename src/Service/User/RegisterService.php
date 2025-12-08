@@ -14,8 +14,9 @@ class RegisterService
         private UserRepository $repository
     ) {}
 
-    public function register(User $user)
-    {
+    public function register(
+        User $user
+    ): void {
         if ($this->repository->findOneBy(['email' => $user->getEmail()])) {
             throw new BadRequestHttpException('Email already exists.');
         }

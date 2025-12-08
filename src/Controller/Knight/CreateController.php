@@ -12,10 +12,16 @@ use App\Repository\KnightRepository;
 
 final class CreateController extends AbstractController
 {
+    public function __construct(
+        private SerializerInterface $serializer
+    ) {}
+
     #[Route('/api/knight/create', name: 'knight_create', methods: ['POST'])]
-    public function create(Request $request, SerializerInterface $serializer, KnightRepository $repository): JsonResponse
-    {
-        $knight = $serializer->deserialize(
+    public function create(
+        Request $request,
+        KnightRepository $knightRepo
+    ): JsonResponse {
+        $knight = $this->serializer->deserialize(
             $request->getContent(),
             Knight::class,
             'json',
@@ -28,11 +34,11 @@ final class CreateController extends AbstractController
         $knight->setHp(100);
         $knight->setUser($this->getUser());
 
-        $repository->save($knight);
+        $knightRepo->save($knight);
 
         return new JsonResponse(
             array_merge(
-                $serializer->normalize($knight, 'json', ['groups' => ['knight:read']]),
+                $this->serializer->normalize($knight, 'json', ['groups' => ['knight:read']]),
                 ['user' => $this->getUser()->getName()]
             ),
             201

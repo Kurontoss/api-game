@@ -12,20 +12,20 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class KnightRepository extends ServiceEntityRepository
 {
-    private $em;
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $em)
-    {
+    public function __construct(
+        ManagerRegistry $registry,
+        private EntityManagerInterface $em
+    ) {
         parent::__construct($registry, Knight::class);
-        $this->em = $em;
     }
 
-    public function save(Knight $knight)
+    public function save(Knight $knight): void
     {
         $this->em->persist($knight);
         $this->em->flush();
     }
 
-    public function delete(Knight $knight)
+    public function delete(Knight $knight): void
     {
         $this->em->remove($knight);
         $this->em->flush();

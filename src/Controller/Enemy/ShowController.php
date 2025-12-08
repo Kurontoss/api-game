@@ -10,11 +10,16 @@ use App\Entity\Enemy;
 
 final class ShowController extends AbstractController
 {
+    public function __construct(
+        private SerializerInterface $serializer
+    ) {}
+
     #[Route('/api/enemy/{id}', name: 'enemy_show', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function show(SerializerInterface $serializer, Enemy $enemy): JsonResponse
-    {
+    public function show(
+        Enemy $enemy
+    ): JsonResponse {
         return new JsonResponse(
-            $serializer->normalize($enemy, 'json', ['groups' => ['enemy:read']]),
+            $this->serializer->normalize($enemy, 'json', ['groups' => ['enemy:read']]),
             200
         );
     }

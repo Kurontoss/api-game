@@ -14,27 +14,29 @@ use App\Repository\DungeonRepository;
 
 final class ExploreController extends AbstractController
 {
+    public function __construct(
+        private SerializerInterface $serializer,
+        private ExploreService $exploreService
+    ) {}
+
     #[Route('/api/knight/{knightId}/explore/{dungeonId}', name: 'knight_explore', methods: ['POST'])]
     public function create(
-        SerializerInterface $serializer,
-        ExploreService $exploreService,
-        KnightRepository $knightRepository,
-        DungeonRepository $dungeonRepository,
+        KnightRepository $knightRepo,
+        DungeonRepository $dungeonRepo,
         int $knightId,
         int $dungeonId
-    ): JsonResponse
-    {
-        $knight = $knightRepository->find($knightId);
-        $dungeon = $dungeonRepository->find($dungeonId);
+    ): JsonResponse {
+        $knight = $knightRepo->find($knightId);
+        $dungeon = $dungeonRepo->find($dungeonId);
 
-        $battle = $exploreService->explore($knight, $dungeon);
+        $battle = $this->exploreService->explore($knight, $dungeon);
 
-        $knightRepository->save($knight);
+        $knightRepo->save($knight);
 
         return $this->json([
-            'dungeon' => $serializer->normalize($dungeon, 'json',['groups' => ['dungeon:read']]),
-            'battle' => $serializer->normalize($battle, 'json',['groups' => ['knight:read', 'enemy:read']]),
-            'knight' => $serializer->normalize($knight, 'json',['groups' => ['knight:read']]),
+            'dungeon' => $this->serializer->normalize($dungeon, 'json',['groups' => ['dungeon:read']]),
+            'battle' => $this->serializer->normalize($battle, 'json',['groups' => ['knight:read', 'enemy:read']]),
+            'knight' => $this->serializer->normalize($knight, 'json',['groups' => ['knight:read']]),
         ], 200);
     }
 }

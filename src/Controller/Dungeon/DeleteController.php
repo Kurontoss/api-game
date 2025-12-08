@@ -11,8 +11,10 @@ use App\Repository\DungeonRepository;
 final class DeleteController extends AbstractController
 {
     #[Route('/api/dungeon/{id}/delete', name: 'dungeon_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
-    public function create(DungeonRepository $repository, Dungeon $dungeon): JsonResponse
-    {
+    public function create(
+        DungeonRepository $repository,
+        Dungeon $dungeon
+    ): JsonResponse {
         $repository->delete($dungeon);
 
         return new JsonResponse(null, 204);
