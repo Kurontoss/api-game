@@ -2,50 +2,56 @@
 
 namespace App\Service\Knight;
 
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\Knight\LevelUpService;
 use App\Service\Knight\EnemyFightService;
 use App\Entity\Knight;
 use App\Entity\Dungeon;
+use App\DTO\Knight\BattleDTO;
+use App\DTO\Knight\BattleSummaryDTO;
+use App\Exception\LevelTooLowException;
 
 class ExploreService
 {
     public function __construct(
-        private LevelUpService $levelUpService,
         private EnemyFightService $enemyFightService
     ) {}
 
     public function explore(
         Knight $knight,
         Dungeon $dungeon
-    ): array {
+    ): BattleSummaryDTO {
         if ($knight->getLevel() < $dungeon->getLevel()) {
-            throw new BadRequestHttpException('Your level is too low to enter this dungeon.');
+            throw new LevelTooLowException();
         }
 
-        $battle = [[
-            'round' => 0,
-            'knight' => clone $knight,
-        ]];
+        $battleStart = new BattleDTO();
+        $battleStart->round = 0;
+        $battleStart->knight = clone $knight;
+
+        $battleSummary = new BattleSummaryDTO();
+        $battleSummary->battle = [$battleStart];
+        $battleSummary->expGained = 0;
+
         $i = 1;
 
         foreach ($dungeon->getEnemies() as $enemy) {
             $outcome = $this->enemyFightService->fight($knight, $enemy);
 
-            $battle[] = [
-                'round' => $i++,
-                'enemy' => $enemy,
-                'knight' => clone $knight,
-            ];
+            $battleRound = new BattleDTO();
+            $battleRound->round = $i++;
+            $battleRound->enemy = $enemy;
+            $battleRound->knight = $knight;
+            $battleSummary->battle[] = $battleRound;
 
             if (!$outcome) {
-                return $battle;
+                return $battleSummary;
             }
+
+            $battleSummary->expGained += $outcome;
         }
 
-        $knight->setExp($knight->getExp() + $dungeon->getExp());
-        $this->levelUpService->levelUp($knight);
+        $battleSummary->expGained += $dungeon->getExp();
 
-        return $battle;
+        return $battleSummary;
     }
 }
