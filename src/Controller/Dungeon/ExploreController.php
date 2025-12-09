@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use App\Service\Knight\ExploreService;
+use App\Service\Dungeon\ExploreService;
 use App\Service\Knight\LevelUpService;
 use App\Entity\Knight;
 use App\Entity\Dungeon;

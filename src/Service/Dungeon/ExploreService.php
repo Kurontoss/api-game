@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Knight;
+namespace App\Service\Dungeon;
 
 use App\Service\Knight\LevelUpService;
 use App\Service\Knight\EnemyFightService;
