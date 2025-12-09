@@ -21,8 +21,9 @@ final class CreateController extends AbstractController
     #[Route('/api/enemy/create', name: 'enemy_create', methods: ['POST'])]
     public function create(
         Request $request,
-        EnemyRepository $enemyRepository,
-        DungeonRepository $dungeonRepository
+        EnemyRepository $enemyRepo,
+        DungeonRepository $dungeonRepo,
+        DropPoolRepository $dropPoolRepo
     ): JsonResponse {
         $dto = $this->serializer->deserialize(
             $request->getContent(),
@@ -30,7 +31,8 @@ final class CreateController extends AbstractController
             'json'
         );
 
-        $dungeon = $dungeonRepository->find($dto->dungeonId);
+        $dungeon = $dungeonRepo->find($dto->dungeonId);
+        $dropPool = $dropPoolRepo->find($dto->dropPoolId);
 
         $enemy = new Enemy();
         $enemy->setName($dto->name);
@@ -38,8 +40,9 @@ final class CreateController extends AbstractController
         $enemy->setStrength($dto->strength);
         $enemy->setExp($dto->exp);
         $enemy->setDungeon($dungeon);
+        $enemy->setDropPool($dropPool);
 
-        $enemyRepository->save($enemy);
+        $enemyRepo->save($enemy);
 
         return new JsonResponse(
             array_merge(

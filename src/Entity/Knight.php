@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\KnightRepository;
+use App\Entity\Item\InventoryItem;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -42,14 +43,15 @@ class Knight
     private ?int $hp = null;
 
     /**
-     * @var Collection<int, Inventory>
+     * @var Collection<int, InventoryItem>
      */
-    #[ORM\OneToMany(targetEntity: Inventory::class, mappedBy: 'knight')]
-    private Collection $inventories;
+    #[ORM\OneToMany(targetEntity: InventoryItem::class, mappedBy: 'knight')]
+    #[Groups(['inventory:read'])]
+    private Collection $inventory;
 
     public function __construct()
     {
-        $this->inventories = new ArrayCollection();
+        $this->inventory = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,29 +132,29 @@ class Knight
     }
 
     /**
-     * @return Collection<int, Inventory>
+     * @return Collection<int, InventoryItem>
      */
-    public function getInventories(): Collection
+    public function getInventory(): Collection
     {
-        return $this->inventories;
+        return $this->inventory;
     }
 
-    public function addInventory(Inventory $inventory): static
+    public function addInventoryItem(InventoryItem $inventoryItem): static
     {
-        if (!$this->inventories->contains($inventory)) {
-            $this->inventories->add($inventory);
-            $inventory->setKnight($this);
+        if (!$this->inventory->contains($inventoryItem)) {
+            $this->inventoriy->add($inventoryItem);
+            $inventoryItem->setKnight($this);
         }
 
         return $this;
     }
 
-    public function removeInventory(Inventory $inventory): static
+    public function removeInventoryItem(InventoryItem $inventoryItem): static
     {
-        if ($this->inventories->removeElement($inventory)) {
+        if ($this->inventory->removeElement($inventoryItem)) {
             // set the owning side to null (unless already changed)
-            if ($inventory->getKnight() === $this) {
-                $inventory->setKnight(null);
+            if ($inventoryItem->getKnight() === $this) {
+                $inventoryItem->setKnight(null);
             }
         }
 

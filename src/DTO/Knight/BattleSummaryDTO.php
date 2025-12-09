@@ -2,11 +2,11 @@
 
 namespace App\DTO\Knight;
 
-use App\DTO\Knight\BattleDTO;
-
 class BattleSummaryDTO
 {
-    public ?array $battle = null;
+    public ?array $fights = null;
 
-    public ?int $expGained = null;
+    public ?int $exp = null;
+
+    public ?array $items = null;
 }

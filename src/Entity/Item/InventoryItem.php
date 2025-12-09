@@ -1,32 +1,33 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Item;
 
 use App\Entity\Item\Item;
+use App\Entity\Knight;
 use App\Repository\InventoryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: InventoryRepository::class)]
-class Inventory
+#[ORM\Entity(repositoryClass: InventoryItemRepository::class)]
+class InventoryItem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['inventory:read'])]
+    #[Groups(['item:read'])]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['inventory:read'])]
+    #[Groups(['item:read'])]
     private ?Item $item = null;
 
     #[ORM\ManyToOne(inversedBy: 'inventories')]
-    #[Groups(['inventory:read'])]
     private ?Knight $knight = null;
 
     #[ORM\Column]
-    #[Groups(['inventory:read'])]
-    private ?int $count = null;
+    #[Groups(['item:read'])]
+    private ?int $amount = null;
 
     public function getId(): ?int
     {
@@ -57,14 +58,14 @@ class Inventory
         return $this;
     }
 
-    public function getCount(): ?int
+    public function getAmount(): ?int
     {
-        return $this->count;
+        return $this->amount;
     }
 
-    public function setCount(int $count): static
+    public function setAmount(int $amount): static
     {
-        $this->count = $count;
+        $this->amount = $amount;
 
         return $this;
     }

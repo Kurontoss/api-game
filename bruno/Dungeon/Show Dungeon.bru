@@ -7,15 +7,11 @@ meta {
 get {
   url: http://127.0.0.1:8000/api/dungeon/:id
   body: none
-  auth: bearer
+  auth: inherit
 }
 
 params:path {
   id: 6
-}
-
-auth:bearer {
-  token: eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NjUxOTE1NjcsImV4cCI6MTc2NTIyMDM2Nywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiYmVuQHdwLnBsIn0.HzXcglsuGMqfzY2Gk5dwk7JYRQCnH_1l7f_Ych6wJHSfHUsfQht5zkPJFIW9bnrppnMb9EnmcKYwUACusySSzdpyZiWBw8O-JwGLhaQ-gPTLNJJ3mSMXKgtEGVSSDfNEIzuPZhJQkTnk1cqr-piOlClSdvMuitGtWoLIpO4NSpgaYaEZDXxMcTH3cXG6ZlG9q1PqwM3VU96ZHyjyk4fYc1LNsNpBamx3yZ5llhnglHZRqmecZuXjCWKxteGKLJTiU6fB17Fy5E_remuNUj395evppJ4AIXWbx2GPTL_9Dux0bZi_B-cwH1aw-9uCrtm7EbVsbNZr6V2CDZ5JdTIy4Q
 }
 
 settings {

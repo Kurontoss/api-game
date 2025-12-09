@@ -35,22 +35,24 @@ final class ExploreController extends AbstractController
         try {
             $battleSummary = $this->exploreService->explore($knight, $dungeon);
         } catch (\Exception $e) {
+            throw $e;
             throw new BadRequestHttpException('Your level is too low to enter this dungeon.');
         }
 
-        $expGained = $battleSummary->expGained;
-        $battle = $battleSummary->battle;
+        $exp = $battleSummary->exp;
+        $fights = $battleSummary->fights;
+        $items = $battleSummary->items;
 
-        $knight->setExp($knight->getExp() + $expGained);
         $this->levelUpService->levelUp($knight);
 
         $knightRepo->save($knight);
 
         return $this->json([
             'dungeon' => $this->serializer->normalize($dungeon, 'json',['groups' => ['dungeon:read']]),
-            'battle' => $this->serializer->normalize($battle, 'json', ['groups' => ['knight:read', 'enemy:read', 'battle:read']]),
-            'expGained' => $expGained,
-            'knight' => $this->serializer->normalize($knight, 'json',['groups' => ['knight:read']]),
+            'fights' => $this->serializer->normalize($fights, 'json', ['groups' => ['fight:read', 'knight:read', 'enemy:read', 'item:read']]),
+            'exp' => $exp,
+            'items' => $this->serializer->normalize($items, 'json', ['groups' => ['item:read']]),
+            'knight' => $this->serializer->normalize($knight, 'json', ['groups' => ['knight:read', 'inventory:read', 'item:read']]),
         ], 200);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Entity\Item;
 
 use App\Repository\Item\FoodRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: FoodRepository::class)]
 class Food extends Item

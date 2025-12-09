@@ -6,7 +6,7 @@ use App\Service\Knight\LevelUpService;
 use App\Service\Knight\EnemyFightService;
 use App\Entity\Knight;
 use App\Entity\Dungeon;
-use App\DTO\Knight\BattleDTO;
+use App\DTO\Knight\FightDTO;
 use App\DTO\Knight\BattleSummaryDTO;
 use App\Exception\LevelTooLowException;
 
@@ -24,33 +24,35 @@ class ExploreService
             throw new LevelTooLowException();
         }
 
-        $battleStart = new BattleDTO();
+        $battleStart = new FightDTO();
         $battleStart->round = 0;
         $battleStart->knight = clone $knight;
+        $battleStart->exp = 0;
+        $battleStart->items = [];
 
         $battleSummary = new BattleSummaryDTO();
-        $battleSummary->battle = [$battleStart];
-        $battleSummary->expGained = 0;
+        $battleSummary->fights = [$battleStart];
+        $battleSummary->exp = 0;
+        $battleSummary->items = [];
 
         $i = 1;
 
         foreach ($dungeon->getEnemies() as $enemy) {
-            $outcome = $this->enemyFightService->fight($knight, $enemy);
+            $fight = $this->enemyFightService->fight($knight, $enemy);
 
-            $battleRound = new BattleDTO();
-            $battleRound->round = $i++;
-            $battleRound->enemy = $enemy;
-            $battleRound->knight = $knight;
-            $battleSummary->battle[] = $battleRound;
+            $fight->round = $i;
+            $battleSummary->fights[] = $fight;
 
-            if (!$outcome) {
+            if (!$fight->isWon) {
                 return $battleSummary;
             }
 
-            $battleSummary->expGained += $outcome;
+            $battleSummary->exp += $fight->exp;
+            $battleSummary->items[] = $fight->item;
         }
 
-        $battleSummary->expGained += $dungeon->getExp();
+        $battleSummary->exp += $dungeon->getExp();
+        $knight->setExp($knight->getExp() + $dungeon->getExp());
 
         return $battleSummary;
     }

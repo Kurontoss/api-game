@@ -34,6 +34,9 @@ class Enemy
     #[Groups(['enemy:read', 'enemy:write'])]
     private ?int $exp = null;
 
+    #[ORM\ManyToOne]
+    private ?DropPool $dropPool = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -95,6 +98,18 @@ class Enemy
     public function setExp(int $exp): static
     {
         $this->exp = $exp;
+
+        return $this;
+    }
+
+    public function getDropPool(): ?DropPool
+    {
+        return $this->dropPool;
+    }
+
+    public function setDropPool(?DropPool $dropPool): static
+    {
+        $this->dropPool = $dropPool;
 
         return $this;
     }
