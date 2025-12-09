@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Entity\Item;
+
+use App\Repository\Item\FoodRepository;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: FoodRepository::class)]
+class Food extends Item
+{
+    #[ORM\Column]
+    #[Groups(['item:read', 'item:write'])]
+    private ?int $hpRegen = null;
+
+    public function getHpRegen(): ?int
+    {
+        return $this->hpRegen;
+    }
+
+    public function setHpRegen(int $hpRegen): static
+    {
+        $this->hpRegen = $hpRegen;
+
+        return $this;
+    }
+}

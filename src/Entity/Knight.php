@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\KnightRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -38,6 +40,17 @@ class Knight
     #[ORM\Column]
     #[Groups(['knight:read'])]
     private ?int $hp = null;
+
+    /**
+     * @var Collection<int, Inventory>
+     */
+    #[ORM\OneToMany(targetEntity: Inventory::class, mappedBy: 'knight')]
+    private Collection $inventories;
+
+    public function __construct()
+    {
+        $this->inventories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -112,6 +125,36 @@ class Knight
     public function setHp(int $hp): static
     {
         $this->hp = $hp;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Inventory>
+     */
+    public function getInventories(): Collection
+    {
+        return $this->inventories;
+    }
+
+    public function addInventory(Inventory $inventory): static
+    {
+        if (!$this->inventories->contains($inventory)) {
+            $this->inventories->add($inventory);
+            $inventory->setKnight($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventory(Inventory $inventory): static
+    {
+        if ($this->inventories->removeElement($inventory)) {
+            // set the owning side to null (unless already changed)
+            if ($inventory->getKnight() === $this) {
+                $inventory->setKnight(null);
+            }
+        }
 
         return $this;
     }
