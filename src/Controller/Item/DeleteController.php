@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Controller\Dungeon;
+namespace App\Controller\Item;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Entity\Dungeon;
-use App\Repository\DungeonRepository;
+use App\Entity\Item\Item;
+use App\Repository\Item\ItemRepository;
 
 final class DeleteController extends AbstractController
 {
-    #[Route('/api/dungeon/{id}/delete', name: 'dungeon_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
+    #[Route('/api/item/{id}/delete', name: 'item_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
     public function delete(
-        DungeonRepository $repository,
-        Dungeon $dungeon
+        ItemRepository $itemRepo,
+        Item $item
     ): JsonResponse {
-        $repository->delete($dungeon);
+        $itemRepo->delete($item);
 
         return new JsonResponse(null, 204);
     }

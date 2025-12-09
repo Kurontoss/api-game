@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Food extends Item
 {
     #[ORM\Column]
-    #[Groups(['item:read', 'item:write'])]
+    #[Groups(['item:read'])]
     private ?int $hpRegen = null;
 
     public function getHpRegen(): ?int

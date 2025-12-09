@@ -24,11 +24,11 @@ class Item
     private ?int $id = null;
 
     #[ORM\Column(length: 256)]
-    #[Groups(['item:read', 'item:write'])]
+    #[Groups(['item:read'])]
     private ?string $name = null;
 
     #[ORM\Column]
-    #[Groups(['item:read', 'item:write'])]
+    #[Groups(['item:read'])]
     private ?int $value = null;
 
     public function getId(): ?int

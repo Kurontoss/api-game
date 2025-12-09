@@ -11,7 +11,7 @@ use App\Repository\KnightRepository;
 final class DeleteController extends AbstractController
 {
     #[Route('/api/knight/{id}/delete', name: 'knight_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
-    public function create(
+    public function delete(
         KnightRepository $knightRepo,
         Knight $knight
     ): JsonResponse {

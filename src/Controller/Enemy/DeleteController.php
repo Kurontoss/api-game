@@ -11,7 +11,7 @@ use App\Repository\EnemyRepository;
 final class DeleteController extends AbstractController
 {
     #[Route('/api/enemy/{id}/delete', name: 'enemy_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
-    public function create(
+    public function delete(
         EnemyRepository $enemyRepo,
         Enemy $enemy
     ): JsonResponse {
