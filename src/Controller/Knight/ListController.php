@@ -21,7 +21,7 @@ final class ListController extends AbstractController
         $knights = $knightRepo->findAll();
 
         return new JsonResponse(
-            $this->serializer->normalize($knights, 'json', ['groups' => ['knight:read']]),
+            $this->serializer->normalize($knights, 'json', ['groups' => ['knight:read', 'user:read']]),
             200
         );
     }

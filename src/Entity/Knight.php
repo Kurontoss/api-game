@@ -28,6 +28,7 @@ class Knight
 
     #[ORM\ManyToOne(inversedBy: 'knights')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['knight:read'])]
     private ?User $user = null;
 
     #[ORM\Column]

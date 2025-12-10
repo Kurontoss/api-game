@@ -81,6 +81,13 @@ class LootPool
         return $this;
     }
 
+    public function setItems(Collection $items): static
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
     public function removeItem(Item $item): static
     {
         $this->items->removeElement($item);

@@ -21,7 +21,7 @@ final class ListController extends AbstractController
         $lootPools = $lootPoolRepo->findAll();
 
         return new JsonResponse(
-            $this->serializer->normalize($lootPools, 'json', ['groups' => ['lootPool:read']]),
+            $this->serializer->normalize($lootPools, 'json', ['groups' => ['lootPool:read', 'item:read']]),
             200
         );
     }
