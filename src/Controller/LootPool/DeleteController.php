@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Controller\Dungeon;
+namespace App\Controller\LootPool;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Entity\Dungeon;
-use App\Repository\DungeonRepository;
+use App\Entity\LootPool;
+use App\Repository\LootPoolRepository;
 
 final class DeleteController extends AbstractController
 {
-    #[Route('/api/dungeon/{id}/delete', name: 'dungeon_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
+    #[Route('/api/loot-pool/{id}/delete', name: 'loot_pool_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
     public function delete(
-        DungeonRepository $dungeonRepo,
-        Dungeon $dungeon
+        LootPoolRepository $lootPoolRepo,
+        LootPool $lootPool
     ): JsonResponse {
-        $dungeonRepo->delete($dungeon);
+        $lootPoolRepo->delete($lootPool);
 
         return new JsonResponse(null, 204);
     }

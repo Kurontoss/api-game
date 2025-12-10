@@ -1,0 +1,20 @@
+meta {
+  name: Show LootPool
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://127.0.0.1:8000/api/loot-pool/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

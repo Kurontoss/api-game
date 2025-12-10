@@ -24,4 +24,10 @@ class LootPoolRepository extends ServiceEntityRepository
         $this->em->persist($lootPool);
         $this->em->flush();
     }
+
+    public function delete(LootPool $lootPool): void
+    {
+        $this->em->remove($lootPool);
+        $this->em->flush();
+    }
 }

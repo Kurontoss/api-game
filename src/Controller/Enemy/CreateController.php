@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use App\Entity\Enemy;
 use App\Repository\EnemyRepository;
 use App\Repository\DungeonRepository;
+use App\Repository\LootPoolRepository;
 use App\DTO\Enemy\EnemyCreateDTO;
 
 final class CreateController extends AbstractController
@@ -47,7 +48,10 @@ final class CreateController extends AbstractController
         return new JsonResponse(
             array_merge(
                 $this->serializer->normalize($enemy, 'json', ['groups' => ['enemy:read']]),
-                ['dungeon' => $dungeon->getName()]
+                [
+                    'dungeon' => $dungeon->getName(),
+                    'lootPool' => $lootPool->getName(),
+                ]
             ),
             201
         );

@@ -1,0 +1,20 @@
+meta {
+  name: Delete LootPool
+  type: http
+  seq: 4
+}
+
+delete {
+  url: http://127.0.0.1:8000/api/loot-pool/:id/delete
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 2
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

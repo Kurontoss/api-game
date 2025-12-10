@@ -16,7 +16,12 @@ class LootPool
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['lootPool:read'])]
     private ?int $id = null;
+
+    #[ORM\Column(length: 256)]
+    #[Groups(['lootPool:read'])]
+    private ?string $name = null;
 
     /**
      * @var Collection<int, Item>
@@ -30,9 +35,11 @@ class LootPool
     private array $chances = [];
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
+    #[Groups(['lootPool:read'])]
     private array $minAmounts = [];
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
+    #[Groups(['lootPool:read'])]
     private array $maxAmounts = [];
 
     public function __construct()
@@ -43,6 +50,18 @@ class LootPool
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
