@@ -31,7 +31,8 @@ final class CreateController extends AbstractController
         $knight->setLevel(1);
         $knight->setExp(0);
         $knight->setExpToNextLevel(10);
-        $knight->setHp(100);
+        $knight->setHp(10);
+        $knight->setMaxHp(10);
         $knight->setUser($this->getUser());
 
         $knightRepo->save($knight);

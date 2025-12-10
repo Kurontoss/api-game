@@ -13,6 +13,7 @@ use App\Entity\Knight;
 use App\Entity\Dungeon;
 use App\Repository\KnightRepository;
 use App\Repository\DungeonRepository;
+use App\Exception\LevelTooLowException;
 
 final class ExploreController extends AbstractController
 {
@@ -34,7 +35,7 @@ final class ExploreController extends AbstractController
 
         try {
             $battleSummary = $this->exploreService->explore($knight, $dungeon);
-        } catch (\Exception $e) {
+        } catch (LevelTooLowException $e) {
             throw new BadRequestHttpException('Your level is too low to enter this dungeon.');
         }
 

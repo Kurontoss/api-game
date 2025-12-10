@@ -42,6 +42,10 @@ class Knight
     #[Groups(['knight:read'])]
     private ?int $hp = null;
 
+    #[ORM\Column]
+    #[Groups(['knight:read'])]
+    private ?int $maxHp = null;
+
     /**
      * @var Collection<int, InventoryItem>
      */
@@ -127,6 +131,18 @@ class Knight
     public function setHp(int $hp): static
     {
         $this->hp = $hp;
+
+        return $this;
+    }
+
+    public function getMaxHp(): ?int
+    {
+        return $this->maxHp;
+    }
+
+    public function setMaxHp(int $maxHp): static
+    {
+        $this->maxHp = $maxHp;
 
         return $this;
     }
