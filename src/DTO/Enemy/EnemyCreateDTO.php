@@ -14,5 +14,5 @@ class EnemyCreateDTO
 
     public ?int $dungeonId = null;
 
-    public ?int $dropPoolId = null;
+    public ?int $lootPoolId = null;
 }

@@ -35,7 +35,7 @@ class Enemy
     private ?int $exp = null;
 
     #[ORM\ManyToOne]
-    private ?DropPool $dropPool = null;
+    private ?LootPool $lootPool = null;
 
     public function getId(): ?int
     {
@@ -102,14 +102,14 @@ class Enemy
         return $this;
     }
 
-    public function getDropPool(): ?DropPool
+    public function getLootPool(): ?LootPool
     {
-        return $this->dropPool;
+        return $this->lootPool;
     }
 
-    public function setDropPool(?DropPool $dropPool): static
+    public function setLootPool(?LootPool $lootPool): static
     {
-        $this->dropPool = $dropPool;
+        $this->lootPool = $lootPool;
 
         return $this;
     }

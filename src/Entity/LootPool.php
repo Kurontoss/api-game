@@ -3,15 +3,15 @@
 namespace App\Entity;
 
 use App\Entity\Item\Item;
-use App\Repository\DropPoolRepository;
+use App\Repository\LootPoolRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: DropPoolRepository::class)]
-class DropPool
+#[ORM\Entity(repositoryClass: LootPoolRepository::class)]
+class LootPool
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -22,11 +22,11 @@ class DropPool
      * @var Collection<int, Item>
      */
     #[ORM\ManyToMany(targetEntity: Item::class)]
-    #[Groups(['dropPool:read'])]
+    #[Groups(['lootPool:read'])]
     private Collection $items;
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
-    #[Groups(['dropPool:read'])]
+    #[Groups(['lootPool:read'])]
     private array $chances = [];
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]

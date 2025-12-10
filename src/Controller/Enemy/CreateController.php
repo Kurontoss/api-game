@@ -23,7 +23,7 @@ final class CreateController extends AbstractController
         Request $request,
         EnemyRepository $enemyRepo,
         DungeonRepository $dungeonRepo,
-        DropPoolRepository $dropPoolRepo
+        LootPoolRepository $lootPoolRepo
     ): JsonResponse {
         $dto = $this->serializer->deserialize(
             $request->getContent(),
@@ -32,7 +32,7 @@ final class CreateController extends AbstractController
         );
 
         $dungeon = $dungeonRepo->find($dto->dungeonId);
-        $dropPool = $dropPoolRepo->find($dto->dropPoolId);
+        $lootPool = $lootPoolRepo->find($dto->lootPoolId);
 
         $enemy = new Enemy();
         $enemy->setName($dto->name);
@@ -40,7 +40,7 @@ final class CreateController extends AbstractController
         $enemy->setStrength($dto->strength);
         $enemy->setExp($dto->exp);
         $enemy->setDungeon($dungeon);
-        $enemy->setDropPool($dropPool);
+        $enemy->setLootPool($lootPool);
 
         $enemyRepo->save($enemy);
 

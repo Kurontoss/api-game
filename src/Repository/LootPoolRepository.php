@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\DropPool;
+use App\Entity\LootPool;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,18 +10,18 @@ use Doctrine\ORM\EntityManagerInterface;
 /**
  * @extends ServiceEntityRepository<DropPool>
  */
-class DropPoolRepository extends ServiceEntityRepository
+class LootPoolRepository extends ServiceEntityRepository
 {
     public function __construct(
         ManagerRegistry $registry,
         private EntityManagerInterface $em
     ) {
-        parent::__construct($registry, DropPool::class);
+        parent::__construct($registry, LootPool::class);
     }
 
-    public function save(DropPool $dropPool): void
+    public function save(LootPool $lootPool): void
     {
-        $this->em->persist($dropPool);
+        $this->em->persist($lootPool);
         $this->em->flush();
     }
 }

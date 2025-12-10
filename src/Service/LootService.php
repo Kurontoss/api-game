@@ -2,35 +2,35 @@
 
 namespace App\Service;
 
-use App\Entity\DropPool;
+use App\Entity\LootPool;
 use App\Repository\Item\InventoryItemRepository;
 use App\Entity\Item\InventoryItem;
 
-class DropService
+class LootService
 {
     public function __construct(
         private InventoryItemRepository $inventoryItemRepo
     ) {}
 
-    public function drop(DropPool $dropPool): ?InventoryItem
+    public function drop(LootPool $lootPool): ?InventoryItem
     {
         $chance = (double)rand(1, 10000) / 10000;
 
-        for ($i = 0; $i < count($dropPool->getItems()); $i++) {
-            $chance -= $dropPool->getChances()[$i];
+        for ($i = 0; $i < count($lootPool->getItems()); $i++) {
+            $chance -= $lootPool->getChances()[$i];
             if ($chance <= 0) {
                 break;
             }
         }
 
-        if ($dropPool->getItems()[$i] === null) {
+        if ($lootPool->getItems()[$i] === null) {
             return null;
         }
 
-        $amount = rand($dropPool->getMinAmounts()[$i], $dropPool->getMaxAmounts()[$i]);
+        $amount = rand($lootPool->getMinAmounts()[$i], $lootPool->getMaxAmounts()[$i]);
 
         $inventoryItem = new InventoryItem();
-        $inventoryItem->setItem($dropPool->getItems()[$i]);
+        $inventoryItem->setItem($lootPool->getItems()[$i]);
         $inventoryItem->setAmount($amount);
 
         $this->inventoryItemRepo->save($inventoryItem);

@@ -2,7 +2,7 @@
 
 namespace App\Service\Knight;
 
-use App\Service\DropService;
+use App\Service\LootService;
 use App\Entity\Knight;
 use App\Entity\Enemy;
 use App\DTO\Knight\FightDTO;
@@ -10,7 +10,7 @@ use App\DTO\Knight\FightDTO;
 class EnemyFightService
 {
     public function __construct(
-        private DropService $dropService
+        private LootService $lootService
     ) {}
 
     public function fight(
@@ -34,8 +34,8 @@ class EnemyFightService
         $knight->setExp($knight->getExp() + $enemy->getExp());
         $fight->knight = clone $knight;
 
-        if ($enemy->getDropPool()) {
-            $item = $this->dropService->drop($enemy->getDropPool());
+        if ($enemy->getLootPool()) {
+            $item = $this->lootService->drop($enemy->getLootPool());
             if ($item !== null) {
                 $item->setKnight($knight);
             }
