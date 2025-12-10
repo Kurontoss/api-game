@@ -35,7 +35,6 @@ final class ExploreController extends AbstractController
         try {
             $battleSummary = $this->exploreService->explore($knight, $dungeon);
         } catch (\Exception $e) {
-            throw $e;
             throw new BadRequestHttpException('Your level is too low to enter this dungeon.');
         }
 

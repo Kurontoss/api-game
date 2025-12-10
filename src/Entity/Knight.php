@@ -139,10 +139,17 @@ class Knight
         return $this->inventory;
     }
 
+    public function setInventory(Collection $inventory): static
+    {
+        $this->inventory = $inventory;
+
+        return $this;
+    }
+
     public function addInventoryItem(InventoryItem $inventoryItem): static
     {
         if (!$this->inventory->contains($inventoryItem)) {
-            $this->inventoriy->add($inventoryItem);
+            $this->inventory->add($inventoryItem);
             $inventoryItem->setKnight($this);
         }
 

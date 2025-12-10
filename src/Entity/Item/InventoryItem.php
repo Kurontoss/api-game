@@ -55,6 +55,10 @@ class InventoryItem
     {
         $this->knight = $knight;
 
+        if ($knight !== null) {
+            $knight->addInventoryItem($this);
+        }
+
         return $this;
     }
 

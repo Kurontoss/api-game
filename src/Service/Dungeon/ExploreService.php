@@ -4,6 +4,7 @@ namespace App\Service\Dungeon;
 
 use App\Service\Knight\LevelUpService;
 use App\Service\Knight\EnemyFightService;
+use App\Service\Item\MergeService;
 use App\Entity\Knight;
 use App\Entity\Dungeon;
 use App\DTO\Knight\FightDTO;
@@ -13,7 +14,8 @@ use App\Exception\LevelTooLowException;
 class ExploreService
 {
     public function __construct(
-        private EnemyFightService $enemyFightService
+        private EnemyFightService $enemyFightService,
+        private MergeService $mergeService,
     ) {}
 
     public function explore(
@@ -40,7 +42,7 @@ class ExploreService
         foreach ($dungeon->getEnemies() as $enemy) {
             $fight = $this->enemyFightService->fight($knight, $enemy);
 
-            $fight->round = $i;
+            $fight->round = $i++;
             $battleSummary->fights[] = $fight;
 
             if (!$fight->isWon) {

@@ -3,14 +3,21 @@
 namespace App\Service\Knight;
 
 use App\Service\LootService;
+use App\Service\Item\MergeService;
+use App\Repository\Item\InventoryItemRepository;
+use App\Repository\KnightRepository;
 use App\Entity\Knight;
 use App\Entity\Enemy;
 use App\DTO\Knight\FightDTO;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class EnemyFightService
 {
     public function __construct(
-        private LootService $lootService
+        private LootService $lootService,
+        private MergeService $mergeService,
+        private InventoryItemRepository $inventoryItemRepo,
+        private KnightRepository $knightRepo,
     ) {}
 
     public function fight(
@@ -38,6 +45,12 @@ class EnemyFightService
             $item = $this->lootService->drop($enemy->getLootPool());
             if ($item !== null) {
                 $item->setKnight($knight);
+                $this->inventoryItemRepo->save($item);
+                $this->knightRepo->save($knight);
+
+                $inventory = $knight->getInventory()->toArray();
+                $mergedInventory = $this->mergeService->merge($inventory);
+                $knight->setInventory(new ArrayCollection($mergedInventory));
             }
         }
         $fight->item = isset($item) ? $item : null;

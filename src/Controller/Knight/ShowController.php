@@ -19,7 +19,7 @@ final class ShowController extends AbstractController
         Knight $knight
     ): JsonResponse {
         return new JsonResponse(
-            $this->serializer->normalize($knight, 'json', ['groups' => ['knight:read']]),
+            $this->serializer->normalize($knight, 'json', ['groups' => ['knight:read', 'inventory:read', 'item:read']]),
             200
         );
     }

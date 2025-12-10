@@ -24,4 +24,10 @@ class InventoryItemRepository extends ServiceEntityRepository
         $this->em->persist($inventoryItem);
         $this->em->flush();
     }
+
+    public function delete(InventoryItem $inventoryItem): void
+    {
+        $this->em->remove($inventoryItem);
+        $this->em->flush();
+    }
 }
