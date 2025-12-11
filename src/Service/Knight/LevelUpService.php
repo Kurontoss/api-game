@@ -14,6 +14,8 @@ class LevelUpService
             $knight->setExpToNextLevel($knight->getExpToNextLevel() * 1.5);
             $knight->setLevel($knight->getLevel() + 1);
 
+            $knight->setMaxHp($knight->getMaxHp() * 1.2);
+
             $this->levelUp($knight);
         }
     }
