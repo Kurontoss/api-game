@@ -9,7 +9,6 @@ use App\Repository\KnightRepository;
 use App\Entity\Knight;
 use App\Entity\Enemy;
 use App\DTO\Knight\FightDTO;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class EnemyFightService
 {
@@ -47,10 +46,6 @@ class EnemyFightService
                 $item->setKnight($knight);
                 $this->inventoryItemRepo->save($item);
                 $this->knightRepo->save($knight);
-
-                $inventory = $knight->getInventory()->toArray();
-                $mergedInventory = $this->mergeService->merge($inventory);
-                $knight->setInventory(new ArrayCollection($mergedInventory));
             }
         }
         $fight->item = isset($item) ? $item : null;

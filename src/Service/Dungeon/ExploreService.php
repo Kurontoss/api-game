@@ -2,6 +2,7 @@
 
 namespace App\Service\Dungeon;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use App\Service\Knight\LevelUpService;
 use App\Service\Knight\EnemyFightService;
 use App\Service\Item\MergeService;
@@ -53,8 +54,13 @@ class ExploreService
             $battleSummary->items[] = $fight->item;
         }
 
+        $battleSummary->items = $this->mergeService->merge($battleSummary->items, true);
         $battleSummary->exp += $dungeon->getExp();
         $knight->setExp($knight->getExp() + $dungeon->getExp());
+
+        $inventory = $knight->getInventory()->toArray();
+        $mergedInventory = $this->mergeService->merge($inventory);
+        $knight->setInventory(new ArrayCollection($mergedInventory));
 
         return $battleSummary;
     }

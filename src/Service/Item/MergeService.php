@@ -10,7 +10,7 @@ class MergeService
         private InventoryItemRepository $inventoryItemRepo
     ) {}
 
-    public function merge(array $items): array
+    public function merge(array $items, bool $clone = false): array
     {
         $mergedItems = [];
 
@@ -20,7 +20,9 @@ class MergeService
             foreach ($mergedItems as $mergedItem) {
                 if ($item->getItem() === $mergedItem->getItem()) {
                     $mergedItem->setAmount($mergedItem->getAmount() + $item->getAmount());
-                    $this->inventoryItemRepo->delete($item);
+                    if (!$clone) {
+                        $this->inventoryItemRepo->delete($item);
+                    }
 
                     $merged = true;
                     break;
@@ -28,7 +30,7 @@ class MergeService
             }
 
             if (!$merged) {
-                $mergedItems[] = $item;
+                $mergedItems[] = $clone ? clone $item : $item;
             }
         }
 

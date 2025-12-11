@@ -33,8 +33,6 @@ class LootService
         $inventoryItem->setItem($lootPool->getItems()[$i]);
         $inventoryItem->setAmount($amount);
 
-        $this->inventoryItemRepo->save($inventoryItem);
-
         return $inventoryItem;
     }
 }
