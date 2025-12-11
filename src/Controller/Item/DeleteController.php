@@ -5,7 +5,6 @@ namespace App\Controller\Item;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
-use App\Entity\Item\Item;
 use App\Repository\Item\ItemRepository;
 
 final class DeleteController extends AbstractController
@@ -16,8 +15,9 @@ final class DeleteController extends AbstractController
 
     #[Route('/api/item/{id}/delete', name: 'item_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
     public function delete(
-        Item $item,
+        int $id,
     ): JsonResponse {
+        $item = $this->itemRepo->find($id);
         $this->itemRepo->delete($item);
 
         return new JsonResponse(null, 204);

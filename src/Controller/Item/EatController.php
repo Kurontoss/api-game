@@ -9,8 +9,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\Item\EatService;
+use App\Repository\Item\ItemRepository;
 use App\Repository\KnightRepository;
-use App\Entity\Item\InventoryItem;
 use App\DTO\Item\EatDTO;
 use App\Exception\ItemAmountTooLowException;
 
@@ -19,13 +19,14 @@ final class EatController extends AbstractController
     public function __construct(
         private SerializerInterface $serializer,
         private EatService $eatService,
+        private ItemRepository $itemRepo,
         private KnightRepository $knightRepo,
     ) {}
 
     #[Route('/api/item/{id}/eat', name: 'item_eat', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function eat(
         Request $request,
-        InventoryItem $item,
+        int $id,
     ): JsonResponse {
         $dto = $this->serializer->deserialize(
             $request->getContent(),
@@ -34,6 +35,7 @@ final class EatController extends AbstractController
             ['groups' => ['inventory_item:write']]
         );
 
+        $item = $this->itemRepo->find($id);
         $knight = $this->knightRepo->find($dto->knightId);
 
         if ($knight->getUser() !== $this->getUser()) {

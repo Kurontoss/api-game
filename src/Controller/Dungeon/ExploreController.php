@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\Dungeon\ExploreService;
 use App\Service\Knight\LevelUpService;
-use App\Entity\Dungeon;
+use App\Repository\DungeonRepository;
 use App\Repository\KnightRepository;
 use App\DTO\Dungeon\ExploreDTO;
 use App\Exception\LevelTooLowException;
@@ -21,13 +21,14 @@ final class ExploreController extends AbstractController
         private SerializerInterface $serializer,
         private ExploreService $exploreService,
         private LevelUpService $levelUpService,
+        private DungeonRepository $dungeonRepo,
         private KnightRepository $knightRepo,
     ) {}
 
     #[Route('/api/dungeon/{id}/explore', name: 'dungeon_explore', methods: ['POST'])]
     public function create(
         Request $request,
-        Dungeon $dungeon,
+        int $id,
     ): JsonResponse {
         $dto = $this->serializer->deserialize(
             $request->getContent(),
@@ -36,6 +37,7 @@ final class ExploreController extends AbstractController
             ['groups' => ['dungeon:write']]
         );
 
+        $dungeon = $this->dungeonRepo->find($id);
         $knight = $this->knightRepo->find($dto->knightId);
 
         if ($knight->getUser() !== $this->getUser()) {
