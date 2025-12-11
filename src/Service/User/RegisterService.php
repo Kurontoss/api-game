@@ -3,9 +3,9 @@
 namespace App\Service\User;
 
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Exception\EmailAlreadyRegisteredException;
 
 class RegisterService
 {
@@ -18,7 +18,7 @@ class RegisterService
         User $user
     ): void {
         if ($this->repository->findOneBy(['email' => $user->getEmail()])) {
-            throw new BadRequestHttpException('Email already exists.');
+            throw new EmailAlreadyRegisteredException();
         }
 
         $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());

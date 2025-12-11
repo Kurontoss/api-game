@@ -8,9 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Service\User\RegisterService;
+use App\Exception\EmailAlreadyRegisteredException;
 
 final class RegisterController extends AbstractController
 {
@@ -32,7 +34,11 @@ final class RegisterController extends AbstractController
             ['groups' => ['user:write']]
         );
 
-        $this->registerService->register($user);
+        try {
+            $this->registerService->register($user);
+        } catch (EmailAlreadyRegisteredException $e) {
+            throw new BadRequestHttpException('Email is already registered.');
+        }
 
         $userRepo->save($user);
 
