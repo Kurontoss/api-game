@@ -31,7 +31,7 @@ class UserFixtures extends Fixture
         $hashedPassword = $this->passwordHasher->hashPassword($user2, 'abc');
         $user2->setPassword($hashedPassword);
         $manager->persist($user2);
-        $this->addReference('user_ben', $user1);
+        $this->addReference('user_ben', $user2);
 
         $manager->flush();
     }
