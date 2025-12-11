@@ -33,6 +33,10 @@ final class ExploreController extends AbstractController
         $knight = $knightRepo->find($knightId);
         $dungeon = $dungeonRepo->find($dungeonId);
 
+        if ($knight->getUser() !== $this->getUser()) {
+            throw new BadRequestHttpException('The currently logged in user is not this knight\'s onwer!');
+        }
+
         try {
             $battleSummary = $this->exploreService->explore($knight, $dungeon);
         } catch (LevelTooLowException $e) {

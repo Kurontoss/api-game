@@ -29,6 +29,10 @@ final class EatController extends AbstractController
         InventoryItemRepository $inventoryItemRepo,
         KnightRepository $knightRepo,
     ): JsonResponse {
+        if ($knight->getUser() !== $this->getUser()) {
+            throw new BadRequestHttpException('The currently logged in user is not this knight\'s onwer!');
+        }
+
         $dto = $this->serializer->deserialize(
             $request->getContent(),
             EatDTO::class,
