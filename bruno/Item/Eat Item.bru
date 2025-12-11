@@ -5,18 +5,18 @@ meta {
 }
 
 post {
-  url: http://127.0.0.1:8000/api/knight/:id/eat
+  url: http://127.0.0.1:8000/api/item/:id/eat
   body: json
   auth: inherit
 }
 
 params:path {
-  id: 6
+  id: 118
 }
 
 body:json {
   {
-    "inventoryItemId": 121,
+    "knightId": 6,
     "amount": 3
   }
 }

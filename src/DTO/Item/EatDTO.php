@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class EatDTO
 {
     #[Groups(['inventory_item:write'])]
-    public ?int $inventoryItemId;
+    public ?int $knightId;
 
     #[Groups(['inventory_item:write'])]
     public ?int $amount;

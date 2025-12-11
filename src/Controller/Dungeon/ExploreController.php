@@ -4,6 +4,7 @@ namespace App\Controller\Dungeon;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -13,6 +14,7 @@ use App\Entity\Knight;
 use App\Entity\Dungeon;
 use App\Repository\KnightRepository;
 use App\Repository\DungeonRepository;
+use App\DTO\Dungeon\ExploreDTO;
 use App\Exception\LevelTooLowException;
 
 final class ExploreController extends AbstractController
@@ -23,15 +25,21 @@ final class ExploreController extends AbstractController
         private LevelUpService $levelUpService
     ) {}
 
-    #[Route('/api/knight/{knightId}/explore/{dungeonId}', name: 'knight_explore', methods: ['POST'])]
+    #[Route('/api/dungeon/{id}/explore', name: 'dungeon_explore', methods: ['POST'])]
     public function create(
+        Request $request,
+        Dungeon $dungeon,
         KnightRepository $knightRepo,
         DungeonRepository $dungeonRepo,
-        int $knightId,
-        int $dungeonId
     ): JsonResponse {
-        $knight = $knightRepo->find($knightId);
-        $dungeon = $dungeonRepo->find($dungeonId);
+        $dto = $this->serializer->deserialize(
+            $request->getContent(),
+            ExploreDTO::class,
+            'json',
+            ['groups' => ['dungeon:write']]
+        );
+
+        $knight = $knightRepo->find($dto->knightId);
 
         if ($knight->getUser() !== $this->getUser()) {
             throw new BadRequestHttpException('The currently logged in user is not this knight\'s onwer!');

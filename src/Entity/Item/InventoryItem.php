@@ -4,7 +4,7 @@ namespace App\Entity\Item;
 
 use App\Entity\Item\Item;
 use App\Entity\Knight;
-use App\Repository\InventoryRepository;
+use App\Repository\Item\InventoryItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 

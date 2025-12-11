@@ -5,14 +5,19 @@ meta {
 }
 
 post {
-  url: http://127.0.0.1:8000/api/knight/:knightId/explore/:dungeonId
-  body: none
+  url: http://127.0.0.1:8000/api/dungeon/:id/explore
+  body: json
   auth: inherit
 }
 
 params:path {
-  dungeonId: 26
-  knightId: 6
+  id: 27
+}
+
+body:json {
+  {
+    "knightId": 6
+  }
 }
 
 settings {

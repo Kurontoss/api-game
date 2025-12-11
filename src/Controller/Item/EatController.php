@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\Item\EatService;
 use App\Repository\Item\InventoryItemRepository;
 use App\Repository\KnightRepository;
-use App\Entity\Knight;
+use App\Entity\Item\InventoryItem;
 use App\DTO\Item\EatDTO;
 use App\Exception\ItemAmountTooLowException;
 
@@ -21,25 +21,26 @@ final class EatController extends AbstractController
         private SerializerInterface $serializer
     ) {}
 
-    #[Route('/api/knight/{id}/eat', name: 'item_eat', methods: ['POST'], requirements: ['id' => '\d+'])]
+    #[Route('/api/item/{id}/eat', name: 'item_eat', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function eat(
         Request $request,
-        Knight $knight,
+        InventoryItem $item,
         EatService $eatService,
         InventoryItemRepository $inventoryItemRepo,
         KnightRepository $knightRepo,
     ): JsonResponse {
-        if ($knight->getUser() !== $this->getUser()) {
-            throw new BadRequestHttpException('The currently logged in user is not this knight\'s onwer!');
-        }
-
         $dto = $this->serializer->deserialize(
             $request->getContent(),
             EatDTO::class,
-            'json'
+            'json',
+            ['groups' => ['inventory_item:write']]
         );
 
-        $item = $inventoryItemRepo->find($dto->inventoryItemId);
+        $knight = $knightRepo->find($dto->knightId);
+
+        if ($knight->getUser() !== $this->getUser()) {
+            throw new BadRequestHttpException('The currently logged in user is not this knight\'s onwer!');
+        }
 
         if ($item === null) {
             throw new BadRequestHttpException('Invalid inventory item id!');
