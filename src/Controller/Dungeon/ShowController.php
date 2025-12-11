@@ -11,12 +11,12 @@ use App\Entity\Dungeon;
 final class ShowController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
     ) {}
 
     #[Route('/api/dungeon/{id}', name: 'dungeon_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(
-        Dungeon $dungeon
+        Dungeon $dungeon,
     ): JsonResponse {
         return new JsonResponse(
             $this->serializer->normalize($dungeon, 'json', ['groups' => [

@@ -11,14 +11,14 @@ use App\Repository\EnemyRepository;
 final class ListController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
+        private EnemyRepository $enemyRepo,
     ) {}
 
     #[Route('/api/enemy', name: 'enemy_list', methods: ['GET'])]
-    public function list(
-        EnemyRepository $enemyRepo
-    ): JsonResponse {
-        $enemies = $enemyRepo->findAll();
+    public function list(): JsonResponse
+    {
+        $enemies = $this->enemyRepo->findAll();
 
         return new JsonResponse(
             $this->serializer->normalize($enemies, 'json', ['groups' => ['enemy:read']]),

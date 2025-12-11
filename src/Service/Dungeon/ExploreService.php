@@ -22,7 +22,7 @@ class ExploreService
 
     public function explore(
         Knight $knight,
-        Dungeon $dungeon
+        Dungeon $dungeon,
     ): BattleSummaryDTO {
         if ($knight->getLevel() < $dungeon->getLevel()) {
             throw new LevelTooLowException();

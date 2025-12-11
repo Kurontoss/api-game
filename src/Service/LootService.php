@@ -9,11 +9,12 @@ use App\Entity\Item\InventoryItem;
 class LootService
 {
     public function __construct(
-        private InventoryItemRepository $inventoryItemRepo
+        private InventoryItemRepository $inventoryItemRepo,
     ) {}
 
-    public function drop(LootPool $lootPool): ?InventoryItem
-    {
+    public function drop(
+        LootPool $lootPool,
+    ): ?InventoryItem {
         $chance = (double)rand(1, 10000) / 10000;
 
         for ($i = 0; $i < count($lootPool->getItems()); $i++) {

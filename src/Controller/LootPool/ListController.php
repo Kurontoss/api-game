@@ -11,14 +11,14 @@ use App\Repository\LootPoolRepository;
 final class ListController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
+        private LootPoolRepository $lootPoolRepo,
     ) {}
     
     #[Route('/api/loot-pool', name: 'loot_pool_list', methods: ['GET'])]
-    public function list(
-        LootPoolRepository $lootPoolRepo
-    ): JsonResponse {
-        $lootPools = $lootPoolRepo->findAll();
+    public function list(): JsonResponse
+    {
+        $lootPools = $this->lootPoolRepo->findAll();
 
         return new JsonResponse(
             $this->serializer->normalize($lootPools, 'json', ['groups' => [

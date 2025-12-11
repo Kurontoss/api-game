@@ -10,10 +10,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\Dungeon\ExploreService;
 use App\Service\Knight\LevelUpService;
-use App\Entity\Knight;
 use App\Entity\Dungeon;
 use App\Repository\KnightRepository;
-use App\Repository\DungeonRepository;
 use App\DTO\Dungeon\ExploreDTO;
 use App\Exception\LevelTooLowException;
 
@@ -22,15 +20,14 @@ final class ExploreController extends AbstractController
     public function __construct(
         private SerializerInterface $serializer,
         private ExploreService $exploreService,
-        private LevelUpService $levelUpService
+        private LevelUpService $levelUpService,
+        private KnightRepository $knightRepo,
     ) {}
 
     #[Route('/api/dungeon/{id}/explore', name: 'dungeon_explore', methods: ['POST'])]
     public function create(
         Request $request,
         Dungeon $dungeon,
-        KnightRepository $knightRepo,
-        DungeonRepository $dungeonRepo,
     ): JsonResponse {
         $dto = $this->serializer->deserialize(
             $request->getContent(),
@@ -39,7 +36,7 @@ final class ExploreController extends AbstractController
             ['groups' => ['dungeon:write']]
         );
 
-        $knight = $knightRepo->find($dto->knightId);
+        $knight = $this->knightRepo->find($dto->knightId);
 
         if ($knight->getUser() !== $this->getUser()) {
             throw new BadRequestHttpException('The currently logged in user is not this knight\'s onwer!');
@@ -57,7 +54,7 @@ final class ExploreController extends AbstractController
 
         $this->levelUpService->levelUp($knight);
 
-        $knightRepo->save($knight);
+        $this->knightRepo->save($knight);
 
         return $this->json([
             'dungeon' => $this->serializer->normalize($dungeon, 'json',['groups' => ['dungeon:read']]),

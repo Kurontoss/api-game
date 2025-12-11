@@ -15,14 +15,14 @@ use App\DTO\LootPool\CreateDTO;
 final class CreateController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
+        private LootPoolRepository $lootPoolRepo,
+        private ItemRepository $itemRepo,
     ) {}
 
     #[Route('/api/loot-pool/create', name: 'loot_pool_create', methods: ['POST'])]
     public function create(
         Request $request,
-        LootPoolRepository $lootPoolRepo,
-        ItemRepository $itemRepo
     ): JsonResponse {
         $dto = $this->serializer->deserialize(
             $request->getContent(),
@@ -34,7 +34,7 @@ final class CreateController extends AbstractController
         $lootPool->setName($dto->name);
 
         foreach($dto->items as $id) {
-            $item = $itemRepo->find($id);
+            $item = $this->itemRepo->find($id);
             if ($item) {
                 $lootPool->addItem($item);
             }
@@ -44,7 +44,7 @@ final class CreateController extends AbstractController
         $lootPool->setMinAmounts($dto->minAmounts);
         $lootPool->setMaxAmounts($dto->maxAmounts);
 
-        $lootPoolRepo->save($lootPool);
+        $this->lootPoolRepo->save($lootPool);
 
         return new JsonResponse(
             $this->serializer->normalize($lootPool, 'json', ['groups' => [

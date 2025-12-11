@@ -7,7 +7,7 @@ use App\Entity\Knight;
 class LevelUpService
 {
     public function levelUp(
-        Knight $knight
+        Knight $knight,
     ): void {
         if ($knight->getExp() >= $knight->getExpToNextLevel()) {
             $knight->setExp($knight->getExp() - $knight->getExpToNextLevel());

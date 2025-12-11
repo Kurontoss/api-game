@@ -21,7 +21,7 @@ class EnemyFightService
 
     public function fight(
         Knight $knight,
-        Enemy $enemy
+        Enemy $enemy,
     ): ?FightDTO {
         $rounds = (int)ceil($enemy->getHp() / $knight->getLevel()) - 1;
         $knight->setHp($knight->getHp() - $enemy->getStrength() * $rounds);

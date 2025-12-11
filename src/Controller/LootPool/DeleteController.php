@@ -10,12 +10,15 @@ use App\Repository\LootPoolRepository;
 
 final class DeleteController extends AbstractController
 {
+    public function __construct(
+        private LootPoolRepository $lootPoolRepo,
+    ) {}
+
     #[Route('/api/loot-pool/{id}/delete', name: 'loot_pool_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
     public function delete(
-        LootPoolRepository $lootPoolRepo,
-        LootPool $lootPool
+        LootPool $lootPool,
     ): JsonResponse {
-        $lootPoolRepo->delete($lootPool);
+        $this->lootPoolRepo->delete($lootPool);
 
         return new JsonResponse(null, 204);
     }

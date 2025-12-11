@@ -11,13 +11,13 @@ class RegisterService
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
-        private UserRepository $repository
+        private UserRepository $userRepo,
     ) {}
 
     public function register(
-        User $user
+        User $user,
     ): void {
-        if ($this->repository->findOneBy(['email' => $user->getEmail()])) {
+        if ($this->userRepo->findOneBy(['email' => $user->getEmail()])) {
             throw new EmailAlreadyRegisteredException();
         }
 

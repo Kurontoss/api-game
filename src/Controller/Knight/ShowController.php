@@ -11,12 +11,12 @@ use App\Entity\Knight;
 final class ShowController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
     ) {}
 
     #[Route('/api/knight/{id}', name: 'knight_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(
-        Knight $knight
+        Knight $knight,
     ): JsonResponse {
         return new JsonResponse(
             $this->serializer->normalize($knight, 'json', ['groups' => [

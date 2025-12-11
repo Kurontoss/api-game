@@ -11,14 +11,14 @@ use App\Repository\KnightRepository;
 final class ListController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
+        private KnightRepository $knightRepo,
     ) {}
 
     #[Route('/api/knight', name: 'knight_list', methods: ['GET'])]
-    public function list(
-        KnightRepository $knightRepo
-    ): JsonResponse {
-        $knights = $knightRepo->findAll();
+    public function list(): JsonResponse
+    {
+        $knights = $this->knightRepo->findAll();
 
         return new JsonResponse(
             $this->serializer->normalize($knights, 'json', ['groups' => [

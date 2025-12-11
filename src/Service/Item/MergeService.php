@@ -7,11 +7,13 @@ use App\Repository\Item\InventoryItemRepository;
 class MergeService
 {
     public function __construct(
-        private InventoryItemRepository $inventoryItemRepo
+        private InventoryItemRepository $inventoryItemRepo,
     ) {}
 
-    public function merge(array $items, bool $clone = false): array
-    {
+    public function merge(
+        array $items,
+        bool $clone = false,
+    ): array {
         $mergedItems = [];
 
         foreach ($items as $item) {

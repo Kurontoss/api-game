@@ -10,11 +10,14 @@ use App\Exception\ItemAmountTooLowException;
 class EatService
 {
     public function __construct(
-        private InventoryItemRepository $inventoryItemRepo
+        private InventoryItemRepository $inventoryItemRepo,
     ) {}
 
-    public function eat(Knight $knight, InventoryItem $item, int $amount): void
-    {
+    public function eat(
+        Knight $knight,
+        InventoryItem $item,
+        int $amount,
+    ): void {
         if ($amount > $item->getAmount()) {
             throw new ItemAmountTooLowException();
         }

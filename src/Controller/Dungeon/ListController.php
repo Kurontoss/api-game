@@ -11,14 +11,14 @@ use App\Repository\DungeonRepository;
 final class ListController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
+        private DungeonRepository $dungeonRepo,
     ) {}
     
     #[Route('/api/dungeon', name: 'dungeon_list', methods: ['GET'])]
-    public function list(
-        DungeonRepository $dungeonRepo
-    ): JsonResponse {
-        $dungeons = $dungeonRepo->findAll();
+    public function list(): JsonResponse
+    {
+        $dungeons = $this->dungeonRepo->findAll();
 
         return new JsonResponse(
             $this->serializer->normalize($dungeons, 'json', ['groups' => ['dungeon:read']]),

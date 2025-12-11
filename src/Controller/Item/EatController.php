@@ -9,7 +9,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use App\Service\Item\EatService;
-use App\Repository\Item\InventoryItemRepository;
 use App\Repository\KnightRepository;
 use App\Entity\Item\InventoryItem;
 use App\DTO\Item\EatDTO;
@@ -18,16 +17,15 @@ use App\Exception\ItemAmountTooLowException;
 final class EatController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
+        private EatService $eatService,
+        private KnightRepository $knightRepo,
     ) {}
 
     #[Route('/api/item/{id}/eat', name: 'item_eat', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function eat(
         Request $request,
         InventoryItem $item,
-        EatService $eatService,
-        InventoryItemRepository $inventoryItemRepo,
-        KnightRepository $knightRepo,
     ): JsonResponse {
         $dto = $this->serializer->deserialize(
             $request->getContent(),
@@ -36,7 +34,7 @@ final class EatController extends AbstractController
             ['groups' => ['inventory_item:write']]
         );
 
-        $knight = $knightRepo->find($dto->knightId);
+        $knight = $this->knightRepo->find($dto->knightId);
 
         if ($knight->getUser() !== $this->getUser()) {
             throw new BadRequestHttpException('The currently logged in user is not this knight\'s onwer!');
@@ -51,12 +49,12 @@ final class EatController extends AbstractController
         }
 
         try {
-            $eatService->eat($knight, $item, $dto->amount);
+            $this->eatService->eat($knight, $item, $dto->amount);
         } catch (ItemAmountTooLowException $e) {
             throw new BadRequestHttpException('You don\'t have enough food to eat!');
         }
 
-        $knightRepo->save($knight);
+        $this->knightRepo->save($knight);
 
         return new JsonResponse(
             $this->serializer->normalize($knight, 'json', ['groups' => [

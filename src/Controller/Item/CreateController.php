@@ -15,13 +15,13 @@ use App\Repository\Item\ItemRepository;
 final class CreateController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
+        private ItemRepository $itemRepo,
     ) {}
 
     #[Route('/api/item/create', name: 'item_create', methods: ['POST'])]
     public function create(
         Request $request,
-        ItemRepository $itemRepo
     ): JsonResponse {
         $dto = $this->serializer->deserialize(
             $request->getContent(),
@@ -39,7 +39,7 @@ final class CreateController extends AbstractController
         $item->setName($dto->name);
         $item->setValue($dto->value);
 
-        $itemRepo->save($item);
+        $this->itemRepo->save($item);
 
         return new JsonResponse(
             $this->serializer->normalize($item, 'json', ['groups' => ['item:read']]),

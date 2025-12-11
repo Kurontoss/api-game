@@ -16,15 +16,15 @@ use App\DTO\Enemy\CreateDTO;
 final class CreateController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
+        private EnemyRepository $enemyRepo,
+        private DungeonRepository $dungeonRepo,
+        private LootPoolRepository $lootPoolRepo,
     ) {}
 
     #[Route('/api/enemy/create', name: 'enemy_create', methods: ['POST'])]
     public function create(
         Request $request,
-        EnemyRepository $enemyRepo,
-        DungeonRepository $dungeonRepo,
-        LootPoolRepository $lootPoolRepo
     ): JsonResponse {
         $dto = $this->serializer->deserialize(
             $request->getContent(),
@@ -33,8 +33,8 @@ final class CreateController extends AbstractController
             ['groups' => ['enemy:write']]
         );
 
-        $dungeon = $dungeonRepo->find($dto->dungeonId);
-        $lootPool = $lootPoolRepo->find($dto->lootPoolId);
+        $dungeon = $this->dungeonRepo->find($dto->dungeonId);
+        $lootPool = $this->lootPoolRepo->find($dto->lootPoolId);
 
         $enemy = new Enemy();
         $enemy->setName($dto->name);
@@ -44,7 +44,7 @@ final class CreateController extends AbstractController
         $enemy->setDungeon($dungeon);
         $enemy->setLootPool($lootPool);
 
-        $enemyRepo->save($enemy);
+        $this->enemyRepo->save($enemy);
 
         return new JsonResponse(
             $this->serializer->normalize($enemy, 'json', ['groups' => [

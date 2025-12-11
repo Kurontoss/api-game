@@ -11,12 +11,12 @@ use App\Entity\LootPool;
 final class ShowController extends AbstractController
 {
     public function __construct(
-        private SerializerInterface $serializer
+        private SerializerInterface $serializer,
     ) {}
 
     #[Route('/api/loot-pool/{id}', name: 'loot_pool_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(
-        LootPool $lootPool
+        LootPool $lootPool,
     ): JsonResponse {
         return new JsonResponse(
             $this->serializer->normalize($lootPool, 'json', ['groups' => [

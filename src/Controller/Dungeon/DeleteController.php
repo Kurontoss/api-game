@@ -10,12 +10,15 @@ use App\Repository\DungeonRepository;
 
 final class DeleteController extends AbstractController
 {
+    public function __construct(
+        private DungeonRepository $dungeonRepo,
+    ) {}
+
     #[Route('/api/dungeon/{id}/delete', name: 'dungeon_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
     public function delete(
-        DungeonRepository $dungeonRepo,
-        Dungeon $dungeon
+        Dungeon $dungeon,
     ): JsonResponse {
-        $dungeonRepo->delete($dungeon);
+        $this->dungeonRepo->delete($dungeon);
 
         return new JsonResponse(null, 204);
     }
