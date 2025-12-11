@@ -4,7 +4,7 @@ namespace App\DTO\Enemy;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
-class EnemyCreateDTO
+class CreateDTO
 {
     #[Groups(['enemy:write'])]
     public ?string $name = null;

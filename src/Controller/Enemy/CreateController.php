@@ -11,7 +11,7 @@ use App\Entity\Enemy;
 use App\Repository\EnemyRepository;
 use App\Repository\DungeonRepository;
 use App\Repository\LootPoolRepository;
-use App\DTO\Enemy\EnemyCreateDTO;
+use App\DTO\Enemy\CreateDTO;
 
 final class CreateController extends AbstractController
 {
@@ -28,7 +28,7 @@ final class CreateController extends AbstractController
     ): JsonResponse {
         $dto = $this->serializer->deserialize(
             $request->getContent(),
-            EnemyCreateDTO::class,
+            CreateDTO::class,
             'json',
             ['groups' => ['enemy:write']]
         );

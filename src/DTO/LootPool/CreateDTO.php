@@ -4,7 +4,7 @@ namespace App\DTO\LootPool;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
-class LootPoolCreateDTO
+class CreateDTO
 {
     #[Groups(['loot_pool:write'])]
     public ?string $name = null;

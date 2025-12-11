@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use App\DTO\Item\ItemCreateDTO;
+use App\DTO\Item\CreateDTO;
 use App\Entity\Item\Item;
 use App\Entity\Item\Food;
 use App\Repository\Item\ItemRepository;
@@ -25,7 +25,7 @@ final class CreateController extends AbstractController
     ): JsonResponse {
         $dto = $this->serializer->deserialize(
             $request->getContent(),
-            ItemCreateDTO::class,
+            CreateDTO::class,
             'json'
         );
 

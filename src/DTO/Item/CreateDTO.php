@@ -4,7 +4,7 @@ namespace App\DTO\Item;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
-class ItemCreateDTO
+class CreateDTO
 {
     #[Groups(['item:write'])]
     public ?string $name = null;

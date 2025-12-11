@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use App\Entity\LootPool;
 use App\Repository\LootPoolRepository;
 use App\Repository\Item\ItemRepository;
-use App\DTO\LootPool\LootPoolCreateDTO;
+use App\DTO\LootPool\CreateDTO;
 
 final class CreateController extends AbstractController
 {
@@ -26,7 +26,7 @@ final class CreateController extends AbstractController
     ): JsonResponse {
         $dto = $this->serializer->deserialize(
             $request->getContent(),
-            LootPoolCreateDTO::class,
+            CreateDTO::class,
             'json'
         );
 
