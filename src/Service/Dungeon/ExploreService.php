@@ -8,8 +8,8 @@ use App\Service\Knight\EnemyFightService;
 use App\Service\Item\MergeService;
 use App\Entity\Knight;
 use App\Entity\Dungeon;
-use App\DTO\Knight\FightDTO;
-use App\DTO\Knight\BattleSummaryDTO;
+use App\DTO\Battle\FightDTO;
+use App\DTO\Battle\BattleSummaryDTO;
 use App\Exception\LevelTooLowException;
 
 class ExploreService

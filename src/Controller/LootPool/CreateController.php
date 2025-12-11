@@ -47,7 +47,10 @@ final class CreateController extends AbstractController
         $lootPoolRepo->save($lootPool);
 
         return new JsonResponse(
-            $this->serializer->normalize($lootPool, 'json', ['groups' => ['lootPool:read', 'item:read']]),
+            $this->serializer->normalize($lootPool, 'json', ['groups' => [
+                'loot_pool:read',
+                'item:read',
+            ]]),
             201
         );
     }

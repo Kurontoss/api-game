@@ -28,7 +28,7 @@ class Knight
 
     #[ORM\ManyToOne(inversedBy: 'knights')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['knight:read'])]
+    #[Groups(['knight_user:read'])]
     private ?User $user = null;
 
     #[ORM\Column]
@@ -51,7 +51,7 @@ class Knight
      * @var Collection<int, InventoryItem>
      */
     #[ORM\OneToMany(targetEntity: InventoryItem::class, mappedBy: 'knight')]
-    #[Groups(['inventory:read'])]
+    #[Groups(['knight_inventory:read'])]
     private Collection $inventory;
 
     public function __construct()

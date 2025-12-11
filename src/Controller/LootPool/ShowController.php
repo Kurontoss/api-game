@@ -19,7 +19,10 @@ final class ShowController extends AbstractController
         LootPool $lootPool
     ): JsonResponse {
         return new JsonResponse(
-            $this->serializer->normalize($lootPool, 'json', ['groups' => ['lootPool:read']]),
+            $this->serializer->normalize($lootPool, 'json', ['groups' => [
+                'loot_pool:read',
+                'item:read'
+            ]]),
             200
         );
     }

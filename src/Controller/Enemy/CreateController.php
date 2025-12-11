@@ -29,7 +29,8 @@ final class CreateController extends AbstractController
         $dto = $this->serializer->deserialize(
             $request->getContent(),
             EnemyCreateDTO::class,
-            'json'
+            'json',
+            ['groups' => ['enemy:write']]
         );
 
         $dungeon = $dungeonRepo->find($dto->dungeonId);
@@ -46,13 +47,14 @@ final class CreateController extends AbstractController
         $enemyRepo->save($enemy);
 
         return new JsonResponse(
-            array_merge(
-                $this->serializer->normalize($enemy, 'json', ['groups' => ['enemy:read']]),
-                [
-                    'dungeon' => $dungeon->getName(),
-                    'lootPool' => $lootPool->getName(),
-                ]
-            ),
+            $this->serializer->normalize($enemy, 'json', ['groups' => [
+                'enemy:read',
+                'enemy_dungeon:read',
+                'dungeon:read',
+                'enemy_loot_pool:read',
+                'loot_pool:read',
+                'item:read'
+            ]]),
             201
         );
     }

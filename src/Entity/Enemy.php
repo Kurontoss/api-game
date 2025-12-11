@@ -16,25 +16,27 @@ class Enemy
     private ?int $id = null;
 
     #[ORM\Column(length: 256)]
-    #[Groups(['enemy:read', 'enemy:write'])]
+    #[Groups(['enemy:read'])]
     private ?string $name = null;
 
     #[ORM\Column]
-    #[Groups(['enemy:read', 'enemy:write'])]
+    #[Groups(['enemy:read'])]
     private ?int $hp = null;
 
     #[ORM\Column]
-    #[Groups(['enemy:read', 'enemy:write'])]
+    #[Groups(['enemy:read'])]
     private ?int $strength = null;
 
     #[ORM\ManyToOne(inversedBy: 'enemies')]
+    #[Groups(['enemy_dungeon:read'])]
     private ?Dungeon $dungeon = null;
 
     #[ORM\Column]
-    #[Groups(['enemy:read', 'enemy:write'])]
+    #[Groups(['enemy:read'])]
     private ?int $exp = null;
 
     #[ORM\ManyToOne]
+    #[Groups(['enemy_loot_pool:read'])]
     private ?LootPool $lootPool = null;
 
     public function getId(): ?int

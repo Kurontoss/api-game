@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTO\Knight;
+namespace App\DTO\Battle;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Entity\Enemy;

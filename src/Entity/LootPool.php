@@ -16,30 +16,30 @@ class LootPool
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['lootPool:read'])]
+    #[Groups(['loot_pool:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 256)]
-    #[Groups(['lootPool:read'])]
+    #[Groups(['loot_pool:read'])]
     private ?string $name = null;
 
     /**
      * @var Collection<int, Item>
      */
     #[ORM\ManyToMany(targetEntity: Item::class)]
-    #[Groups(['lootPool:read'])]
+    #[Groups(['loot_pool:read'])]
     private Collection $items;
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
-    #[Groups(['lootPool:read'])]
+    #[Groups(['loot_pool:read'])]
     private array $chances = [];
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
-    #[Groups(['lootPool:read'])]
+    #[Groups(['loot_pool:read'])]
     private array $minAmounts = [];
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
-    #[Groups(['lootPool:read'])]
+    #[Groups(['loot_pool:read'])]
     private array $maxAmounts = [];
 
     public function __construct()

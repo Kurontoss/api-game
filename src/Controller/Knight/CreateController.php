@@ -38,10 +38,14 @@ final class CreateController extends AbstractController
         $knightRepo->save($knight);
 
         return new JsonResponse(
-            array_merge(
-                $this->serializer->normalize($knight, 'json', ['groups' => ['knight:read']]),
-                ['user' => $this->getUser()->getName()]
-            ),
+            $this->serializer->normalize($knight, 'json', ['groups' => [
+                'knight:read',
+                'knight_user:read',
+                'user:read',
+                'knight_inventory:read',
+                'inventory_item:read',
+                'item:read'
+            ]]),
             201
         );
     }

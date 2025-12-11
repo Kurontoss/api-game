@@ -19,7 +19,11 @@ final class ShowController extends AbstractController
         Dungeon $dungeon
     ): JsonResponse {
         return new JsonResponse(
-            $this->serializer->normalize($dungeon, 'json', ['groups' => ['dungeon:read']]),
+            $this->serializer->normalize($dungeon, 'json', ['groups' => [
+                'dungeon:read',
+                'dungeon_enemies:read',
+                'enemy:read'
+            ]]),
             200
         );
     }

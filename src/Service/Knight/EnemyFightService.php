@@ -8,7 +8,7 @@ use App\Repository\Item\InventoryItemRepository;
 use App\Repository\KnightRepository;
 use App\Entity\Knight;
 use App\Entity\Enemy;
-use App\DTO\Knight\FightDTO;
+use App\DTO\Battle\FightDTO;
 
 class EnemyFightService
 {

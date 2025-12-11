@@ -12,7 +12,7 @@ use App\Service\Item\EatService;
 use App\Repository\Item\InventoryItemRepository;
 use App\Repository\KnightRepository;
 use App\Entity\Knight;
-use App\DTO\Knight\EatDTO;
+use App\DTO\Item\EatDTO;
 use App\Exception\ItemAmountTooLowException;
 
 final class EatController extends AbstractController
@@ -54,7 +54,12 @@ final class EatController extends AbstractController
         $knightRepo->save($knight);
 
         return new JsonResponse(
-            $this->serializer->normalize($knight, 'json', ['groups' => ['knight:read', 'inventory:read', 'item:read']]),
+            $this->serializer->normalize($knight, 'json', ['groups' => [
+                'knight:read',
+                'knight_inventory:read',
+                'inventory_item:read',
+                'item:read'
+            ]]),
             200
         );
     }

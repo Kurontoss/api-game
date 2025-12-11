@@ -33,6 +33,7 @@ class Dungeon
      * @var Collection<int, Enemy>
      */
     #[ORM\OneToMany(targetEntity: Enemy::class, mappedBy: 'dungeon')]
+    #[Groups(['dungeon_enemies:read'])]
     private Collection $enemies;
 
     public function __construct()

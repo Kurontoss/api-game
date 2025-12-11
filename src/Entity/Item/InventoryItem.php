@@ -14,19 +14,20 @@ class InventoryItem
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['item:read'])]
+    #[Groups(['inventory_item:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['item:read'])]
+    #[Groups(['inventory_item:read'])]
     private ?Item $item = null;
 
     #[ORM\ManyToOne(inversedBy: 'inventories')]
+    #[Groups(['inventory_item_knight:read'])]
     private ?Knight $knight = null;
 
     #[ORM\Column]
-    #[Groups(['item:read'])]
+    #[Groups(['inventory_item:read'])]
     private ?int $amount = null;
 
     public function getId(): ?int
