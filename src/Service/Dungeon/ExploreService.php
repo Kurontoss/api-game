@@ -17,6 +17,7 @@ class ExploreService
     public function __construct(
         private EnemyFightService $enemyFightService,
         private MergeService $mergeService,
+        private LevelUpService $levelUpService,
     ) {}
 
     public function explore(
@@ -47,16 +48,20 @@ class ExploreService
             $battleSummary->fights[] = $fight;
 
             if (!$fight->isWon) {
-                return $battleSummary;
+                break;
             }
 
             $battleSummary->exp += $fight->exp;
             $battleSummary->items[] = $fight->item;
         }
 
+        if ($fight->isWon) {
+            $battleSummary->exp += $dungeon->getExp();
+            $knight->setExp($knight->getExp() + $dungeon->getExp());
+            $this->levelUpService->levelUp($knight);
+        }
+
         $battleSummary->items = $this->mergeService->merge($battleSummary->items, true);
-        $battleSummary->exp += $dungeon->getExp();
-        $knight->setExp($knight->getExp() + $dungeon->getExp());
 
         $inventory = $knight->getInventory()->toArray();
         $mergedInventory = $this->mergeService->merge($inventory);
