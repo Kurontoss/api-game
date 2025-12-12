@@ -7,7 +7,6 @@ use App\Entity\Knight;
 use App\Repository\Item\InventoryItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: InventoryItemRepository::class)]
 class InventoryItem
@@ -29,7 +28,6 @@ class InventoryItem
 
     #[ORM\Column]
     #[Groups(['inventory_item:read'])]
-    #[Assert\Positive]
     private int $amount = 1;
 
     public function getId(): ?int

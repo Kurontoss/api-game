@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: KnightRepository::class)]
 class Knight
@@ -21,39 +20,31 @@ class Knight
 
     #[ORM\Column(length: 255)]
     #[Groups(['knight:read', 'knight:write'])]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private string $name = '';
 
     #[ORM\Column]
     #[Groups(['knight:read'])]
-    #[Assert\Positive]
     private int $level = 1;
 
     #[ORM\ManyToOne(inversedBy: 'knights')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['knight_user:read'])]
-    #[Assert\NotNull]
     private ?User $user = null;
 
     #[ORM\Column]
     #[Groups(['knight:read'])]
-    #[Assert\PositiveOrZero]
     private int $exp = 0;
 
     #[ORM\Column]
     #[Groups(['knight:read'])]
-    #[Assert\Positive]
     private int $expToNextLevel = 1;
 
     #[ORM\Column]
     #[Groups(['knight:read'])]
-    #[Assert\Positive]
     private int $hp = 1;
 
     #[ORM\Column]
     #[Groups(['knight:read'])]
-    #[Assert\Positive]
     private int $maxHp = 1;
 
     /**

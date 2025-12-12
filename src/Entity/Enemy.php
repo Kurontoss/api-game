@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\EnemyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EnemyRepository::class)]
 class Enemy
@@ -18,18 +17,14 @@ class Enemy
 
     #[ORM\Column(length: 255, nullable: false)]
     #[Groups(['enemy:read'])]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private string $name = '';
 
     #[ORM\Column(nullable: false)]
     #[Groups(['enemy:read'])]
-    #[Assert\Positive]
     private int $hp = 1;
 
     #[ORM\Column(nullable: false)]
     #[Groups(['enemy:read'])]
-    #[Assert\Positive]
     private int $strength = 1;
 
     #[ORM\ManyToOne(inversedBy: 'enemies')]
@@ -38,7 +33,6 @@ class Enemy
 
     #[ORM\Column(nullable: false)]
     #[Groups(['enemy:read'])]
-    #[Assert\PositiveOrZero]
     private int $exp = 0;
 
     #[ORM\ManyToOne]

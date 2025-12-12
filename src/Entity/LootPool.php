@@ -9,22 +9,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
-use App\Validator\Constraints as AppAssert;
 
 #[ORM\Entity(repositoryClass: LootPoolRepository::class)]
-#[AppAssert\MinLessThanMax(
-    minField: 'minAmounts',
-    maxField: 'maxAmounts'
-)]
-#[AppAssert\ArraysEqualLength(
-    arrayFields: [
-        'items',
-        'chances',
-        'minAmounts',
-        'maxAmounts',
-    ]
-)]
 class LootPool
 {
     #[ORM\Id]
@@ -35,8 +21,6 @@ class LootPool
 
     #[ORM\Column(length: 255)]
     #[Groups(['loot_pool:read'])]
-    #[Assert\NotBlank]
-    #[Assert\Length(max: 255)]
     private string $name = '';
 
     /**
@@ -44,35 +28,18 @@ class LootPool
      */
     #[ORM\ManyToMany(targetEntity: Item::class)]
     #[Groups(['loot_pool:read'])]
-    #[Assert\Count(min: 1)]
     private Collection $items;
 
     #[ORM\Column(type: Types::JSON)]
     #[Groups(['loot_pool:read'])]
-    #[Assert\Count(min: 1)]
-    #[Assert\All([
-        new Assert\Type('float'),
-        new Assert\GreaterThan(value: 0),
-        new Assert\LessThanOrEqual(value: 1),
-    ])]
     private array $chances = [];
 
     #[ORM\Column(type: Types::JSON)]
     #[Groups(['loot_pool:read'])]
-    #[Assert\Count(min: 1)]
-    #[Assert\All([
-        new Assert\Type('integer'),
-        new Assert\Positive,
-    ])]
     private array $minAmounts = [];
 
     #[ORM\Column(type: Types::JSON)]
     #[Groups(['loot_pool:read'])]
-    #[Assert\Count(min: 1)]
-    #[Assert\All([
-        new Assert\Type('integer'),
-        new Assert\Positive,
-    ])]
     private array $maxAmounts = [];
 
     public function __construct()

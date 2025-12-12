@@ -5,14 +5,12 @@ namespace App\Entity\Item;
 use App\Repository\Item\FoodRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FoodRepository::class)]
 class Food extends Item
 {
     #[ORM\Column]
     #[Groups(['item:read'])]
-    #[Assert\PositiveOrZero]
     private int $hpRegen = 0;
 
     public function getHpRegen(): ?int
