@@ -21,37 +21,48 @@ use App\Validator\Constraints as AppAssert;
 class CreateDTO
 {
     #[Groups(['loot_pool:write'])]
+    #[Assert\Type('string')]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
-    public ?string $name = null;
+    public $name;
 
     #[Groups(['loot_pool:write'])]
+    #[Assert\Type('array')]
+    #[Assert\NotNull]
     #[Assert\Count(min: 1)]
-    #[Assert\All([new Assert\Type(Item::class)])]
-    public array $items = [];
+    #[Assert\All([
+        new Assert\Type('integer')
+    ])]
+    public $items;
     
     #[Groups(['loot_pool:write'])]
+    #[Assert\Type('array')]
+    #[Assert\NotNull]
     #[Assert\Count(min: 1)]
     #[Assert\All([
         new Assert\Type('float'),
         new Assert\GreaterThan(value: 0),
         new Assert\LessThanOrEqual(value: 1),
     ])]
-    public array $chances = [];
+    public $chances;
 
     #[Groups(['loot_pool:write'])]
+    #[Assert\Type('array')]
+    #[Assert\NotNull]
     #[Assert\Count(min: 1)]
     #[Assert\All([
         new Assert\Type('integer'),
         new Assert\Positive,
     ])]
-    public array $minAmounts = [];
+    public $minAmounts;
 
     #[Groups(['loot_pool:write'])]
+    #[Assert\Type('array')]
+    #[Assert\NotNull]
     #[Assert\Count(min: 1)]
     #[Assert\All([
         new Assert\Type('integer'),
         new Assert\Positive,
     ])]
-    public array $maxAmounts = [];
+    public $maxAmounts;
 }

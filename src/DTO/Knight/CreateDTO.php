@@ -1,41 +1,45 @@
 <?php
 
-namespace App\DTO\Enemy;
+namespace App\DTO\Knight;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateDTO
 {
-    #[Groups(['enemy:write'])]
+    #[Groups(['knight:write'])]
     #[Assert\Type('string')]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
     public $name;
 
-    #[Groups(['enemy:write'])]
+    #[Groups(['knight:write'])]
     #[Assert\Type('integer')]
     #[Assert\NotNull]
     #[Assert\Positive]
-    public $hp;
+    public $level;
 
-    #[Groups(['enemy:write'])]
-    #[Assert\Type('integer')]
-    #[Assert\NotNull]
-    #[Assert\Positive]
-    public $strength;
-
-    #[Groups(['enemy:write'])]
+    #[Groups(['knight:write'])]
     #[Assert\Type('integer')]
     #[Assert\NotNull]
     #[Assert\PositiveOrZero]
     public $exp;
 
-    #[Groups(['enemy:write'])]
+    #[Groups(['knight:write'])]
     #[Assert\Type('integer')]
-    public $dungeonId;
+    #[Assert\NotNull]
+    #[Assert\Positive]
+    public $expToNextLevel;
 
-    #[Groups(['enemy:write'])]
+    #[Groups(['knight:write'])]
     #[Assert\Type('integer')]
-    public $lootPoolId;
+    #[Assert\NotNull]
+    #[Assert\Positive]
+    public $hp;
+
+    #[Groups(['knight:write'])]
+    #[Assert\Type('integer')]
+    #[Assert\NotNull]
+    #[Assert\Positive]
+    public $maxHp;
 }

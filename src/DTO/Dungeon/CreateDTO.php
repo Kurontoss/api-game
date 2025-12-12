@@ -1,33 +1,27 @@
 <?php
 
-namespace App\DTO\Item;
+namespace App\DTO\Dungeon;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class CreateDTO
 {
-    #[Groups(['item:write'])]
+    #[Groups(['dungeon:write'])]
     #[Assert\Type('string')]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
     public $name;
 
-    #[Groups(['item:write'])]
+    #[Groups(['dungeon:write'])]
+    #[Assert\Type('integer')]
+    #[Assert\NotNull]
+    #[Assert\Positive]
+    public $level;
+
+    #[Groups(['dungeon:write'])]
     #[Assert\Type('integer')]
     #[Assert\NotNull]
     #[Assert\PositiveOrZero]
-    public $value;
-
-    #[Groups(['item:write'])]
-    #[Assert\Type('string')]
-    #[Assert\NotNull]
-    #[Assert\Length(max: 255)]
-    public $type;
-
-    #[Groups(['item:write'])]
-    #[Assert\Type('integer')]
-    #[Assert\NotNull]
-    #[Assert\PositiveOrZero]
-    public $hpRegen;
+    public $exp;
 }
