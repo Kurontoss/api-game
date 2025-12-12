@@ -7,6 +7,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\Item\ItemRepository;
 use App\Entity\Item\Food;
 use App\Entity\Knight;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
 #[ORM\InheritanceType("SINGLE_TABLE")]
@@ -23,13 +24,16 @@ class Item
     #[Groups(['item:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 256)]
+    #[ORM\Column(length: 255)]
     #[Groups(['item:read'])]
-    private ?string $name = null;
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    private string $name = '';
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     #[Groups(['item:read'])]
-    private ?int $value = null;
+    #[Assert\PositiveOrZero]
+    private int $value = 0;
 
     public function getId(): ?int
     {

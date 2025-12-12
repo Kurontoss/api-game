@@ -3,6 +3,7 @@
 namespace App\DTO\Battle;
 
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Enemy;
 use App\Entity\Knight;
 use App\Entity\Item\InventoryItem;
@@ -10,7 +11,8 @@ use App\Entity\Item\InventoryItem;
 class FightDTO
 {
     #[Groups(['fight:read'])]
-    public ?int $round = null;
+    #[Assert\PositiveOrZero]
+    public int $round = 0;
 
     #[Groups(['fight:read'])]
     public ?Enemy $enemy = null;
@@ -19,11 +21,12 @@ class FightDTO
     public ?Knight $knight = null;
 
     #[Groups(['fight:read'])]
-    public ?int $exp = null;
+    #[Assert\PositiveOrZero]
+    public int $exp = 0;
 
     #[Groups(['fight:read'])]
     public ?InventoryItem $item = null;
 
     #[Groups(['fight:read'])]
-    public ?bool $isWon = null;
+    public bool $isWon = false;
 }

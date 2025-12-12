@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EnemyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EnemyRepository::class)]
 class Enemy
@@ -15,25 +16,30 @@ class Enemy
     #[Groups(['enemy:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 256)]
+    #[ORM\Column(length: 255, nullable: false)]
     #[Groups(['enemy:read'])]
-    private ?string $name = null;
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    private string $name = '';
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     #[Groups(['enemy:read'])]
-    private ?int $hp = null;
+    #[Assert\Positive]
+    private int $hp = 1;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     #[Groups(['enemy:read'])]
-    private ?int $strength = null;
+    #[Assert\Positive]
+    private int $strength = 1;
 
     #[ORM\ManyToOne(inversedBy: 'enemies')]
     #[Groups(['enemy_dungeon:read'])]
     private ?Dungeon $dungeon = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     #[Groups(['enemy:read'])]
-    private ?int $exp = null;
+    #[Assert\PositiveOrZero]
+    private int $exp = 0;
 
     #[ORM\ManyToOne]
     #[Groups(['enemy_loot_pool:read'])]

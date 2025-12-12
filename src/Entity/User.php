@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -20,20 +21,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 512)]
+    #[ORM\Column(length: 512, unique: true)]
     #[Groups(['user:read', 'user:write'])]
-    private ?string $email = null;
+    #[Assert\NotBlank]
+    #[Assert\Email]
+    private string $email = '';
 
     #[ORM\Column]
     private array $roles = [];
 
-    #[ORM\Column(length: 256)]
+    #[ORM\Column(length: 255)]
     #[Groups(['user:read', 'user:write'])]
-    private ?string $name = null;
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    private string $name = '';
 
-    #[ORM\Column(length: 256)]
+    #[ORM\Column(length: 255)]
     #[Groups(['user:write'])]
-    private ?string $password = null;
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[Assert\NotCompromisedPassword]
+    private string $password = '';
 
     /**
      * @var Collection<int, Knight>

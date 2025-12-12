@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DungeonRepository::class)]
 class Dungeon
@@ -17,17 +18,21 @@ class Dungeon
     #[Groups(['dungeon:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 256)]
+    #[ORM\Column(length: 255, nullable: false)]
     #[Groups(['dungeon:read', 'dungeon:write'])]
-    private ?string $name = null;
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    private string $name = '';
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     #[Groups(['dungeon:read', 'dungeon:write'])]
-    private ?int $level = null;
+    #[Assert\Positive]
+    private int $level = 1;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     #[Groups(['dungeon:read', 'dungeon:write'])]
-    private ?int $exp = null;
+    #[Assert\PositiveOrZero]
+    private int $exp = 0;
 
     /**
      * @var Collection<int, Enemy>
