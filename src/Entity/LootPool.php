@@ -10,8 +10,21 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraints as AppAssert;
 
 #[ORM\Entity(repositoryClass: LootPoolRepository::class)]
+#[AppAssert\MinLessThanMax(
+    minField: 'minAmounts',
+    maxField: 'maxAmounts'
+)]
+#[AppAssert\ArraysEqualLength(
+    arrayFields: [
+        'items',
+        'chances',
+        'minAmounts',
+        'maxAmounts',
+    ]
+)]
 class LootPool
 {
     #[ORM\Id]
