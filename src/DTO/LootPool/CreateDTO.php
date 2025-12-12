@@ -4,7 +4,20 @@ namespace App\DTO\LootPool;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraints as AppAssert;
 
+#[AppAssert\MinLessThanMax(
+    minField: 'minAmounts',
+    maxField: 'maxAmounts'
+)]
+#[AppAssert\ArraysEqualLength(
+    arrayFields: [
+        'items',
+        'chances',
+        'minAmounts',
+        'maxAmounts',
+    ]
+)]
 class CreateDTO
 {
     #[Groups(['loot_pool:write'])]
