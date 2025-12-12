@@ -23,6 +23,5 @@ class CreateDTO
     #[Assert\Type('string')]
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
-    #[Assert\NotCompromisedPassword]
     public $password;
 }

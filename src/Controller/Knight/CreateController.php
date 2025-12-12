@@ -7,13 +7,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use App\Service\ValidationService;
 use App\Entity\Knight;
+use App\DTO\Knight\CreateDTO;
 use App\Repository\KnightRepository;
 
 final class CreateController extends AbstractController
 {
     public function __construct(
         private SerializerInterface $serializer,
+        private ValidationService $validator,
         private KnightRepository $knightRepo,
     ) {}
 
@@ -21,13 +24,22 @@ final class CreateController extends AbstractController
     public function create(
         Request $request,
     ): JsonResponse {
-        $knight = $this->serializer->deserialize(
+        $dto = $this->serializer->deserialize(
             $request->getContent(),
-            Knight::class,
+            CreateDTO::class,
             'json',
             ['groups' => ['knight:write']]
         );
 
+        if ($errors = $this->validator->validate($dto)) {
+            return new JsonResponse([
+                'reason' => 'Validation error',
+                'errors' => $errors
+            ], 422);
+        }
+
+        $knight = new Knight();
+        $knight->setName($dto->name);
         $knight->setLevel(1);
         $knight->setExp(0);
         $knight->setExpToNextLevel(10);

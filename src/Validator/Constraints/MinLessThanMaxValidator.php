@@ -24,8 +24,8 @@ class MinLessThanMaxValidator extends ConstraintValidator
             if ($minField[$i] > $maxField[$i]) {
                 $this->context
                     ->buildViolation($constraint->message)
-                    ->setParameter('{{ min }}', (string) $minAmounts[$i])
-                    ->setParameter('{{ max }}', (string) $maxAmounts[$i])
+                    ->setParameter('{{ min }}', (string) $minField[$i])
+                    ->setParameter('{{ max }}', (string) $maxField[$i])
                     ->setParameter('{{ index }}', (string) $i)
                     ->atPath(sprintf('%s[%d]', $constraint->minField, $i))
                     ->addViolation()

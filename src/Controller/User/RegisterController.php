@@ -9,7 +9,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use App\Service\ValidationService;
 use App\Entity\User;
+use App\DTO\User\CreateDTO;
 use App\Repository\UserRepository;
 use App\Service\User\RegisterService;
 use App\Exception\EmailAlreadyRegisteredException;
@@ -19,6 +21,7 @@ final class RegisterController extends AbstractController
     public function __construct(
         private SerializerInterface $serializer,
         private JWTTokenManagerInterface $jwt,
+        private ValidationService $validator,
         private RegisterService $registerService,
         private UserRepository $userRepo,
     ) {}
@@ -27,12 +30,24 @@ final class RegisterController extends AbstractController
     public function create(
         Request $request,
     ): JsonResponse {
-        $user = $this->serializer->deserialize(
+        $dto = $this->serializer->deserialize(
             $request->getContent(),
-            User::class,
+            CreateDTO::class,
             'json',
             ['groups' => ['user:write']]
         );
+
+        if ($errors = $this->validator->validate($dto)) {
+            return new JsonResponse([
+                'reason' => 'Validation error',
+                'errors' => $errors
+            ], 422);
+        }
+
+        $user = new User();
+        $user->setEmail($dto->email);
+        $user->setName($dto->name);
+        $user->setPassword($dto->password);
 
         try {
             $this->registerService->register($user);

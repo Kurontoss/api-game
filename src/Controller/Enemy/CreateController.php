@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use App\Service\ValidationService;
 use App\Entity\Enemy;
 use App\Repository\EnemyRepository;
 use App\Repository\DungeonRepository;
@@ -17,6 +18,7 @@ final class CreateController extends AbstractController
 {
     public function __construct(
         private SerializerInterface $serializer,
+        private ValidationService $validator,
         private EnemyRepository $enemyRepo,
         private DungeonRepository $dungeonRepo,
         private LootPoolRepository $lootPoolRepo,
@@ -32,6 +34,13 @@ final class CreateController extends AbstractController
             'json',
             ['groups' => ['enemy:write']]
         );
+
+        if ($errors = $this->validator->validate($dto)) {
+            return new JsonResponse([
+                'reason' => 'Validation error',
+                'errors' => $errors
+            ], 422);
+        }
 
         $dungeon = $this->dungeonRepo->find($dto->dungeonId);
         $lootPool = $this->lootPoolRepo->find($dto->lootPoolId);

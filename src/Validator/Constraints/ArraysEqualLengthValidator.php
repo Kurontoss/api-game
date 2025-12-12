@@ -11,10 +11,6 @@ class ArraysEqualLengthValidator extends ConstraintValidator
     {
         /* @var $constraint ArraysEqualLength */
 
-        $arr1 = $object->{$constraint->arr1};
-        $arr2 = $object->{$constraint->arr2};
-        $arr3 = $object->{$constraint->arr3};
-
         for ($i = 1; $i < count($constraint->arrayFields); $i++) {
             $current = $object->{$constraint->arrayFields[$i]};
             $prev = $object->{$constraint->arrayFields[$i - 1]};

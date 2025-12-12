@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\DTO\ErrorDTO;
 
 class ValidationService
 {

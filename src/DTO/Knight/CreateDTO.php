@@ -12,34 +12,4 @@ class CreateDTO
     #[Assert\NotBlank]
     #[Assert\Length(max: 255)]
     public $name;
-
-    #[Groups(['knight:write'])]
-    #[Assert\Type('integer')]
-    #[Assert\NotNull]
-    #[Assert\Positive]
-    public $level;
-
-    #[Groups(['knight:write'])]
-    #[Assert\Type('integer')]
-    #[Assert\NotNull]
-    #[Assert\PositiveOrZero]
-    public $exp;
-
-    #[Groups(['knight:write'])]
-    #[Assert\Type('integer')]
-    #[Assert\NotNull]
-    #[Assert\Positive]
-    public $expToNextLevel;
-
-    #[Groups(['knight:write'])]
-    #[Assert\Type('integer')]
-    #[Assert\NotNull]
-    #[Assert\Positive]
-    public $hp;
-
-    #[Groups(['knight:write'])]
-    #[Assert\Type('integer')]
-    #[Assert\NotNull]
-    #[Assert\Positive]
-    public $maxHp;
 }
