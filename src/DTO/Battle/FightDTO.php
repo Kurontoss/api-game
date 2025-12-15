@@ -10,7 +10,7 @@ use App\Entity\Item\InventoryItem;
 class FightDTO
 {
     #[Groups(['fight:read'])]
-    public int $round = 0;
+    public int $index = 0;
 
     #[Groups(['fight:read'])]
     public ?Enemy $enemy = null;

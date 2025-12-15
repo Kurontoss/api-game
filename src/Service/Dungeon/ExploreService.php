@@ -29,7 +29,7 @@ class ExploreService
         }
 
         $battleStart = new FightDTO();
-        $battleStart->round = 0;
+        $battleStart->index = 0;
         $battleStart->knight = clone $knight;
         $battleStart->exp = 0;
         $battleStart->items = [];
@@ -44,7 +44,7 @@ class ExploreService
         foreach ($dungeon->getEnemies() as $enemy) {
             $fight = $this->enemyFightService->fight($knight, $enemy);
 
-            $fight->round = $i++;
+            $fight->index = $i++;
             $battleSummary->fights[] = $fight;
 
             if (!$fight->isWon) {
