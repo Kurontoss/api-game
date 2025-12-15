@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Repository\Item\ItemRepository;
 
 final class ShowController extends AbstractController
@@ -20,6 +21,10 @@ final class ShowController extends AbstractController
         int $id,
     ): JsonResponse {
         $item = $this->itemRepo->find($id);
+
+        if (!$item) {
+            throw new NotFoundHttpException('Item not found');
+        }
 
         return new JsonResponse(
             $this->serializer->normalize($item, 'json', ['groups' => ['item:read']]),

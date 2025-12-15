@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Repository\LootPoolRepository;
 
 final class ShowController extends AbstractController
@@ -20,6 +21,10 @@ final class ShowController extends AbstractController
         int $id,
     ): JsonResponse {
         $lootPool = $this->lootPoolRepo->find($id);
+
+        if (!$lootPool) {
+            throw new NotFoundHttpException('Loot pool not found');
+        }
         
         return new JsonResponse(
             $this->serializer->normalize($lootPool, 'json', ['groups' => [

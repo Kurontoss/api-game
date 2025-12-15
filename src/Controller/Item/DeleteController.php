@@ -4,6 +4,7 @@ namespace App\Controller\Item;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\Item\ItemRepository;
 
@@ -18,6 +19,11 @@ final class DeleteController extends AbstractController
         int $id,
     ): JsonResponse {
         $item = $this->itemRepo->find($id);
+
+        if (!$item) {
+            throw new NotFoundHttpException('Item not found');
+        }
+
         $this->itemRepo->delete($item);
 
         return new JsonResponse(null, 204);

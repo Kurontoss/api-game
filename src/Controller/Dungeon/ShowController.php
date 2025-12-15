@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Repository\DungeonRepository;
 
 final class ShowController extends AbstractController
@@ -20,6 +21,10 @@ final class ShowController extends AbstractController
         int $id,
     ): JsonResponse {
         $dungeon = $this->dungeonRepo->find($id);
+
+        if (!$dungeon) {
+            throw new NotFoundHttpException('Dungeon not found');
+        }
 
         return new JsonResponse(
             $this->serializer->normalize($dungeon, 'json', ['groups' => [

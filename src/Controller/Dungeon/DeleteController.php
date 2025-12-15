@@ -5,6 +5,7 @@ namespace App\Controller\Dungeon;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Repository\DungeonRepository;
 
 final class DeleteController extends AbstractController
@@ -18,6 +19,11 @@ final class DeleteController extends AbstractController
         int $id,
     ): JsonResponse {
         $dungeon = $this->dungeonRepo->find($id);
+
+        if (!$dungeon) {
+            throw new NotFoundHttpException('Dungeon not found');
+        }
+
         $this->dungeonRepo->delete($dungeon);
 
         return new JsonResponse(null, 204);
