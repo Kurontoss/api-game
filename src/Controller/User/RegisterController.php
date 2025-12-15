@@ -13,6 +13,7 @@ use App\Service\ValidationService;
 use App\Entity\User;
 use App\DTO\User\CreateDTO;
 use App\Repository\UserRepository;
+use App\Assembler\UserAssembler;
 use App\Service\User\RegisterService;
 use App\Exception\EmailAlreadyRegisteredException;
 
@@ -24,6 +25,7 @@ final class RegisterController extends AbstractController
         private ValidationService $validator,
         private RegisterService $registerService,
         private UserRepository $userRepo,
+        private UserAssembler $assembler,
     ) {}
 
     #[Route('/api/register', name: 'user_register', methods: ['POST'])]
@@ -44,10 +46,7 @@ final class RegisterController extends AbstractController
             ], 422);
         }
 
-        $user = new User();
-        $user->setEmail($dto->email);
-        $user->setName($dto->name);
-        $user->setPassword($dto->password);
+        $user = $this->assembler->fromCreateDTO($dto);
 
         try {
             $this->registerService->register($user);

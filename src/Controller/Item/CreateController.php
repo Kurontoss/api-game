@@ -12,6 +12,7 @@ use App\DTO\Item\CreateDTO;
 use App\Entity\Item\Item;
 use App\Entity\Item\Food;
 use App\Repository\Item\ItemRepository;
+use App\Assembler\ItemAssembler;
 
 final class CreateController extends AbstractController
 {
@@ -19,6 +20,7 @@ final class CreateController extends AbstractController
         private SerializerInterface $serializer,
         private ValidationService $validator,
         private ItemRepository $itemRepo,
+        private ItemAssembler $assembler,
     ) {}
 
     #[Route('/api/item/create', name: 'item_create', methods: ['POST'])]
@@ -38,15 +40,7 @@ final class CreateController extends AbstractController
             ], 422);
         }
 
-        if ($dto->type == 'food') {
-            $item = new Food();
-            $item->setHpRegen($dto->hpRegen);
-        } else {
-            $item = new Item();
-        }
-
-        $item->setName($dto->name);
-        $item->setValue($dto->value);
+        $item = $this->assembler->fromCreateDTO($dto);
 
         $this->itemRepo->save($item);
 

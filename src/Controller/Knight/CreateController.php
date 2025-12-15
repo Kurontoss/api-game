@@ -11,6 +11,7 @@ use App\Service\ValidationService;
 use App\Entity\Knight;
 use App\DTO\Knight\CreateDTO;
 use App\Repository\KnightRepository;
+use App\Assembler\KnightAssembler;
 
 final class CreateController extends AbstractController
 {
@@ -18,6 +19,7 @@ final class CreateController extends AbstractController
         private SerializerInterface $serializer,
         private ValidationService $validator,
         private KnightRepository $knightRepo,
+        private KnightAssembler $assembler,
     ) {}
 
     #[Route('/api/knight/create', name: 'knight_create', methods: ['POST'])]
@@ -38,14 +40,7 @@ final class CreateController extends AbstractController
             ], 422);
         }
 
-        $knight = new Knight();
-        $knight->setName($dto->name);
-        $knight->setLevel(1);
-        $knight->setExp(0);
-        $knight->setExpToNextLevel(10);
-        $knight->setHp(10);
-        $knight->setMaxHp(10);
-        $knight->setUser($this->getUser());
+        $knight = $this->assembler->fromCreateDTO($dto);
 
         $this->knightRepo->save($knight);
 

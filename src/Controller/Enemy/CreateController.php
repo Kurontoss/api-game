@@ -12,6 +12,7 @@ use App\Entity\Enemy;
 use App\Repository\EnemyRepository;
 use App\Repository\DungeonRepository;
 use App\Repository\LootPoolRepository;
+use App\Assembler\EnemyAssembler;
 use App\DTO\Enemy\CreateDTO;
 
 final class CreateController extends AbstractController
@@ -22,6 +23,7 @@ final class CreateController extends AbstractController
         private EnemyRepository $enemyRepo,
         private DungeonRepository $dungeonRepo,
         private LootPoolRepository $lootPoolRepo,
+        private EnemyAssembler $assembler,
     ) {}
 
     #[Route('/api/enemy/create', name: 'enemy_create', methods: ['POST'])]
@@ -42,16 +44,7 @@ final class CreateController extends AbstractController
             ], 422);
         }
 
-        $dungeon = $this->dungeonRepo->find($dto->dungeonId);
-        $lootPool = $this->lootPoolRepo->find($dto->lootPoolId);
-
-        $enemy = new Enemy();
-        $enemy->setName($dto->name);
-        $enemy->setHp($dto->hp);
-        $enemy->setStrength($dto->strength);
-        $enemy->setExp($dto->exp);
-        $enemy->setDungeon($dungeon);
-        $enemy->setLootPool($lootPool);
+        $enemy = $this->assembler->fromCreateDTO($dto);
 
         $this->enemyRepo->save($enemy);
 

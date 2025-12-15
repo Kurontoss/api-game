@@ -11,6 +11,7 @@ use App\Service\ValidationService;
 use App\Entity\Dungeon;
 use App\DTO\Dungeon\CreateDTO;
 use App\Repository\DungeonRepository;
+use App\Assembler\DungeonAssembler;
 
 final class CreateController extends AbstractController
 {
@@ -18,6 +19,7 @@ final class CreateController extends AbstractController
         private SerializerInterface $serializer,
         private ValidationService $validator,
         private DungeonRepository $dungeonRepo,
+        private DungeonAssembler $assembler,
     ) {}
 
     #[Route('/api/dungeon/create', name: 'dungeon_create', methods: ['POST'])]
@@ -38,10 +40,7 @@ final class CreateController extends AbstractController
             ], 422);
         }
 
-        $dungeon = new Dungeon();
-        $dungeon->setName($dto->name);
-        $dungeon->setLevel($dto->level);
-        $dungeon->setExp($dto->exp);
+        $dungeon = $this->assembler->fromCreateDTO($dto);
 
         $this->dungeonRepo->save($dungeon);
 

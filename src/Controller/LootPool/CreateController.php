@@ -11,6 +11,7 @@ use App\Service\ValidationService;
 use App\Entity\LootPool;
 use App\Repository\LootPoolRepository;
 use App\Repository\Item\ItemRepository;
+use App\Assembler\LootPoolAssembler;
 use App\DTO\LootPool\CreateDTO;
 
 final class CreateController extends AbstractController
@@ -20,6 +21,7 @@ final class CreateController extends AbstractController
         private ValidationService $validator,
         private LootPoolRepository $lootPoolRepo,
         private ItemRepository $itemRepo,
+        private LootPoolAssembler $assembler,
     ) {}
 
     #[Route('/api/loot-pool/create', name: 'loot_pool_create', methods: ['POST'])]
@@ -39,19 +41,7 @@ final class CreateController extends AbstractController
             ], 422);
         }
 
-        $lootPool = new LootPool();
-        $lootPool->setName($dto->name);
-
-        foreach($dto->items as $id) {
-            $item = $this->itemRepo->find($id);
-            if ($item) {
-                $lootPool->addItem($item);
-            }
-        }
-
-        $lootPool->setChances($dto->chances);
-        $lootPool->setMinAmounts($dto->minAmounts);
-        $lootPool->setMaxAmounts($dto->maxAmounts);
+        $lootPool = $this->assembler->fromCreateDTO($dto);
 
         $this->lootPoolRepo->save($lootPool);
 
