@@ -3,16 +3,17 @@
 namespace App\Controller\Item;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use App\Service\ValidationService;
+
+use App\Assembler\ItemAssembler;
 use App\DTO\Item\CreateDTO;
 use App\Entity\Item\Item;
 use App\Entity\Item\Food;
 use App\Repository\Item\ItemRepository;
-use App\Assembler\ItemAssembler;
+use App\Service\ValidationService;
 
 final class CreateController extends AbstractController
 {

@@ -2,10 +2,11 @@
 
 namespace App\Repository\Item;
 
-use App\Entity\Item\Item;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+
+use App\Entity\Item\Item;
 
 /**
  * @extends ServiceEntityRepository<Item>

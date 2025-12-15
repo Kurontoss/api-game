@@ -3,13 +3,14 @@
 namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use App\Entity\Enemy;
-use App\Entity\Dungeon;
-use App\Entity\LootPool;
+use Doctrine\Persistence\ObjectManager;
+
 use App\DataFixtures\DungeonFixtures;
 use App\DataFixtures\LootPoolFixtures;
+use App\Entity\Dungeon;
+use App\Entity\Enemy;
+use App\Entity\LootPool;
 
 class EnemyFixtures extends Fixture implements DependentFixtureInterface
 {

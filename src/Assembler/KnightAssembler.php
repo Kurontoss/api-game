@@ -3,8 +3,9 @@
 namespace App\Assembler;
 
 use Symfony\Bundle\SecurityBundle\Security;
-use App\Entity\Knight;
+
 use App\DTO\Knight\CreateDTO;
+use App\Entity\Knight;
 
 class KnightAssembler
 {

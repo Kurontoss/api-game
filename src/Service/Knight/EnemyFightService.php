@@ -2,13 +2,13 @@
 
 namespace App\Service\Knight;
 
-use App\Service\LootService;
-use App\Service\Item\MergeService;
+use App\DTO\Battle\FightDTO;
+use App\Entity\Enemy;
+use App\Entity\Knight;
 use App\Repository\Item\InventoryItemRepository;
 use App\Repository\KnightRepository;
-use App\Entity\Knight;
-use App\Entity\Enemy;
-use App\DTO\Battle\FightDTO;
+use App\Service\LootService;
+use App\Service\Item\MergeService;
 
 class EnemyFightService
 {

@@ -5,16 +5,17 @@ namespace App\Controller\Dungeon;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use App\Service\ValidationService;
-use App\Service\Dungeon\ExploreService;
-use App\Service\Knight\LevelUpService;
-use App\Repository\DungeonRepository;
-use App\Repository\KnightRepository;
+
 use App\DTO\Dungeon\ExploreDTO;
 use App\Exception\LevelTooLowException;
+use App\Repository\DungeonRepository;
+use App\Repository\KnightRepository;
+use App\Service\Dungeon\ExploreService;
+use App\Service\Knight\LevelUpService;
+use App\Service\ValidationService;
 
 final class ExploreController extends AbstractController
 {

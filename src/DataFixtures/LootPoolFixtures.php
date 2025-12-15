@@ -3,13 +3,14 @@
 namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use App\Entity\LootPool;
-use App\Entity\Item\Item;
-use App\Entity\Item\Food;
+use Doctrine\Persistence\ObjectManager;
+
 use App\DataFixtures\ItemFixtures;
+use App\Entity\Item\Food;
+use App\Entity\Item\Item;
+use App\Entity\LootPool;
 
 class LootPoolFixtures extends Fixture implements DependentFixtureInterface
 {

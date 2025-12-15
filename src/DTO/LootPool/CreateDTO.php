@@ -4,8 +4,9 @@ namespace App\DTO\LootPool;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Validator\Constraints as AppAssert;
+
 use App\Entity\Item\Item;
+use App\Validator\Constraints as AppAssert;
 
 #[AppAssert\MinLessThanMax(
     minField: 'minAmounts',

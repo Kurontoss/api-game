@@ -2,10 +2,10 @@
 
 namespace App\Assembler;
 
+use App\DTO\Enemy\CreateDTO;
+use App\Entity\Enemy;
 use App\Repository\DungeonRepository;
 use App\Repository\LootPoolRepository;
-use App\Entity\Enemy;
-use App\DTO\Enemy\CreateDTO;
 
 class EnemyAssembler
 {

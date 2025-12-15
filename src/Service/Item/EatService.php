@@ -2,10 +2,10 @@
 
 namespace App\Service\Item;
 
-use App\Repository\Item\InventoryItemRepository;
 use App\Entity\Item\InventoryItem;
 use App\Entity\Knight;
 use App\Exception\ItemAmountTooLowException;
+use App\Repository\Item\InventoryItemRepository;
 
 class EatService
 {

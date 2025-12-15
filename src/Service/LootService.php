@@ -2,9 +2,9 @@
 
 namespace App\Service;
 
+use App\Entity\Item\InventoryItem;
 use App\Entity\LootPool;
 use App\Repository\Item\InventoryItemRepository;
-use App\Entity\Item\InventoryItem;
 
 class LootService
 {

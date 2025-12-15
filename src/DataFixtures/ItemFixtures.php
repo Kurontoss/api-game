@@ -4,8 +4,9 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use App\Entity\Item\Item;
+
 use App\Entity\Item\Food;
+use App\Entity\Item\Item;
 
 class ItemFixtures extends Fixture
 {

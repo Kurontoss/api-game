@@ -3,17 +3,18 @@
 namespace App\Controller\Enemy;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use App\Service\ValidationService;
-use App\Entity\Enemy;
-use App\Repository\EnemyRepository;
-use App\Repository\DungeonRepository;
-use App\Repository\LootPoolRepository;
+
 use App\Assembler\EnemyAssembler;
 use App\DTO\Enemy\CreateDTO;
+use App\Entity\Enemy;
+use App\Repository\DungeonRepository;
+use App\Repository\EnemyRepository;
+use App\Repository\LootPoolRepository;
+use App\Service\ValidationService;
 
 final class CreateController extends AbstractController
 {

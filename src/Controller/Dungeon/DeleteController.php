@@ -4,8 +4,9 @@ namespace App\Controller\Dungeon;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Attribute\Route;
+
 use App\Repository\DungeonRepository;
 
 final class DeleteController extends AbstractController

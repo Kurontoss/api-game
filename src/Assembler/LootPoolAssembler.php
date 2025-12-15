@@ -2,9 +2,9 @@
 
 namespace App\Assembler;
 
-use App\Repository\Item\ItemRepository;
-use App\Entity\LootPool;
 use App\DTO\LootPool\CreateDTO;
+use App\Entity\LootPool;
+use App\Repository\Item\ItemRepository;
 
 class LootPoolAssembler
 {

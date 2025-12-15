@@ -2,8 +2,8 @@
 
 namespace App\Assembler;
 
-use App\Entity\User;
 use App\DTO\User\CreateDTO;
+use App\Entity\User;
 
 class UserAssembler
 {

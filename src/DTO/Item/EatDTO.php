@@ -4,9 +4,10 @@ namespace App\DTO\Item;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Validator\Constraints as AppAssert;
-use App\Entity\Knight;
+
 use App\Entity\Item\InventoryItem;
+use App\Entity\Knight;
+use App\Validator\Constraints as AppAssert;
 
 class EatDTO
 {

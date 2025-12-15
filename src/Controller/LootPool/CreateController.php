@@ -3,16 +3,17 @@
 namespace App\Controller\LootPool;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use App\Service\ValidationService;
-use App\Entity\LootPool;
-use App\Repository\LootPoolRepository;
-use App\Repository\Item\ItemRepository;
+
 use App\Assembler\LootPoolAssembler;
 use App\DTO\LootPool\CreateDTO;
+use App\Entity\LootPool;
+use App\Repository\Item\ItemRepository;
+use App\Repository\LootPoolRepository;
+use App\Service\ValidationService;
 
 final class CreateController extends AbstractController
 {

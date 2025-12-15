@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+
 use App\Entity\Dungeon;
 
 class DungeonFixtures extends Fixture

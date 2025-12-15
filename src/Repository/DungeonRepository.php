@@ -2,10 +2,11 @@
 
 namespace App\Repository;
 
-use App\Entity\Dungeon;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+
+use App\Entity\Dungeon;
 
 /**
  * @extends ServiceEntityRepository<Dungeon>

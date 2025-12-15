@@ -4,9 +4,10 @@ namespace App\Entity\Item;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Repository\Item\ItemRepository;
+
 use App\Entity\Item\Food;
 use App\Entity\Knight;
+use App\Repository\Item\ItemRepository;
 
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
 #[ORM\InheritanceType("SINGLE_TABLE")]

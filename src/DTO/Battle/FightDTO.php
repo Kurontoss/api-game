@@ -3,9 +3,10 @@
 namespace App\DTO\Battle;
 
 use Symfony\Component\Serializer\Annotation\Groups;
+
 use App\Entity\Enemy;
-use App\Entity\Knight;
 use App\Entity\Item\InventoryItem;
+use App\Entity\Knight;
 
 class FightDTO
 {

@@ -4,18 +4,19 @@ namespace App\Controller\User;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use App\Service\ValidationService;
-use App\Entity\User;
-use App\DTO\User\CreateDTO;
-use App\Repository\UserRepository;
+
 use App\Assembler\UserAssembler;
-use App\Service\User\RegisterService;
+use App\DTO\User\CreateDTO;
+use App\Entity\User;
 use App\Exception\EmailAlreadyRegisteredException;
+use App\Repository\UserRepository;
+use App\Service\User\RegisterService;
+use App\Service\ValidationService;
 
 final class RegisterController extends AbstractController
 {

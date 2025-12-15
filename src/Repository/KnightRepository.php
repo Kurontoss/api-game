@@ -2,10 +2,11 @@
 
 namespace App\Repository;
 
-use App\Entity\Knight;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+
+use App\Entity\Knight;
 
 /**
  * @extends ServiceEntityRepository<Knight>

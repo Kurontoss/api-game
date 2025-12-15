@@ -4,8 +4,9 @@ namespace App\Controller\LootPool;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Attribute\Route;
+
 use App\Repository\LootPoolRepository;
 
 final class DeleteController extends AbstractController

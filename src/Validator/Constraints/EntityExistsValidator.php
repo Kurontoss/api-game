@@ -2,9 +2,9 @@
 
 namespace App\Validator\Constraints;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Doctrine\ORM\EntityManagerInterface;
 
 class EntityExistsValidator extends ConstraintValidator
 {

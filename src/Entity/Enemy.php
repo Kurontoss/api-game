@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\EnemyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+
+use App\Repository\EnemyRepository;
 
 #[ORM\Entity(repositoryClass: EnemyRepository::class)]
 class Enemy

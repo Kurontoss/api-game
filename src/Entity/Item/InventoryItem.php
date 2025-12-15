@@ -2,11 +2,12 @@
 
 namespace App\Entity\Item;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 use App\Entity\Item\Item;
 use App\Entity\Knight;
 use App\Repository\Item\InventoryItemRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: InventoryItemRepository::class)]
 class InventoryItem

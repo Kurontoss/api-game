@@ -3,15 +3,16 @@
 namespace App\Controller\Knight;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use App\Service\ValidationService;
-use App\Entity\Knight;
-use App\DTO\Knight\CreateDTO;
-use App\Repository\KnightRepository;
+
 use App\Assembler\KnightAssembler;
+use App\DTO\Knight\CreateDTO;
+use App\Entity\Knight;
+use App\Repository\KnightRepository;
+use App\Service\ValidationService;
 
 final class CreateController extends AbstractController
 {

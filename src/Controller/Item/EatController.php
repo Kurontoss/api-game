@@ -3,17 +3,18 @@
 namespace App\Controller\Item;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use App\Service\ValidationService;
-use App\Service\Item\EatService;
-use App\Repository\Item\InventoryItemRepository;
-use App\Repository\KnightRepository;
+
 use App\DTO\Item\EatDTO;
 use App\Exception\ItemAmountTooLowException;
+use App\Repository\Item\InventoryItemRepository;
+use App\Repository\KnightRepository;
+use App\Service\Item\EatService;
+use App\Service\ValidationService;
 
 final class EatController extends AbstractController
 {

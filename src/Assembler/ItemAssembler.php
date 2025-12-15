@@ -2,9 +2,9 @@
 
 namespace App\Assembler;
 
-use App\Entity\Item\Item;
-use App\Entity\Item\Food;
 use App\DTO\Item\CreateDTO;
+use App\Entity\Item\Food;
+use App\Entity\Item\Item;
 
 class ItemAssembler
 {

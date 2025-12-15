@@ -2,8 +2,8 @@
 
 namespace App\Assembler;
 
-use App\Entity\Dungeon;
 use App\DTO\Dungeon\CreateDTO;
+use App\Entity\Dungeon;
 
 class DungeonAssembler
 {

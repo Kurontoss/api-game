@@ -3,9 +3,10 @@
 namespace App\Service\User;
 
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 use App\Entity\User;
-use App\Repository\UserRepository;
 use App\Exception\EmailAlreadyRegisteredException;
+use App\Repository\UserRepository;
 
 class RegisterService
 {

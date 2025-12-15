@@ -4,9 +4,10 @@ namespace App\Controller\LootPool;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use App\Repository\LootPoolRepository;
 
 final class ShowController extends AbstractController
