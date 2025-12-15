@@ -5,6 +5,7 @@ namespace App\DTO\LootPool;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as AppAssert;
+use App\Entity\Item\Item;
 
 #[AppAssert\MinLessThanMax(
     minField: 'minAmounts',
@@ -31,7 +32,8 @@ class CreateDTO
     #[Assert\NotNull]
     #[Assert\Count(min: 1)]
     #[Assert\All([
-        new Assert\Type('integer')
+        new Assert\Type('integer'),
+        new AppAssert\EntityExists(entityClass: Item::class),
     ])]
     public $items;
     
