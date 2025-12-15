@@ -53,6 +53,10 @@ final class EatController extends AbstractController
             throw new BadRequestHttpException('The currently logged in user is not this knight\'s onwer!');
         }
 
+        if ($inventoryItem->getKnight() !== $knight) {
+            throw new BadRequestHttpException('This item doesn\'t belong to this knight!');
+        }
+
         try {
             $this->eatService->eat($knight, $inventoryItem, $dto->amount);
         } catch (ItemAmountTooLowException $e) {
