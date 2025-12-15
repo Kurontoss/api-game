@@ -9,11 +9,11 @@ use App\Entity\Item\InventoryItem;
 class BattleSummaryDTO
 {
     #[Groups(['battle_summary:read'])]
-    public array $fights = [];
+    public array $fights;
 
     #[Groups(['battle_summary:read'])]
-    public int $exp = 0;
+    public int $exp;
 
     #[Groups(['battle_summary:read'])]
-    public array $items = [];
+    public array $items;
 }

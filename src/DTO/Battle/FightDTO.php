@@ -10,20 +10,20 @@ use App\Entity\Item\InventoryItem;
 class FightDTO
 {
     #[Groups(['fight:read'])]
-    public int $index = 0;
+    public int $index;
 
     #[Groups(['fight:read'])]
-    public ?Enemy $enemy = null;
+    public ?Enemy $enemy;
 
     #[Groups(['fight:read'])]
-    public ?Knight $knight = null;
+    public ?Knight $knight;
 
     #[Groups(['fight:read'])]
-    public int $exp = 0;
+    public int $exp;
 
     #[Groups(['fight:read'])]
-    public ?InventoryItem $item = null;
+    public ?InventoryItem $item;
 
     #[Groups(['fight:read'])]
-    public bool $isWon = false;
+    public bool $isWon;
 }

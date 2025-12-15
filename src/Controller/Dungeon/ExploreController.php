@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use App\Service\ValidationService;
 use App\Service\Dungeon\ExploreService;
 use App\Service\Knight\LevelUpService;
 use App\Repository\DungeonRepository;
@@ -19,6 +20,7 @@ final class ExploreController extends AbstractController
 {
     public function __construct(
         private SerializerInterface $serializer,
+        private ValidationService $validator,
         private ExploreService $exploreService,
         private LevelUpService $levelUpService,
         private DungeonRepository $dungeonRepo,
@@ -37,7 +39,16 @@ final class ExploreController extends AbstractController
             ['groups' => ['dungeon:write']]
         );
 
-        $dungeon = $this->dungeonRepo->find($id);
+        $dto->dungeonId = $id;
+
+        if ($errors = $this->validator->validate($dto)) {
+            return new JsonResponse([
+                'reason' => 'Validation error',
+                'errors' => $errors
+            ], 422);
+        }
+
+        $dungeon = $this->dungeonRepo->find($dto->dungeonId);
         $knight = $this->knightRepo->find($dto->knightId);
 
         if ($knight->getUser() !== $this->getUser()) {

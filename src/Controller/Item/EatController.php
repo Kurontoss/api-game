@@ -8,8 +8,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use App\Service\ValidationService;
 use App\Service\Item\EatService;
-use App\Repository\Item\ItemRepository;
+use App\Repository\Item\InventoryItemRepository;
 use App\Repository\KnightRepository;
 use App\DTO\Item\EatDTO;
 use App\Exception\ItemAmountTooLowException;
@@ -18,8 +19,9 @@ final class EatController extends AbstractController
 {
     public function __construct(
         private SerializerInterface $serializer,
+        private ValidationService $validator,
         private EatService $eatService,
-        private ItemRepository $itemRepo,
+        private InventoryItemRepository $inventoryItemRepo,
         private KnightRepository $knightRepo,
     ) {}
 
@@ -35,23 +37,24 @@ final class EatController extends AbstractController
             ['groups' => ['inventory_item:write']]
         );
 
-        $item = $this->itemRepo->find($id);
+        $dto->inventoryItemId = $id;
+
+        if ($errors = $this->validator->validate($dto)) {
+            return new JsonResponse([
+                'reason' => 'Validation error',
+                'errors' => $errors
+            ], 422);
+        }
+
+        $inventoryItem = $this->inventoryItemRepo->find($dto->inventoryItemId);
         $knight = $this->knightRepo->find($dto->knightId);
 
         if ($knight->getUser() !== $this->getUser()) {
             throw new BadRequestHttpException('The currently logged in user is not this knight\'s onwer!');
         }
 
-        if ($item === null) {
-            throw new BadRequestHttpException('Invalid inventory item id!');
-        }
-
-        if ($dto->amount <= 0) {
-            throw new BadRequestHttpException('Invalid amount!');
-        }
-
         try {
-            $this->eatService->eat($knight, $item, $dto->amount);
+            $this->eatService->eat($knight, $inventoryItem, $dto->amount);
         } catch (ItemAmountTooLowException $e) {
             throw new BadRequestHttpException('You don\'t have enough food to eat!');
         }
