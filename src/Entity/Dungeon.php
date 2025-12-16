@@ -19,15 +19,15 @@ class Dungeon
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: false)]
-    #[Groups(['dungeon:read', 'dungeon:write'])]
+    #[Groups(['dungeon:read'])]
     private string $name = '';
 
     #[ORM\Column(nullable: false)]
-    #[Groups(['dungeon:read', 'dungeon:write'])]
+    #[Groups(['dungeon:read'])]
     private int $level = 1;
 
     #[ORM\Column(nullable: false)]
-    #[Groups(['dungeon:read', 'dungeon:write'])]
+    #[Groups(['dungeon:read'])]
     private int $exp = 0;
 
     /**

@@ -20,7 +20,7 @@ class Knight
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['knight:read', 'knight:write'])]
+    #[Groups(['knight:read'])]
     private string $name = '';
 
     #[ORM\Column]
