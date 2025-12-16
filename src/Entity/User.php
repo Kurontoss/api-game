@@ -40,6 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Knight>
      */
     #[ORM\OneToMany(targetEntity: Knight::class, mappedBy: 'user')]
+    #[Groups(['user_knights:read'])]
     private Collection $knights;
 
     public function __construct()

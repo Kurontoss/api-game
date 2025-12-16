@@ -25,4 +25,10 @@ class UserRepository extends ServiceEntityRepository
         $this->em->persist($user);
         $this->em->flush();
     }
+
+    public function delete(User $user): void
+    {
+        $this->em->remove($user);
+        $this->em->flush();
+    }
 }

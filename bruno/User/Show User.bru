@@ -1,0 +1,20 @@
+meta {
+  name: Show User
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://127.0.0.1:8000/api/user/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
