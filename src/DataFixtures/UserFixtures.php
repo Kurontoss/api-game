@@ -16,6 +16,15 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        $admin = new User();
+        $admin->setEmail('admin@wp.pl');
+        $admin->setName('Admin');
+        $admin->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
+        $hashedPassword = $this->passwordHasher->hashPassword($admin, '123');
+        $admin->setPassword($hashedPassword);
+        $manager->persist($admin);
+        $this->addReference('user_admin', $admin);
+
         $user1 = new User();
         $user1->setEmail('tom@wp.pl');
         $user1->setName('Tom');

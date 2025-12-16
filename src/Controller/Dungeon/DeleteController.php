@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use App\Repository\DungeonRepository;
 
@@ -15,6 +16,7 @@ final class DeleteController extends AbstractController
         private DungeonRepository $dungeonRepo,
     ) {}
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/dungeons/{id}', name: 'dungeon_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
     public function __invoke(
         int $id,

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Assembler\LootPoolAssembler;
@@ -23,6 +24,7 @@ final class CreateController extends AbstractController
         private LootPoolAssembler $assembler,
     ) {}
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/loot-pools', name: 'loot_pool_create', methods: ['POST'])]
     public function __invoke(
         Request $request,
