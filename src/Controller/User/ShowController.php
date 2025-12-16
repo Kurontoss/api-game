@@ -33,7 +33,7 @@ final class ShowController extends AbstractController
                 'user_knights:read',
                 'knight:read',
             ]]),
-            200
+            JsonResponse::HTTP_OK
         );
     }
 }

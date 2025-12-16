@@ -36,7 +36,7 @@ final class ShowController extends AbstractController
                 'item_instance:read',
                 'item:read'
             ]]),
-            200
+            JsonResponse::HTTP_OK
         );
     }
 }

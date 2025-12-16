@@ -46,11 +46,13 @@ final class UpdateController extends AbstractController
             ['groups' => ['user:write']]
         );
 
-        if ($errors = $this->validator->validate($dto)) {
+        $errors = $this->validator->validate($dto);
+
+        if (count($errors) > 0) {
             return new JsonResponse([
                 'reason' => 'Validation error',
                 'errors' => $errors
-            ], 422);
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $user = $this->userRepo->find($id);
@@ -73,6 +75,6 @@ final class UpdateController extends AbstractController
             $data['token'] = $this->jwt->create($user);
         }
 
-        return $this->json($data, 201);
+        return $this->json($data, JsonResponse::HTTP_CREATED);
     }
 }

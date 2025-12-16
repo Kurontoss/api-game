@@ -36,11 +36,13 @@ final class CreateController extends AbstractController
             'json'
         );
 
-        if ($errors = $this->validator->validate($dto)) {
+        $errors = $this->validator->validate($dto);
+
+        if (count($errors) > 0) {
             return new JsonResponse([
                 'reason' => 'Validation error',
                 'errors' => $errors
-            ], 422);
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $item = $this->assembler->fromCreateDTO($dto);
@@ -49,7 +51,7 @@ final class CreateController extends AbstractController
 
         return new JsonResponse(
             $this->serializer->normalize($item, 'json', ['groups' => ['item:read']]),
-            201
+            JsonResponse::HTTP_CREATED
         );
     }
 }

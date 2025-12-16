@@ -23,7 +23,7 @@ final class ListController extends AbstractController
 
         return new JsonResponse(
             $this->serializer->normalize($dungeons, 'json', ['groups' => ['dungeon:read']]),
-            200
+            JsonResponse::HTTP_OK
         );
     }
 }

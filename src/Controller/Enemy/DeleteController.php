@@ -29,6 +29,6 @@ final class DeleteController extends AbstractController
 
         $this->enemyRepo->delete($enemy);
 
-        return new JsonResponse(null, 204);
+        return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
     }
 }

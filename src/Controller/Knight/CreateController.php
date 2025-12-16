@@ -34,11 +34,13 @@ final class CreateController extends AbstractController
             ['groups' => ['knight:write']]
         );
 
-        if ($errors = $this->validator->validate($dto)) {
+        $errors = $this->validator->validate($dto);
+
+        if (count($errors) > 0) {
             return new JsonResponse([
                 'reason' => 'Validation error',
                 'errors' => $errors
-            ], 422);
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $knight = $this->assembler->fromCreateDTO($dto);
@@ -54,7 +56,7 @@ final class CreateController extends AbstractController
                 'item_instance:read',
                 'item:read'
             ]]),
-            201
+            JsonResponse::HTTP_CREATED
         );
     }
 }

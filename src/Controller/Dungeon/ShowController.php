@@ -33,7 +33,7 @@ final class ShowController extends AbstractController
                 'dungeon_enemies:read',
                 'enemy:read'
             ]]),
-            200
+            JsonResponse::HTTP_OK
         );
     }
 }

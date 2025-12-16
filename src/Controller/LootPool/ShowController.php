@@ -32,7 +32,7 @@ final class ShowController extends AbstractController
                 'loot_pool:read',
                 'item:read'
             ]]),
-            200
+            JsonResponse::HTTP_OK
         );
     }
 }

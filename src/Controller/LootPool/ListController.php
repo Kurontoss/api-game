@@ -26,7 +26,7 @@ final class ListController extends AbstractController
                 'loot_pool:read',
                 'item:read'
             ]]),
-            200
+            JsonResponse::HTTP_OK
         );
     }
 }

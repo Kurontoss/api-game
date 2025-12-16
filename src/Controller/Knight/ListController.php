@@ -27,7 +27,7 @@ final class ListController extends AbstractController
                 'knight_user:read',
                 'user:read'
             ]]),
-            200
+            JsonResponse::HTTP_OK
         );
     }
 }

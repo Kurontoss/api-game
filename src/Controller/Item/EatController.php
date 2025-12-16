@@ -41,11 +41,13 @@ final class EatController extends AbstractController
 
         $dto->itemInstanceId = $id;
 
-        if ($errors = $this->validator->validate($dto)) {
+        $errors = $this->validator->validate($dto);
+
+        if (count($errors) > 0) {
             return new JsonResponse([
                 'reason' => 'Validation error',
                 'errors' => $errors
-            ], 422);
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $itemInstance = $this->itemInstanceRepo->find($dto->itemInstanceId);
@@ -74,7 +76,7 @@ final class EatController extends AbstractController
                 'item_instance:read',
                 'item:read'
             ]]),
-            200
+            JsonResponse::HTTP_OK
         );
     }
 }

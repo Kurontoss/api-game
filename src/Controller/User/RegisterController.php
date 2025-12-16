@@ -40,11 +40,13 @@ final class RegisterController extends AbstractController
             ['groups' => ['user:write']]
         );
 
-        if ($errors = $this->validator->validate($dto)) {
+        $errors = $this->validator->validate($dto);
+
+        if (count($errors) > 0) {
             return new JsonResponse([
                 'reason' => 'Validation error',
                 'errors' => $errors
-            ], 422);
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $user = $this->assembler->fromCreateDTO($dto);
@@ -62,6 +64,6 @@ final class RegisterController extends AbstractController
         return $this->json([
             'user' => $this->serializer->normalize($user, 'json',['groups' => ['user:read']]),
             'token' => $token
-        ], 201);
+        ], JsonResponse::HTTP_CREATED);
     }
 }

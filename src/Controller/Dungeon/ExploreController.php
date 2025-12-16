@@ -43,11 +43,13 @@ final class ExploreController extends AbstractController
 
         $dto->dungeonId = $id;
 
-        if ($errors = $this->validator->validate($dto)) {
+        $errors = $this->validator->validate($dto);
+
+        if (count($errors) > 0) {
             return new JsonResponse([
                 'reason' => 'Validation error',
                 'errors' => $errors
-            ], 422);
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $dungeon = $this->dungeonRepo->find($dto->dungeonId);
@@ -77,6 +79,6 @@ final class ExploreController extends AbstractController
             'exp' => $exp,
             'items' => $this->serializer->normalize($items, 'json', ['groups' => ['item_instance:read', 'item:read']]),
             'knight' => $this->serializer->normalize($knight, 'json', ['groups' => ['knight:read', 'knight_inventory:read', 'item_instance:read', 'item:read']]),
-        ], 200);
+        ], JsonResponse::HTTP_OK);
     }
 }

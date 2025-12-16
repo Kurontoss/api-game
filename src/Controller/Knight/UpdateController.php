@@ -36,11 +36,13 @@ final class UpdateController extends AbstractController
             ['groups' => ['knight:write']]
         );
 
-        if ($errors = $this->validator->validate($dto)) {
+        $errors = $this->validator->validate($dto);
+
+        if (count($errors) > 0) {
             return new JsonResponse([
                 'reason' => 'Validation error',
                 'errors' => $errors
-            ], 422);
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $knight = $this->knightRepo->find($id);
@@ -62,7 +64,7 @@ final class UpdateController extends AbstractController
                 'item_instance:read',
                 'item:read'
             ]]),
-            201
+            JsonResponse::HTTP_CREATED
         );
     }
 }
