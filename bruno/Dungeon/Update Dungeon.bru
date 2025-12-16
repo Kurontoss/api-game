@@ -1,0 +1,26 @@
+meta {
+  name: Update Dungeon
+  type: http
+  seq: 6
+}
+
+patch {
+  url: http://127.0.0.1:8000/api/dungeons/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "name": "Changed"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,27 @@
+meta {
+  name: Update User
+  type: http
+  seq: 6
+}
+
+patch {
+  url: http://127.0.0.1:8000/api/users/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "name": "Changed",
+    "email": "tom@wp.pl"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

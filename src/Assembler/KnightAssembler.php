@@ -5,6 +5,7 @@ namespace App\Assembler;
 use Symfony\Bundle\SecurityBundle\Security;
 
 use App\DTO\Knight\CreateDTO;
+use App\DTO\Knight\UpdateDTO;
 use App\Entity\Knight;
 
 class KnightAssembler
@@ -23,6 +24,15 @@ class KnightAssembler
         $knight->setHp(10);
         $knight->setMaxHp(10);
         $knight->setUser($this->security->getUser());
+
+        return $knight;
+    }
+
+    public function fromUpdateDTO(UpdateDTO $dto, Knight $knight): Knight
+    {
+        if ($dto->name) {
+            $knight->setName($dto->name);
+        }
 
         return $knight;
     }

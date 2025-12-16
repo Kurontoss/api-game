@@ -1,0 +1,28 @@
+meta {
+  name: Update Loot Pool
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://127.0.0.1:8000/api/loot-pools/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+body:json {
+  {
+    "name": "Changed",
+    "items": [1, 2, 3],
+    "chances": [0.6, 0.3, 0.1]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

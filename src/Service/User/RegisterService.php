@@ -26,4 +26,16 @@ class RegisterService
         $user->setPassword($hashedPassword);
         $user->setRoles(['ROLE_USER']);
     }
+
+    public function update(
+        User $user,
+    ): void {
+        $found = $this->userRepo->findOneBy(['email' => $user->getEmail()]);
+        if ($found && $found !== $user) {
+            throw new EmailAlreadyRegisteredException();
+        }
+
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
+        $user->setPassword($hashedPassword);
+    }
 }

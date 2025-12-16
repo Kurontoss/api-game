@@ -3,6 +3,7 @@
 namespace App\Assembler;
 
 use App\DTO\Item\CreateDTO;
+use App\DTO\Item\UpdateDTO;
 use App\Entity\Item\Food;
 use App\Entity\Item\Item;
 
@@ -20,6 +21,23 @@ class ItemAssembler
         $item->setName($dto->name);
         $item->setValue($dto->value);
 
+        return $item;
+    }
+
+    public function fromUpdateDTO(UpdateDTO $dto, Item $item): Item
+    {
+        if ($dto->name) {
+            $item->setName($dto->name);
+        }
+
+        if ($dto->value) {
+            $item->setValue($dto->value);
+        }
+
+        if($dto->hpRegen && $item instanceof Food) {
+            $item->setHpRegen($dto->hpRegen);
+        }
+        
         return $item;
     }
 }
