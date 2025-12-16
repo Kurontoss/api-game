@@ -16,7 +16,7 @@ final class ListController extends AbstractController
         private UserRepository $userRepo,
     ) {}
     
-    #[Route('/api/user', name: 'user_list', methods: ['GET'])]
+    #[Route('/api/users', name: 'user_list', methods: ['GET'])]
     public function __invoke(): JsonResponse
     {
         $users = $this->userRepo->findAll();

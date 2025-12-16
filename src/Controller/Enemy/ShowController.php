@@ -17,7 +17,7 @@ final class ShowController extends AbstractController
         private EnemyRepository $enemyRepo,
     ) {}
 
-    #[Route('/api/enemy/{id}', name: 'enemy_show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    #[Route('/api/enemies/{id}', name: 'enemy_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function __invoke(
         int $id,
     ): JsonResponse {

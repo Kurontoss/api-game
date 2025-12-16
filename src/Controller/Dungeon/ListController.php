@@ -16,7 +16,7 @@ final class ListController extends AbstractController
         private DungeonRepository $dungeonRepo,
     ) {}
     
-    #[Route('/api/dungeon', name: 'dungeon_list', methods: ['GET'])]
+    #[Route('/api/dungeons', name: 'dungeon_list', methods: ['GET'])]
     public function __invoke(): JsonResponse
     {
         $dungeons = $this->dungeonRepo->findAll();

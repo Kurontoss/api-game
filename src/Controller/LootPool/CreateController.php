@@ -25,7 +25,7 @@ final class CreateController extends AbstractController
         private LootPoolAssembler $assembler,
     ) {}
 
-    #[Route('/api/loot-pool/create', name: 'loot_pool_create', methods: ['POST'])]
+    #[Route('/api/loot-pools', name: 'loot_pool_create', methods: ['POST'])]
     public function __invoke(
         Request $request,
     ): JsonResponse {

@@ -17,7 +17,7 @@ final class ShowController extends AbstractController
         private LootPoolRepository $lootPoolRepo,
     ) {}
 
-    #[Route('/api/loot-pool/{id}', name: 'loot_pool_show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    #[Route('/api/loot-pools/{id}', name: 'loot_pool_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function __invoke(
         int $id,
     ): JsonResponse {

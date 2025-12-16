@@ -23,7 +23,7 @@ final class CreateController extends AbstractController
         private DungeonAssembler $assembler,
     ) {}
 
-    #[Route('/api/dungeon/create', name: 'dungeon_create', methods: ['POST'])]
+    #[Route('/api/dungeons', name: 'dungeon_create', methods: ['POST'])]
     public function __invoke(
         Request $request,
     ): JsonResponse {

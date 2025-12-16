@@ -16,7 +16,7 @@ final class ListController extends AbstractController
         private LootPoolRepository $lootPoolRepo,
     ) {}
     
-    #[Route('/api/loot-pool', name: 'loot_pool_list', methods: ['GET'])]
+    #[Route('/api/loot-pools', name: 'loot_pool_list', methods: ['GET'])]
     public function __invoke(): JsonResponse
     {
         $lootPools = $this->lootPoolRepo->findAll();

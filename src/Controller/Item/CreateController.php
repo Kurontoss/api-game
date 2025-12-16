@@ -24,7 +24,7 @@ final class CreateController extends AbstractController
         private ItemAssembler $assembler,
     ) {}
 
-    #[Route('/api/item/create', name: 'item_create', methods: ['POST'])]
+    #[Route('/api/items', name: 'item_create', methods: ['POST'])]
     public function __invoke(
         Request $request,
     ): JsonResponse {

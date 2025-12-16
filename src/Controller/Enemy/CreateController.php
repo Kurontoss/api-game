@@ -27,7 +27,7 @@ final class CreateController extends AbstractController
         private EnemyAssembler $assembler,
     ) {}
 
-    #[Route('/api/enemy/create', name: 'enemy_create', methods: ['POST'])]
+    #[Route('/api/enemies', name: 'enemy_create', methods: ['POST'])]
     public function __invoke(
         Request $request,
     ): JsonResponse {

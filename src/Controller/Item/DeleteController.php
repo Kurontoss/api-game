@@ -15,7 +15,7 @@ final class DeleteController extends AbstractController
         private ItemRepository $itemRepo,
     ) {}
 
-    #[Route('/api/item/{id}/delete', name: 'item_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
+    #[Route('/api/items/{id}', name: 'item_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
     public function __invoke(
         int $id,
     ): JsonResponse {

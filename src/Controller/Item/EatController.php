@@ -26,7 +26,7 @@ final class EatController extends AbstractController
         private KnightRepository $knightRepo,
     ) {}
 
-    #[Route('/api/item/{id}/eat', name: 'item_eat', methods: ['POST'], requirements: ['id' => '\d+'])]
+    #[Route('/api/items/{id}/eat', name: 'item_eat', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function __invoke(
         Request $request,
         int $id,

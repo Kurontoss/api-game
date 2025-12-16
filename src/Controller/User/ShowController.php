@@ -17,7 +17,7 @@ final class ShowController extends AbstractController
         private UserRepository $userRepo,
     ) {}
 
-    #[Route('/api/user/{id}', name: 'user_show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    #[Route('/api/users/{id}', name: 'user_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function __invoke(
         int $id,
     ): JsonResponse {

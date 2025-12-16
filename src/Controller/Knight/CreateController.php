@@ -23,7 +23,7 @@ final class CreateController extends AbstractController
         private KnightAssembler $assembler,
     ) {}
 
-    #[Route('/api/knight/create', name: 'knight_create', methods: ['POST'])]
+    #[Route('/api/knights', name: 'knight_create', methods: ['POST'])]
     public function __invoke(
         Request $request,
     ): JsonResponse {

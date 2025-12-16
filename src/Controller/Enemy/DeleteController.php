@@ -15,7 +15,7 @@ final class DeleteController extends AbstractController
         private EnemyRepository $enemyRepo,
     ) {}
 
-    #[Route('/api/enemy/{id}/delete', name: 'enemy_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
+    #[Route('/api/enemies/{id}', name: 'enemy_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
     public function __invoke(
         int $id,
     ): JsonResponse {

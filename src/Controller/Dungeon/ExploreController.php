@@ -28,7 +28,7 @@ final class ExploreController extends AbstractController
         private KnightRepository $knightRepo,
     ) {}
 
-    #[Route('/api/dungeon/{id}/explore', name: 'dungeon_explore', methods: ['POST'])]
+    #[Route('/api/dungeons/{id}/explore', name: 'dungeon_explore', methods: ['POST'])]
     public function __invoke(
         Request $request,
         int $id,

@@ -17,7 +17,7 @@ final class ShowController extends AbstractController
         private KnightRepository $knightRepo,
     ) {}
 
-    #[Route('/api/knight/{id}', name: 'knight_show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    #[Route('/api/knights/{id}', name: 'knight_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function __invoke(
         int $id,
     ): JsonResponse {

@@ -15,7 +15,7 @@ final class DeleteController extends AbstractController
         private KnightRepository $knightRepo,
     ) {}
 
-    #[Route('/api/knight/{id}/delete', name: 'knight_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
+    #[Route('/api/knights/{id}', name: 'knight_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
     public function __invoke(
         int $id,
     ): JsonResponse {

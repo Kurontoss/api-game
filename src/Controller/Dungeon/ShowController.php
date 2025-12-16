@@ -17,7 +17,7 @@ final class ShowController extends AbstractController
         private DungeonRepository $dungeonRepo,
     ) {}
 
-    #[Route('/api/dungeon/{id}', name: 'dungeon_show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    #[Route('/api/dungeons/{id}', name: 'dungeon_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function __invoke(
         int $id,
     ): JsonResponse {

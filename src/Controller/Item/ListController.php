@@ -16,7 +16,7 @@ final class ListController extends AbstractController
         private ItemRepository $itemRepo,
     ) {}
 
-    #[Route('/api/item', name: 'item_list', methods: ['GET'])]
+    #[Route('/api/items', name: 'item_list', methods: ['GET'])]
     public function __invoke(): JsonResponse
     {
         $items = $this->itemRepo->findAll();
