@@ -17,7 +17,7 @@ final class ListController extends AbstractController
     ) {}
 
     #[Route('/api/knight', name: 'knight_list', methods: ['GET'])]
-    public function list(): JsonResponse
+    public function __invoke(): JsonResponse
     {
         $knights = $this->knightRepo->findAll();
 

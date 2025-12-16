@@ -16,7 +16,7 @@ final class DeleteController extends AbstractController
     ) {}
 
     #[Route('/api/knight/{id}/delete', name: 'knight_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
-    public function delete(
+    public function __invoke(
         int $id,
     ): JsonResponse {
         $knight = $this->knightRepo->find($id);

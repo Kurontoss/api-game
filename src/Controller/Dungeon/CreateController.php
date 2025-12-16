@@ -24,7 +24,7 @@ final class CreateController extends AbstractController
     ) {}
 
     #[Route('/api/dungeon/create', name: 'dungeon_create', methods: ['POST'])]
-    public function create(
+    public function __invoke(
         Request $request,
     ): JsonResponse {
         $dto = $this->serializer->deserialize(

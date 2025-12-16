@@ -29,7 +29,7 @@ final class ExploreController extends AbstractController
     ) {}
 
     #[Route('/api/dungeon/{id}/explore', name: 'dungeon_explore', methods: ['POST'])]
-    public function create(
+    public function __invoke(
         Request $request,
         int $id,
     ): JsonResponse {

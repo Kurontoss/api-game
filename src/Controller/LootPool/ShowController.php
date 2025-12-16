@@ -18,7 +18,7 @@ final class ShowController extends AbstractController
     ) {}
 
     #[Route('/api/loot-pool/{id}', name: 'loot_pool_show', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function show(
+    public function __invoke(
         int $id,
     ): JsonResponse {
         $lootPool = $this->lootPoolRepo->find($id);

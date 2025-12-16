@@ -30,7 +30,7 @@ final class RegisterController extends AbstractController
     ) {}
 
     #[Route('/api/register', name: 'user_register', methods: ['POST'])]
-    public function create(
+    public function __invoke(
         Request $request,
     ): JsonResponse {
         $dto = $this->serializer->deserialize(

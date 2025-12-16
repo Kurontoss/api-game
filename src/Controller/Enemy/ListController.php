@@ -17,7 +17,7 @@ final class ListController extends AbstractController
     ) {}
 
     #[Route('/api/enemy', name: 'enemy_list', methods: ['GET'])]
-    public function list(): JsonResponse
+    public function __invoke(): JsonResponse
     {
         $enemies = $this->enemyRepo->findAll();
 

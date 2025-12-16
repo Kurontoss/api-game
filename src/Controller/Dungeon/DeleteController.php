@@ -16,7 +16,7 @@ final class DeleteController extends AbstractController
     ) {}
 
     #[Route('/api/dungeon/{id}/delete', name: 'dungeon_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
-    public function delete(
+    public function __invoke(
         int $id,
     ): JsonResponse {
         $dungeon = $this->dungeonRepo->find($id);

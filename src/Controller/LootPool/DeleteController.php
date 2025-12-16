@@ -16,7 +16,7 @@ final class DeleteController extends AbstractController
     ) {}
 
     #[Route('/api/loot-pool/{id}/delete', name: 'loot_pool_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
-    public function delete(
+    public function __invoke(
         int $id,
     ): JsonResponse {
         $lootPool = $this->lootPoolRepo->find($id);

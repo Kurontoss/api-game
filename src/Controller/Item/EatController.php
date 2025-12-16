@@ -27,7 +27,7 @@ final class EatController extends AbstractController
     ) {}
 
     #[Route('/api/item/{id}/eat', name: 'item_eat', methods: ['POST'], requirements: ['id' => '\d+'])]
-    public function eat(
+    public function __invoke(
         Request $request,
         int $id,
     ): JsonResponse {
