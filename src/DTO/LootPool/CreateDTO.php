@@ -42,6 +42,7 @@ class CreateDTO
     #[Assert\Type('array')]
     #[Assert\NotNull]
     #[Assert\Count(min: 1)]
+    #[AppAssert\AddToOne]
     #[Assert\All([
         new Assert\Type('float'),
         new Assert\GreaterThan(value: 0),

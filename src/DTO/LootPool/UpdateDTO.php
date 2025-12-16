@@ -39,6 +39,7 @@ class UpdateDTO
     #[Groups(['loot_pool:write'])]
     #[Assert\Type('array')]
     #[Assert\Count(min: 1)]
+    #[AppAssert\AddToOne]
     #[Assert\All([
         new Assert\Type('float'),
         new Assert\GreaterThan(value: 0),
