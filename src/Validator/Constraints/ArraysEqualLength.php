@@ -25,7 +25,7 @@ class ArraysEqualLength extends Constraint
         $this->arrayFields = $arrayFields;
 
         if (!isset($this->arrayFields) || count($arrayFields) < 2) {
-            throw new \InvalidArgumentException('You must provide at least 2 fields.');
+            throw new \InvalidArgumentException('You must provide at least 2 fields');
         }
     }
 

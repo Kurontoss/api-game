@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use App\Repository\UserRepository;
 
@@ -20,6 +21,10 @@ final class DeleteController extends AbstractController
         int $id,
     ): JsonResponse {
         $user = $this->userRepo->find($id);
+
+        if ($this->getUser()->getId() !== $id) {
+            throw new AccessDeniedException('The currently logged in user is not allowed to delete this user');
+        }
 
         if (!$user) {
             throw new NotFoundHttpException('User not found');

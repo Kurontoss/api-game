@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Assembler\UserAssembler;
@@ -36,7 +36,7 @@ final class UpdateController extends AbstractController
         int $id,
     ): JsonResponse {
         if ($this->getUser()->getId() !== $id) {
-            throw new AuthenticationException('Not allowed to update this user');
+            throw new AccessDeniedException('Not allowed to update this user');
         }
 
         $dto = $this->serializer->deserialize(
@@ -60,7 +60,7 @@ final class UpdateController extends AbstractController
         try {
             $this->registerService->update($user);
         } catch (EmailAlreadyRegisteredException $e) {
-            throw new BadRequestHttpException('Email is already registered.');
+            throw new BadRequestHttpException('Email is already registered');
         }
 
         $this->userRepo->save($user);

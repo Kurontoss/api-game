@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use App\DTO\Dungeon\ExploreDTO;
@@ -53,13 +54,13 @@ final class ExploreController extends AbstractController
         $knight = $this->knightRepo->find($dto->knightId);
 
         if ($knight->getUser() !== $this->getUser()) {
-            throw new BadRequestHttpException('The currently logged in user is not this knight\'s onwer!');
+            throw new AccessDeniedExceptionHttpException('The currently logged in user is not this knight\'s onwer');
         }
 
         try {
             $battleSummary = $this->exploreService->explore($knight, $dungeon);
         } catch (LevelTooLowException $e) {
-            throw new BadRequestHttpException('Your level is too low to enter this dungeon.');
+            throw new BadRequestHttpException('Your level is too low to enter this dungeon');
         }
 
         $exp = $battleSummary->exp;

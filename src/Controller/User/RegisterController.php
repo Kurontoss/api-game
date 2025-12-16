@@ -52,7 +52,7 @@ final class RegisterController extends AbstractController
         try {
             $this->registerService->register($user);
         } catch (EmailAlreadyRegisteredException $e) {
-            throw new BadRequestHttpException('Email is already registered.');
+            throw new BadRequestHttpException('Email is already registered');
         }
 
         $this->userRepo->save($user);

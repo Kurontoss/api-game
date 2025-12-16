@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use App\DTO\Item\EatDTO;
@@ -51,17 +52,17 @@ final class EatController extends AbstractController
         $knight = $this->knightRepo->find($dto->knightId);
 
         if ($knight->getUser() !== $this->getUser()) {
-            throw new BadRequestHttpException('The currently logged in user is not this knight\'s onwer!');
+            throw new AccessDeniedException('The currently logged in user is not this knight\'s onwer');
         }
 
         if ($itemInstance->getKnight() !== $knight) {
-            throw new BadRequestHttpException('This item doesn\'t belong to this knight!');
+            throw new AccessDeniedException('This item doesn\'t belong to this knight');
         }
 
         try {
             $this->eatService->eat($knight, $itemInstance, $dto->amount);
         } catch (ItemAmountTooLowException $e) {
-            throw new BadRequestHttpException('You don\'t have enough food to eat!');
+            throw new BadRequestHttpException('There is not enough food to eat');
         }
 
         $this->knightRepo->save($knight);

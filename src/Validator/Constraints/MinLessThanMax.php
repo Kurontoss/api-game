@@ -28,7 +28,7 @@ class MinLessThanMax extends Constraint
         $this->maxField = $maxField;
 
         if (!isset($this->minField) || !isset($this->maxField)) {
-            throw new \InvalidArgumentException('You must provide "minField" and "maxField" options.');
+            throw new \InvalidArgumentException('You must provide "minField" and "maxField" options');
         }
     }
 
