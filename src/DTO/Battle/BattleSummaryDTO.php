@@ -4,9 +4,6 @@ namespace App\DTO\Battle;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
-use App\DTO\Battle\FightDTO;
-use App\Entity\Item\InventoryItem;
-
 class BattleSummaryDTO
 {
     #[Groups(['battle_summary:read'])]

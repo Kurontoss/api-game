@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 use App\DTO\Item\EatDTO;
 use App\Exception\ItemAmountTooLowException;
-use App\Repository\Item\InventoryItemRepository;
+use App\Repository\Item\ItemInstanceRepository;
 use App\Repository\KnightRepository;
 use App\Service\Item\EatService;
 use App\Service\ValidationService;
@@ -22,7 +22,7 @@ final class EatController extends AbstractController
         private SerializerInterface $serializer,
         private ValidationService $validator,
         private EatService $eatService,
-        private InventoryItemRepository $inventoryItemRepo,
+        private ItemInstanceRepository $itemInstanceRepo,
         private KnightRepository $knightRepo,
     ) {}
 
@@ -35,10 +35,10 @@ final class EatController extends AbstractController
             $request->getContent(),
             EatDTO::class,
             'json',
-            ['groups' => ['inventory_item:write']]
+            ['groups' => ['item_instance:write']]
         );
 
-        $dto->inventoryItemId = $id;
+        $dto->itemInstanceId = $id;
 
         if ($errors = $this->validator->validate($dto)) {
             return new JsonResponse([
@@ -47,19 +47,19 @@ final class EatController extends AbstractController
             ], 422);
         }
 
-        $inventoryItem = $this->inventoryItemRepo->find($dto->inventoryItemId);
+        $itemInstance = $this->itemInstanceRepo->find($dto->itemInstanceId);
         $knight = $this->knightRepo->find($dto->knightId);
 
         if ($knight->getUser() !== $this->getUser()) {
             throw new BadRequestHttpException('The currently logged in user is not this knight\'s onwer!');
         }
 
-        if ($inventoryItem->getKnight() !== $knight) {
+        if ($itemInstance->getKnight() !== $knight) {
             throw new BadRequestHttpException('This item doesn\'t belong to this knight!');
         }
 
         try {
-            $this->eatService->eat($knight, $inventoryItem, $dto->amount);
+            $this->eatService->eat($knight, $itemInstance, $dto->amount);
         } catch (ItemAmountTooLowException $e) {
             throw new BadRequestHttpException('You don\'t have enough food to eat!');
         }
@@ -70,7 +70,7 @@ final class EatController extends AbstractController
             $this->serializer->normalize($knight, 'json', ['groups' => [
                 'knight:read',
                 'knight_inventory:read',
-                'inventory_item:read',
+                'item_instance:read',
                 'item:read'
             ]]),
             200

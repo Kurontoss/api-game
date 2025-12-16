@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-use App\Entity\Item\InventoryItem;
+use App\Entity\Item\ItemInstance;
 use App\Repository\KnightRepository;
 
 #[ORM\Entity(repositoryClass: KnightRepository::class)]
@@ -49,9 +49,9 @@ class Knight
     private int $maxHp = 1;
 
     /**
-     * @var Collection<int, InventoryItem>
+     * @var Collection<int, ItemInstance>
      */
-    #[ORM\OneToMany(targetEntity: InventoryItem::class, mappedBy: 'knight')]
+    #[ORM\OneToMany(targetEntity: ItemInstance::class, mappedBy: 'knight')]
     #[Groups(['knight_inventory:read'])]
     private Collection $inventory;
 
@@ -150,7 +150,7 @@ class Knight
     }
 
     /**
-     * @return Collection<int, InventoryItem>
+     * @return Collection<int, ItemInstance>
      */
     public function getInventory(): Collection
     {
@@ -164,22 +164,22 @@ class Knight
         return $this;
     }
 
-    public function addInventoryItem(InventoryItem $inventoryItem): static
+    public function addItemInstance(ItemInstance $itemInstance): static
     {
-        if (!$this->inventory->contains($inventoryItem)) {
-            $this->inventory->add($inventoryItem);
-            $inventoryItem->setKnight($this);
+        if (!$this->inventory->contains($itemInstance)) {
+            $this->inventory->add($itemInstance);
+            $itemInstance->setKnight($this);
         }
 
         return $this;
     }
 
-    public function removeInventoryItem(InventoryItem $inventoryItem): static
+    public function removeItemInstance(ItemInstance $itemInstance): static
     {
-        if ($this->inventory->removeElement($inventoryItem)) {
+        if ($this->inventory->removeElement($itemInstance)) {
             // set the owning side to null (unless already changed)
-            if ($inventoryItem->getKnight() === $this) {
-                $inventoryItem->setKnight(null);
+            if ($itemInstance->getKnight() === $this) {
+                $itemInstance->setKnight(null);
             }
         }
 

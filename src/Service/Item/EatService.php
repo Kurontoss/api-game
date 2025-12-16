@@ -2,20 +2,20 @@
 
 namespace App\Service\Item;
 
-use App\Entity\Item\InventoryItem;
+use App\Entity\Item\ItemInstance;
 use App\Entity\Knight;
 use App\Exception\ItemAmountTooLowException;
-use App\Repository\Item\InventoryItemRepository;
+use App\Repository\Item\ItemInstanceRepository;
 
 class EatService
 {
     public function __construct(
-        private InventoryItemRepository $inventoryItemRepo,
+        private ItemInstanceRepository $itemInstanceRepo,
     ) {}
 
     public function eat(
         Knight $knight,
-        InventoryItem $item,
+        ItemInstance $item,
         int $amount,
     ): void {
         if ($amount > $item->getAmount()) {
@@ -27,7 +27,7 @@ class EatService
         
         $item->setAmount($item->getAmount() - $amount);
         if ($item->getAmount() === 0) {
-            $this->inventoryItemRepo->delete($item);
+            $this->itemInstanceRepo->delete($item);
         }
     }
 }

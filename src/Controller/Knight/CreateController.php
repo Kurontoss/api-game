@@ -51,7 +51,7 @@ final class CreateController extends AbstractController
                 'knight_user:read',
                 'user:read',
                 'knight_inventory:read',
-                'inventory_item:read',
+                'item_instance:read',
                 'item:read'
             ]]),
             201

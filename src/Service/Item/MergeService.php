@@ -2,12 +2,12 @@
 
 namespace App\Service\Item;
 
-use App\Repository\Item\InventoryItemRepository;
+use App\Repository\Item\ItemInstanceRepository;
 
 class MergeService
 {
     public function __construct(
-        private InventoryItemRepository $inventoryItemRepo,
+        private ItemInstanceRepository $itemInstanceRepo,
     ) {}
 
     public function merge(
@@ -23,7 +23,7 @@ class MergeService
                 if ($item->getItem() === $mergedItem->getItem()) {
                     $mergedItem->setAmount($mergedItem->getAmount() + $item->getAmount());
                     if (!$clone) {
-                        $this->inventoryItemRepo->delete($item);
+                        $this->itemInstanceRepo->delete($item);
                     }
 
                     $merged = true;

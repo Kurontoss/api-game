@@ -72,10 +72,10 @@ final class ExploreController extends AbstractController
 
         return $this->json([
             'dungeon' => $this->serializer->normalize($dungeon, 'json',['groups' => ['dungeon:read']]),
-            'fights' => $this->serializer->normalize($fights, 'json', ['groups' => ['fight:read', 'knight:read', 'enemy:read', 'inventory_item:read', 'item:read']]),
+            'fights' => $this->serializer->normalize($fights, 'json', ['groups' => ['fight:read', 'knight:read', 'enemy:read', 'item_instance:read', 'item:read']]),
             'exp' => $exp,
-            'items' => $this->serializer->normalize($items, 'json', ['groups' => ['inventory_item:read', 'item:read']]),
-            'knight' => $this->serializer->normalize($knight, 'json', ['groups' => ['knight:read', 'knight_inventory:read', 'inventory_item:read', 'item:read']]),
+            'items' => $this->serializer->normalize($items, 'json', ['groups' => ['item_instance:read', 'item:read']]),
+            'knight' => $this->serializer->normalize($knight, 'json', ['groups' => ['knight:read', 'knight_inventory:read', 'item_instance:read', 'item:read']]),
         ], 200);
     }
 }

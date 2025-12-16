@@ -7,28 +7,28 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 use App\Entity\Item\Item;
 use App\Entity\Knight;
-use App\Repository\Item\InventoryItemRepository;
+use App\Repository\Item\ItemInstanceRepository;
 
-#[ORM\Entity(repositoryClass: InventoryItemRepository::class)]
-class InventoryItem
+#[ORM\Entity(repositoryClass: ItemInstanceRepository::class)]
+class ItemInstance
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['inventory_item:read'])]
+    #[Groups(['item_instance:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['inventory_item:read'])]
+    #[Groups(['item_instance:read'])]
     private ?Item $item = null;
 
     #[ORM\ManyToOne(inversedBy: 'inventories')]
-    #[Groups(['inventory_item_knight:read'])]
+    #[Groups(['item_instance_knight:read'])]
     private ?Knight $knight = null;
 
     #[ORM\Column]
-    #[Groups(['inventory_item:read'])]
+    #[Groups(['item_instance:read'])]
     private int $amount = 1;
 
     public function getId(): ?int
@@ -58,7 +58,7 @@ class InventoryItem
         $this->knight = $knight;
 
         if ($knight !== null) {
-            $knight->addInventoryItem($this);
+            $knight->addItemInstance($this);
         }
 
         return $this;

@@ -5,7 +5,7 @@ namespace App\DTO\Battle;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 use App\Entity\Enemy;
-use App\Entity\Item\InventoryItem;
+use App\Entity\Item\ItemInstance;
 use App\Entity\Knight;
 
 class FightDTO
@@ -23,7 +23,7 @@ class FightDTO
     public int $exp;
 
     #[Groups(['fight:read'])]
-    public ?InventoryItem $item;
+    public ?ItemInstance $item;
 
     #[Groups(['fight:read'])]
     public bool $isWon;

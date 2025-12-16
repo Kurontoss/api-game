@@ -5,7 +5,7 @@ namespace App\Service\Knight;
 use App\DTO\Battle\FightDTO;
 use App\Entity\Enemy;
 use App\Entity\Knight;
-use App\Repository\Item\InventoryItemRepository;
+use App\Repository\Item\ItemInstanceRepository;
 use App\Repository\KnightRepository;
 use App\Service\LootService;
 use App\Service\Item\MergeService;
@@ -15,7 +15,7 @@ class EnemyFightService
     public function __construct(
         private LootService $lootService,
         private MergeService $mergeService,
-        private InventoryItemRepository $inventoryItemRepo,
+        private ItemInstanceRepository $itemInstanceRepo,
         private KnightRepository $knightRepo,
     ) {}
 
@@ -44,7 +44,7 @@ class EnemyFightService
             $item = $this->lootService->drop($enemy->getLootPool());
             if ($item !== null) {
                 $item->setKnight($knight);
-                $this->inventoryItemRepo->save($item);
+                $this->itemInstanceRepo->save($item);
                 $this->knightRepo->save($knight);
             }
         }
