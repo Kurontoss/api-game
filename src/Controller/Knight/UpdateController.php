@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Assembler\KnightAssembler;
@@ -43,6 +44,10 @@ final class UpdateController extends AbstractController
         }
 
         $knight = $this->knightRepo->find($id);
+
+        if ($this->getUser() !== $knight->getUser()) {
+            throw new AccessDeniedException('Not authorized to delete this knight');
+        }
 
         $knight = $this->assembler->fromUpdateDTO($dto, $knight);
 
