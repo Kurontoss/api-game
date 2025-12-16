@@ -11,7 +11,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 use App\Assembler\LootPoolAssembler;
 use App\DTO\LootPool\CreateDTO;
 use App\Entity\LootPool;
-use App\Repository\Item\ItemRepository;
 use App\Repository\LootPoolRepository;
 use App\Service\ValidationService;
 
@@ -21,7 +20,6 @@ final class CreateController extends AbstractController
         private SerializerInterface $serializer,
         private ValidationService $validator,
         private LootPoolRepository $lootPoolRepo,
-        private ItemRepository $itemRepo,
         private LootPoolAssembler $assembler,
     ) {}
 

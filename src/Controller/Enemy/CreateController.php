@@ -11,9 +11,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use App\Assembler\EnemyAssembler;
 use App\DTO\Enemy\CreateDTO;
 use App\Entity\Enemy;
-use App\Repository\DungeonRepository;
 use App\Repository\EnemyRepository;
-use App\Repository\LootPoolRepository;
 use App\Service\ValidationService;
 
 final class CreateController extends AbstractController
@@ -22,8 +20,6 @@ final class CreateController extends AbstractController
         private SerializerInterface $serializer,
         private ValidationService $validator,
         private EnemyRepository $enemyRepo,
-        private DungeonRepository $dungeonRepo,
-        private LootPoolRepository $lootPoolRepo,
         private EnemyAssembler $assembler,
     ) {}
 
