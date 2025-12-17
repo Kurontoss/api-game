@@ -2,6 +2,8 @@
 
 namespace App\Controller\User;
 
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,6 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Assembler\UserAssembler;
+use App\DTO\ResponseErrorDTO;
 use App\DTO\User\CreateDTO;
 use App\Entity\User;
 use App\Exception\EmailAlreadyRegisteredException;
@@ -29,6 +32,51 @@ final class RegisterController extends AbstractController
         private UserAssembler $assembler,
     ) {}
 
+    #[OA\Post(
+        summary: 'Register a user',
+        description: 'Registers a new user.',
+        security: [['Bearer' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'User registration payload',
+            content: new OA\JsonContent(
+                ref: new Model(
+                    type: CreateDTO::class,
+                    groups: ['user:write']
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: JsonResponse::HTTP_CREATED,
+                description: 'User successfully registered',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: User::class,
+                        groups: ['user:read']
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+                description: 'Validation error',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_BAD_REQUEST,
+                description: 'Bad request',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            )
+        ]
+    )]
     #[Route('/api/register', name: 'user_register', methods: ['POST'])]
     public function __invoke(
         Request $request,
