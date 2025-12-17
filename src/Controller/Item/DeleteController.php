@@ -20,7 +20,7 @@ final class DeleteController extends AbstractController
     ) {}
 
     #[OA\Delete(
-        summary: 'Deletes an item',
+        summary: 'Delete an item',
         description: 'Deletes an item with a given id. Requires admin privileges.',
         security: [['Bearer' => []]],
         parameters: [

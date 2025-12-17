@@ -20,7 +20,7 @@ final class DeleteController extends AbstractController
     ) {}
 
     #[OA\Delete(
-        summary: 'Deletes a knight',
+        summary: 'Delete a knight',
         description: 'Deletes a knight with a given id. Requires the logged in user to be the same as the knight\'s user.',
         security: [['Bearer' => []]],
         parameters: [
