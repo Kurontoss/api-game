@@ -2,12 +2,16 @@
 
 namespace App\Controller\Dungeon;
 
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
+use App\DTO\ResponseErrorDTO;
+use App\Entity\Dungeon;
 use App\Repository\DungeonRepository;
 
 final class ShowController extends AbstractController
@@ -17,6 +21,41 @@ final class ShowController extends AbstractController
         private DungeonRepository $dungeonRepo,
     ) {}
 
+    #[OA\Get(
+        summary: 'Show a dungeon',
+        description: 'Shows a dungeon.',
+        security: [['Bearer' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                description: 'ID of the dungeon to show',
+                required: true,
+                schema: new OA\Schema(type: 'integer', example: 42)
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: JsonResponse::HTTP_OK,
+                description: 'Dungeon successfully shown',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: Dungeon::class,
+                        groups: ['dungeon:read']
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_NOT_FOUND,
+                description: 'Dungeon not found',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            )
+        ]
+    )]
     #[Route('/api/dungeons/{id}', name: 'dungeon_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function __invoke(
         int $id,

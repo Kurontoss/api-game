@@ -2,6 +2,8 @@
 
 namespace App\Controller\Dungeon;
 
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +13,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Assembler\DungeonAssembler;
 use App\DTO\Dungeon\UpdateDTO;
+use App\DTO\ResponseErrorDTO;
 use App\Entity\Dungeon;
 use App\Repository\DungeonRepository;
 use App\Service\ValidationService;
@@ -24,6 +27,69 @@ final class UpdateController extends AbstractController
         private DungeonAssembler $assembler,
     ) {}
 
+    #[OA\Patch(
+        summary: 'Update a dungeon',
+        description: 'Updates a dungeon. Requires admin privileges.',
+        security: [['Bearer' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                description: 'ID of the dungeon to update',
+                required: true,
+                schema: new OA\Schema(type: 'integer', example: 42)
+            )
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'Dungeon update payload',
+            content: new OA\JsonContent(
+                ref: new Model(
+                    type: UpdateDTO::class,
+                    groups: ['dungeon:write']
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: JsonResponse::HTTP_OK,
+                description: 'Dungeon successfully updated',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: Dungeon::class,
+                        groups: ['dungeon:read']
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+                description: 'Validation error',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_NOT_FOUND,
+                description: 'Dungeon not found',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_FORBIDDEN,
+                description: 'Access denied (ROLE_ADMIN required)',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            )
+        ]
+    )]
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/dungeons/{id}', name: 'dungeon_update', methods: ['PATCH'], requirements: ['id' => '\d+'])]
     public function __invoke(
@@ -48,13 +114,17 @@ final class UpdateController extends AbstractController
 
         $dungeon = $this->dungeonRepo->find($id);
 
+        if (!$dungeon) {
+            throw new NotFoundHttpException('Dungeon not found');
+        }
+
         $dungeon = $this->assembler->fromUpdateDTO($dto, $dungeon);
 
         $this->dungeonRepo->save($dungeon);
 
         return new JsonResponse(
             $this->serializer->normalize($dungeon, 'json', ['groups' => ['dungeon:read']]),
-            JsonResponse::HTTP_CREATED
+            JsonResponse::HTTP_OK
         );
     }
 }
