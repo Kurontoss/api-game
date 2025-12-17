@@ -2,6 +2,8 @@
 
 namespace App\Controller\Knight;
 
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +13,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Assembler\KnightAssembler;
 use App\DTO\Knight\UpdateDTO;
+use App\DTO\ResponseErrorDTO;
 use App\Entity\Knight;
 use App\Repository\KnightRepository;
 use App\Service\ValidationService;
@@ -24,6 +27,69 @@ final class UpdateController extends AbstractController
         private KnightAssembler $assembler,
     ) {}
 
+    #[OA\Patch(
+        summary: 'Update a knight',
+        description: 'Updates a knight. Requires the logged in user to be the same as the knight\'s user.',
+        security: [['Bearer' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                description: 'ID of the knight to update',
+                required: true,
+                schema: new OA\Schema(type: 'integer', example: 42)
+            )
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'Knight update payload',
+            content: new OA\JsonContent(
+                ref: new Model(
+                    type: UpdateDTO::class,
+                    groups: ['knight:write']
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: JsonResponse::HTTP_OK,
+                description: 'Knight successfully updated',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: Knight::class,
+                        groups: ['knight:read']
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+                description: 'Validation error',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_NOT_FOUND,
+                description: 'Knight not found',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_FORBIDDEN,
+                description: 'Access denied',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            )
+        ]
+    )]
     #[Route('/api/knights/{id}', name: 'knight_update', methods: ['PATCH'], requirements: ['id' => '\d+'])]
     public function __invoke(
         Request $request,
@@ -46,6 +112,10 @@ final class UpdateController extends AbstractController
         }
 
         $knight = $this->knightRepo->find($id);
+
+        if (!$knight) {
+            throw new NotFoundHttpException('Knight not found');
+        }
 
         if ($this->getUser() !== $knight->getUser()) {
             throw new AccessDeniedException('Not authorized to delete this knight');
