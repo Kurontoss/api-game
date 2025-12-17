@@ -14,12 +14,14 @@ use App\DTO\Enemy\CreateDTO;
 use App\Entity\Enemy;
 use App\Repository\EnemyRepository;
 use App\Service\ValidationService;
+use App\Service\Validator\Enemy\CreateUpdateDTOValidator;
 
 final class CreateController extends AbstractController
 {
     public function __construct(
         private SerializerInterface $serializer,
         private ValidationService $validationService,
+        private CreateUpdateDTOValidator $createDTOValidator,
         private EnemyRepository $enemyRepo,
         private EnemyAssembler $assembler,
     ) {}
@@ -37,6 +39,7 @@ final class CreateController extends AbstractController
         );
 
         $errors = $this->validationService->validate($dto);
+        $errors = array_merge($errors, $this->createDTOValidator->validate($dto));
 
         if (count($errors) > 0) {
             return new JsonResponse([

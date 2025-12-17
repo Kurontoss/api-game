@@ -17,12 +17,14 @@ use App\Repository\KnightRepository;
 use App\Service\Dungeon\ExploreService;
 use App\Service\Knight\LevelUpService;
 use App\Service\ValidationService;
+use App\Service\Validator\Dungeon\ExploreDTOValidator;
 
 final class ExploreController extends AbstractController
 {
     public function __construct(
         private SerializerInterface $serializer,
         private ValidationService $validationService,
+        private ExploreDTOValidator $exploreDTOValidator,
         private ExploreService $exploreService,
         private LevelUpService $levelUpService,
         private DungeonRepository $dungeonRepo,
@@ -44,6 +46,7 @@ final class ExploreController extends AbstractController
         $dto->dungeonId = $id;
 
         $errors = $this->validationService->validate($dto);
+        $errors = array_merge($errors, $this->exploreDTOValidator->validate($dto));
 
         if (count($errors) > 0) {
             return new JsonResponse([

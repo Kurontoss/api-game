@@ -7,7 +7,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use App\Entity\Dungeon;
 use App\Entity\LootPool;
-use App\Validator\Constraints as AppAssert;
 
 class UpdateDTO
 {
@@ -33,11 +32,9 @@ class UpdateDTO
 
     #[Groups(['enemy:write'])]
     #[Assert\Type('integer')]
-    #[AppAssert\EntityExists(entityClass: Dungeon::class)]
     public $dungeonId;
 
     #[Groups(['enemy:write'])]
     #[Assert\Type('integer')]
-    #[AppAssert\EntityExists(entityClass: LootPool::class)]
     public $lootPoolId;
 }

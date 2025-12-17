@@ -16,12 +16,14 @@ use App\Repository\Item\ItemInstanceRepository;
 use App\Repository\KnightRepository;
 use App\Service\Item\EatService;
 use App\Service\ValidationService;
+use App\Service\Validator\Item\EatDTOValidator;
 
 final class EatController extends AbstractController
 {
     public function __construct(
         private SerializerInterface $serializer,
         private ValidationService $validationService,
+        private EatDTOValidator $eatDTOValidator,
         private EatService $eatService,
         private ItemInstanceRepository $itemInstanceRepo,
         private KnightRepository $knightRepo,
@@ -42,6 +44,7 @@ final class EatController extends AbstractController
         $dto->itemInstanceId = $id;
 
         $errors = $this->validationService->validate($dto);
+        $errors = array_merge($errors, $this->eatDTOValidator->validate($dto));
 
         if (count($errors) > 0) {
             return new JsonResponse([

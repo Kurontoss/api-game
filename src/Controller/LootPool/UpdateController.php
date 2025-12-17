@@ -14,12 +14,16 @@ use App\DTO\LootPool\UpdateDTO;
 use App\Entity\LootPool;
 use App\Repository\LootPoolRepository;
 use App\Service\ValidationService;
+use App\Service\Validator\LootPool\CreateUpdateDTOValidator;
+use App\Service\Validator\LootPool\Validator;
 
 final class UpdateController extends AbstractController
 {
     public function __construct(
         private SerializerInterface $serializer,
         private ValidationService $validationService,
+        private Validator $validator,
+        private CreateUpdateDTOValidator $updateDTOValidator,
         private LootPoolRepository $lootPoolRepo,
         private LootPoolAssembler $assembler,
     ) {}
@@ -37,6 +41,7 @@ final class UpdateController extends AbstractController
         );
 
         $errors = $this->validationService->validate($dto);
+        $errors = array_merge($errors, $this->updateDTOValidator->validate($dto));
 
         if (count($errors) > 0) {
             return new JsonResponse([
@@ -48,6 +53,15 @@ final class UpdateController extends AbstractController
         $lootPool = $this->lootPoolRepo->find($id);
 
         $lootPool = $this->assembler->fromUpdateDTO($dto, $lootPool);
+
+        $errors = $this->validator->validate($lootPool);
+
+        if (count($errors) > 0) {
+            return new JsonResponse([
+                'reason' => 'Validation error (entity)',
+                'errors' => $errors
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         $this->lootPoolRepo->save($lootPool);
 
