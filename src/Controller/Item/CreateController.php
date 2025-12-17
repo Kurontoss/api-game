@@ -2,6 +2,8 @@
 
 namespace App\Controller\Item;
 
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +13,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Assembler\ItemAssembler;
 use App\DTO\Item\CreateDTO;
+use App\DTO\ResponseErrorDTO;
 use App\Entity\Item\Item;
 use App\Entity\Item\Food;
 use App\Repository\Item\ItemRepository;
@@ -25,6 +28,51 @@ final class CreateController extends AbstractController
         private ItemAssembler $assembler,
     ) {}
 
+    #[OA\Post(
+        summary: 'Create an item',
+        description: 'Creates a new item. Requires admin privileges.',
+        security: [['Bearer' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'Item creation payload. Type should be either "food" or blank.',
+            content: new OA\JsonContent(
+                ref: new Model(
+                    type: CreateDTO::class,
+                    groups: ['item:write']
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: JsonResponse::HTTP_CREATED,
+                description: 'Item successfully created',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: Item::class,
+                        groups: ['item:read']
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+                description: 'Validation error',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_FORBIDDEN,
+                description: 'Access denied (ROLE_ADMIN required)',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            )
+        ]
+    )]
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/items', name: 'item_create', methods: ['POST'])]
     public function __invoke(

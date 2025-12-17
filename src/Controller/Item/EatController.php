@@ -2,6 +2,8 @@
 
 namespace App\Controller\Item;
 
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +13,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use App\DTO\Item\EatDTO;
+use App\DTO\ResponseErrorDTO;
+use App\Entity\Knight;
 use App\Exception\ItemAmountTooLowException;
 use App\Repository\Item\ItemInstanceRepository;
 use App\Repository\KnightRepository;
@@ -29,6 +33,68 @@ final class EatController extends AbstractController
         private KnightRepository $knightRepo,
     ) {}
 
+    #[OA\Post(
+        summary: 'Eat an item',
+        description: 'Specified knight eats the specified item and regenerates hp.',
+        security: [['Bearer' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                description: 'ID of the item to eat',
+                required: true,
+                schema: new OA\Schema(type: 'integer', example: 42)
+            )
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'Item eat payload',
+            content: new OA\JsonContent(
+                ref: new Model(
+                    type: EatDTO::class,
+                    groups: ['item_instance:write']
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: JsonResponse::HTTP_OK,
+                description: 'Returns knight after eating of the item.',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: Knight::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+                description: 'Validation error',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_BAD_REQUEST,
+                description: 'There is not enough food to eat',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_FORBIDDEN,
+                description: 'Access denied',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            )
+        ]
+    )]
     #[Route('/api/items/{id}/eat', name: 'item_eat', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function __invoke(
         Request $request,

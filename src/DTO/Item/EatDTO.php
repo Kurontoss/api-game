@@ -2,6 +2,7 @@
 
 namespace App\DTO\Item;
 
+use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,17 +12,20 @@ use App\Entity\Knight;
 class EatDTO
 {
     #[Groups(['item_instance:write'])]
+    #[OA\Property(type: 'integer', minimum: 1)]
     #[Assert\Type('integer')]
     #[Assert\NotNull]
     #[Assert\Positive]
     public $knightId;
 
     #[Assert\Type('integer')]
+    #[OA\Property(type: 'integer', minimum: 1)]
     #[Assert\NotNull]
     #[Assert\Positive]
     public $itemInstanceId;
 
     #[Groups(['item_instance:write'])]
+    #[OA\Property(type: 'integer', minimum: 1)]
     #[Assert\Type('integer')]
     #[Assert\NotNull]
     #[Assert\Positive]

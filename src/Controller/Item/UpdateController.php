@@ -2,6 +2,8 @@
 
 namespace App\Controller\Item;
 
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +13,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Assembler\ItemAssembler;
 use App\DTO\Item\UpdateDTO;
+use App\DTO\ResponseErrorDTO;
 use App\Entity\Item\Item;
 use App\Entity\Item\Food;
 use App\Repository\Item\ItemRepository;
@@ -25,6 +28,69 @@ final class UpdateController extends AbstractController
         private ItemAssembler $assembler,
     ) {}
 
+    #[OA\Patch(
+        summary: 'Update an item',
+        description: 'Updates an item. Requires admin privileges.',
+        security: [['Bearer' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                description: 'ID of the item to update',
+                required: true,
+                schema: new OA\Schema(type: 'integer', example: 42)
+            )
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'Item update payload',
+            content: new OA\JsonContent(
+                ref: new Model(
+                    type: UpdateDTO::class,
+                    groups: ['item:write']
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: JsonResponse::HTTP_OK,
+                description: 'Item successfully updated',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: Item::class,
+                        groups: ['item:read']
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+                description: 'Validation error',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_NOT_FOUND,
+                description: 'Item not found',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_FORBIDDEN,
+                description: 'Access denied (ROLE_ADMIN required)',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            )
+        ]
+    )]
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/items/{id}', name: 'item_update', methods: ['PATCH'], requirements: ['id' => '\d+'])]
     public function __invoke(
@@ -47,6 +113,10 @@ final class UpdateController extends AbstractController
         }
 
         $item = $this->itemRepo->find($id);
+
+        if (!$item) {
+            throw new NotFoundHttpException('Item not found');
+        }
 
         $item = $this->assembler->fromUpdateDTO($dto, $item);
 

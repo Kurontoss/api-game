@@ -40,7 +40,7 @@ final class ExploreController extends AbstractController
 
     #[OA\Post(
         summary: 'Explore a dungeon',
-        description: 'Explores a dungeon with a specified knight. Requires admin privileges.',
+        description: 'Explores a dungeon with a specified knight.',
         security: [['Bearer' => []]],
         parameters: [
             new OA\Parameter(
