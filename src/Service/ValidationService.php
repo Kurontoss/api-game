@@ -5,6 +5,7 @@ namespace App\Service;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 use App\DTO\ErrorDTO;
+use App\DTO\ResponseErrorDTO;
 
 class ValidationService
 {
@@ -12,7 +13,7 @@ class ValidationService
         private ValidatorInterface $validator,
     ) {}
 
-    public function validate(mixed $object): array
+    public function validate(mixed $object): ResponseErrorDTO
     {
         $violations = $this->validator->validate($object);
 
@@ -24,6 +25,11 @@ class ValidationService
             );
         }
 
-        return $errors;
+        $response = new ResponseErrorDTO();
+        $response->reason = 'Validation error';
+        $response->message = 'Validation error';
+        $response->errors = $errors;
+
+        return $response;
     }
 }

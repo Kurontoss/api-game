@@ -103,13 +103,13 @@ final class UpdateController extends AbstractController
             ['groups' => ['dungeon:write']]
         );
 
-        $errors = $this->validationService->validate($dto);
+        $response = $this->validationService->validate($dto);
 
-        if (count($errors) > 0) {
-            return new JsonResponse([
-                'reason' => 'Validation error',
-                'errors' => $errors
-            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        if (count($response->errors) > 0) {
+            return new JsonResponse(
+                $this->serializer->normalize($response, 'json'),
+                JsonResponse::HTTP_UNPROCESSABLE_ENTITY
+            );
         }
 
         $dungeon = $this->dungeonRepo->find($id);

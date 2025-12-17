@@ -106,14 +106,14 @@ final class UpdateController extends AbstractController
             'json'
         );
 
-        $errors = $this->validationService->validate($dto);
-        $errors = array_merge($errors, $this->updateDTOValidator->validate($dto));
+        $response = $this->validationService->validate($dto);
+        $response->errors = array_merge($response->errors, $this->updateDTOValidator->validate($dto));
 
-        if (count($errors) > 0) {
-            return new JsonResponse([
-                'reason' => 'Validation error',
-                'errors' => $errors
-            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        if (count($response->errors) > 0) {
+            return new JsonResponse(
+                $this->serializer->normalize($response, 'json'),
+                JsonResponse::HTTP_UNPROCESSABLE_ENTITY
+            );
         }
 
         $lootPool = $this->lootPoolRepo->find($id);
@@ -124,13 +124,13 @@ final class UpdateController extends AbstractController
 
         $lootPool = $this->assembler->fromUpdateDTO($dto, $lootPool);
 
-        $errors = $this->validator->validate($lootPool);
+        $response = $this->validator->validate($dto);
 
-        if (count($errors) > 0) {
-            return new JsonResponse([
-                'reason' => 'Validation error (entity)',
-                'errors' => $errors
-            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        if (count($response->errors) > 0) {
+            return new JsonResponse(
+                $this->serializer->normalize($response, 'json'),
+                JsonResponse::HTTP_UNPROCESSABLE_ENTITY
+            );
         }
 
         $this->lootPoolRepo->save($lootPool);
