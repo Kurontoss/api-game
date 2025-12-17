@@ -23,7 +23,7 @@ final class RegisterController extends AbstractController
     public function __construct(
         private SerializerInterface $serializer,
         private JWTTokenManagerInterface $jwt,
-        private ValidationService $validator,
+        private ValidationService $validationService,
         private RegisterService $registerService,
         private UserRepository $userRepo,
         private UserAssembler $assembler,
@@ -40,7 +40,7 @@ final class RegisterController extends AbstractController
             ['groups' => ['user:write']]
         );
 
-        $errors = $this->validator->validate($dto);
+        $errors = $this->validationService->validate($dto);
 
         if (count($errors) > 0) {
             return new JsonResponse([

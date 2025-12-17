@@ -19,7 +19,7 @@ final class UpdateController extends AbstractController
 {
     public function __construct(
         private SerializerInterface $serializer,
-        private ValidationService $validator,
+        private ValidationService $validationService,
         private DungeonRepository $dungeonRepo,
         private DungeonAssembler $assembler,
     ) {}
@@ -37,7 +37,7 @@ final class UpdateController extends AbstractController
             ['groups' => ['dungeon:write']]
         );
 
-        $errors = $this->validator->validate($dto);
+        $errors = $this->validationService->validate($dto);
 
         if (count($errors) > 0) {
             return new JsonResponse([

@@ -20,7 +20,7 @@ final class CreateController extends AbstractController
 {
     public function __construct(
         private SerializerInterface $serializer,
-        private ValidationService $validator,
+        private ValidationService $validationService,
         private ItemRepository $itemRepo,
         private ItemAssembler $assembler,
     ) {}
@@ -36,7 +36,7 @@ final class CreateController extends AbstractController
             'json'
         );
 
-        $errors = $this->validator->validate($dto);
+        $errors = $this->validationService->validate($dto);
 
         if (count($errors) > 0) {
             return new JsonResponse([
