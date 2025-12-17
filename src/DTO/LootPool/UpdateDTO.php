@@ -2,6 +2,7 @@
 
 namespace App\DTO\LootPool;
 
+use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,11 +12,20 @@ use App\Validator\Constraints as AppAssert;
 class UpdateDTO
 {
     #[Groups(['loot_pool:write'])]
+    #[OA\Property(type: 'string', maxLength: 255)]
     #[Assert\Type('string')]
     #[Assert\Length(max: 255)]
     public $name;
 
     #[Groups(['loot_pool:write'])]
+    #[OA\Property(
+        type: 'array',
+        minItems: 1,
+        items: new OA\Items(
+            type: 'integer',
+            example: 42
+        )
+    )]
     #[Assert\Type('array')]
     #[Assert\Count(min: 1)]
     #[Assert\All([
@@ -24,6 +34,18 @@ class UpdateDTO
     public $items;
     
     #[Groups(['loot_pool:write'])]
+    #[OA\Property(
+        type: 'array',
+        minItems: 1,
+        items: new OA\Items(
+            type: 'number',
+            format: 'float',
+            exclusiveMinimum: true,
+            minimum: 0,
+            maximum: 1,
+            example: 0.25
+        )
+    )]
     #[Assert\Type('array')]
     #[Assert\Count(min: 1)]
     #[Assert\All([
@@ -34,6 +56,14 @@ class UpdateDTO
     public $chances;
 
     #[Groups(['loot_pool:write'])]
+    #[OA\Property(
+        type: 'array',
+        minItems: 1,
+        items: new OA\Items(
+            type: 'integer',
+            minimum: 1
+        )
+    )]
     #[Assert\Type('array')]
     #[Assert\Count(min: 1)]
     #[Assert\All([
@@ -43,6 +73,14 @@ class UpdateDTO
     public $minAmounts;
 
     #[Groups(['loot_pool:write'])]
+    #[OA\Property(
+        type: 'array',
+        minItems: 1,
+        items: new OA\Items(
+            type: 'integer',
+            minimum: 1
+        )
+    )]
     #[Assert\Type('array')]
     #[Assert\Count(min: 1)]
     #[Assert\All([

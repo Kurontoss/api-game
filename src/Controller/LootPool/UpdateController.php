@@ -2,6 +2,8 @@
 
 namespace App\Controller\LootPool;
 
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +13,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Assembler\LootPoolAssembler;
 use App\DTO\LootPool\UpdateDTO;
+use App\DTO\ResponseErrorDTO;
 use App\Entity\LootPool;
 use App\Repository\LootPoolRepository;
 use App\Service\ValidationService;
@@ -28,6 +31,69 @@ final class UpdateController extends AbstractController
         private LootPoolAssembler $assembler,
     ) {}
 
+    #[OA\Patch(
+        summary: 'Update a loot pool',
+        description: 'Updates a loot pool. Requires admin privileges.',
+        security: [['Bearer' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                description: 'ID of the loot pool to update',
+                required: true,
+                schema: new OA\Schema(type: 'integer', example: 42)
+            )
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'Loot pool update payload',
+            content: new OA\JsonContent(
+                ref: new Model(
+                    type: UpdateDTO::class,
+                    groups: ['loot_pool:write']
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: JsonResponse::HTTP_OK,
+                description: 'Loot pool successfully updated',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: LootPool::class,
+                        groups: ['loot_pool:read']
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+                description: 'Validation error',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_NOT_FOUND,
+                description: 'Loot pool not found',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_FORBIDDEN,
+                description: 'Access denied (ROLE_ADMIN required)',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            )
+        ]
+    )]
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/loot-pools/{id}', name: 'loot_pool_update', methods: ['PATCH'], requirements: ['id' => '\d+'])]
     public function __invoke(
@@ -51,6 +117,10 @@ final class UpdateController extends AbstractController
         }
 
         $lootPool = $this->lootPoolRepo->find($id);
+
+        if (!$lootPool) {
+            throw new NotFoundHttpException('Loot pool not found');
+        }
 
         $lootPool = $this->assembler->fromUpdateDTO($dto, $lootPool);
 

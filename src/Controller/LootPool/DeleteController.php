@@ -2,12 +2,15 @@
 
 namespace App\Controller\LootPool;
 
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+use App\DTO\ResponseErrorDTO;
 use App\Repository\LootPoolRepository;
 
 final class DeleteController extends AbstractController
@@ -16,6 +19,44 @@ final class DeleteController extends AbstractController
         private LootPoolRepository $lootPoolRepo,
     ) {}
 
+    #[OA\Delete(
+        summary: 'Deletes a loot pool',
+        description: 'Deletes a loot pool with a given id. Requires admin privileges.',
+        security: [['Bearer' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                description: 'ID of the loot pool to delete',
+                required: true,
+                schema: new OA\Schema(type: 'integer', example: 42)
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: JsonResponse::HTTP_NO_CONTENT,
+                description: 'Loot pool successfully deleted'
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_NOT_FOUND,
+                description: 'Loot pool not found',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_FORBIDDEN,
+                description: 'Access denied (ROLE_ADMIN required)',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            )
+        ]
+    )]
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/loot-pools/{id}', name: 'loot_pool_delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
     public function __invoke(
