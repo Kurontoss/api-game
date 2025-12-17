@@ -59,7 +59,7 @@ final class EatController extends AbstractController
         responses: [
             new OA\Response(
                 response: JsonResponse::HTTP_OK,
-                description: 'Returns knight after eating of the item.',
+                description: 'Item successfully eaten',
                 content: new OA\JsonContent(
                     ref: new Model(
                         type: Knight::class
@@ -77,7 +77,7 @@ final class EatController extends AbstractController
             ),
             new OA\Response(
                 response: JsonResponse::HTTP_BAD_REQUEST,
-                description: 'There is not enough food to eat',
+                description: 'Bad request',
                 content: new OA\JsonContent(
                     ref: new Model(
                         type: ResponseErrorDTO::class

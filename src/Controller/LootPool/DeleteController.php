@@ -39,7 +39,7 @@ final class DeleteController extends AbstractController
             ),
             new OA\Response(
                 response: JsonResponse::HTTP_NOT_FOUND,
-                description: 'Loot pool not found',
+                description: 'Not found',
                 content: new OA\JsonContent(
                     ref: new Model(
                         type: ResponseErrorDTO::class
@@ -48,7 +48,7 @@ final class DeleteController extends AbstractController
             ),
             new OA\Response(
                 response: JsonResponse::HTTP_FORBIDDEN,
-                description: 'Access denied (ROLE_ADMIN required)',
+                description: 'Access denied',
                 content: new OA\JsonContent(
                     ref: new Model(
                         type: ResponseErrorDTO::class

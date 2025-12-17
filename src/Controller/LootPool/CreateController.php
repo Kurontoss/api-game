@@ -67,7 +67,7 @@ final class CreateController extends AbstractController
             ),
             new OA\Response(
                 response: JsonResponse::HTTP_FORBIDDEN,
-                description: 'Access denied (ROLE_ADMIN required)',
+                description: 'Access denied',
                 content: new OA\JsonContent(
                     ref: new Model(
                         type: ResponseErrorDTO::class

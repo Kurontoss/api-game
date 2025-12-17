@@ -124,7 +124,7 @@ final class ExploreController extends AbstractController
             ),
             new OA\Response(
                 response: JsonResponse::HTTP_BAD_REQUEST,
-                description: 'Your level is too low to enter this dungeon',
+                description: 'Bad request',
                 content: new OA\JsonContent(
                     ref: new Model(
                         type: ResponseErrorDTO::class
@@ -133,7 +133,7 @@ final class ExploreController extends AbstractController
             ),
             new OA\Response(
                 response: JsonResponse::HTTP_FORBIDDEN,
-                description: 'Access denied (The currently logged in user is not this knight\'s onwer)',
+                description: 'Access denied',
                 content: new OA\JsonContent(
                     ref: new Model(
                         type: ResponseErrorDTO::class

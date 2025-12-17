@@ -47,7 +47,7 @@ final class ShowController extends AbstractController
             ),
             new OA\Response(
                 response: JsonResponse::HTTP_NOT_FOUND,
-                description: 'User not found',
+                description: 'Not found',
                 content: new OA\JsonContent(
                     ref: new Model(
                         type: ResponseErrorDTO::class

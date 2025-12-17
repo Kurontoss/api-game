@@ -73,7 +73,7 @@ final class UpdateController extends AbstractController
             ),
             new OA\Response(
                 response: JsonResponse::HTTP_NOT_FOUND,
-                description: 'Item not found',
+                description: 'Not found',
                 content: new OA\JsonContent(
                     ref: new Model(
                         type: ResponseErrorDTO::class
@@ -82,7 +82,7 @@ final class UpdateController extends AbstractController
             ),
             new OA\Response(
                 response: JsonResponse::HTTP_FORBIDDEN,
-                description: 'Access denied (ROLE_ADMIN required)',
+                description: 'Access denied',
                 content: new OA\JsonContent(
                     ref: new Model(
                         type: ResponseErrorDTO::class
