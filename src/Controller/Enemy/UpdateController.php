@@ -2,6 +2,8 @@
 
 namespace App\Controller\Enemy;
 
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +13,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Assembler\EnemyAssembler;
 use App\DTO\Enemy\UpdateDTO;
+use App\DTO\ResponseErrorDTO;
 use App\Entity\Enemy;
 use App\Repository\EnemyRepository;
 use App\Service\ValidationService;
@@ -26,6 +29,69 @@ final class UpdateController extends AbstractController
         private EnemyAssembler $assembler,
     ) {}
 
+    #[OA\Patch(
+        summary: 'Update an enemy',
+        description: 'Updates an enemy. Requires admin privileges.',
+        security: [['Bearer' => []]],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                in: 'path',
+                description: 'ID of the enemy to update',
+                required: true,
+                schema: new OA\Schema(type: 'integer', example: 42)
+            )
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'Enemy update payload',
+            content: new OA\JsonContent(
+                ref: new Model(
+                    type: UpdateDTO::class,
+                    groups: ['enemy:write']
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: JsonResponse::HTTP_OK,
+                description: 'Enemy successfully updated',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: Enemy::class,
+                        groups: ['enemy:read']
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+                description: 'Validation error',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_NOT_FOUND,
+                description: 'Enemy not found',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_FORBIDDEN,
+                description: 'Access denied (ROLE_ADMIN required)',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            )
+        ]
+    )]
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/enemies/{id}', name: 'enemy_update', methods: ['PATCH'], requirements: ['id' => '\d+'])]
     public function __invoke(
@@ -50,6 +116,10 @@ final class UpdateController extends AbstractController
         }
 
         $enemy = $this->enemyRepo->find($id);
+
+        if (!$enemy) {
+            throw new NotFoundHttpException('Enemy not found');
+        }
 
         $enemy = $this->assembler->fromUpdateDTO($dto, $enemy);
 

@@ -2,6 +2,8 @@
 
 namespace App\Controller\Enemy;
 
+use Nelmio\ApiDocBundle\Attribute\Model;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +13,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Assembler\EnemyAssembler;
 use App\DTO\Enemy\CreateDTO;
+use App\DTO\ResponseErrorDTO;
 use App\Entity\Enemy;
 use App\Repository\EnemyRepository;
 use App\Service\ValidationService;
@@ -26,6 +29,51 @@ final class CreateController extends AbstractController
         private EnemyAssembler $assembler,
     ) {}
 
+    #[OA\Post(
+        summary: 'Create an enemy',
+        description: 'Creates a new enemy. Requires admin privileges.',
+        security: [['Bearer' => []]],
+        requestBody: new OA\RequestBody(
+            required: true,
+            description: 'Enemy creation payload',
+            content: new OA\JsonContent(
+                ref: new Model(
+                    type: CreateDTO::class,
+                    groups: ['enemy:write']
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: JsonResponse::HTTP_CREATED,
+                description: 'Enemy successfully created',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: Enemy::class,
+                        groups: ['enemy:read']
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_UNPROCESSABLE_ENTITY,
+                description: 'Validation error',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            ),
+            new OA\Response(
+                response: JsonResponse::HTTP_FORBIDDEN,
+                description: 'Access denied (ROLE_ADMIN required)',
+                content: new OA\JsonContent(
+                    ref: new Model(
+                        type: ResponseErrorDTO::class
+                    )
+                )
+            )
+        ]
+    )]
     #[IsGranted('ROLE_ADMIN')]
     #[Route('/api/enemies', name: 'enemy_create', methods: ['POST'])]
     public function __invoke(
