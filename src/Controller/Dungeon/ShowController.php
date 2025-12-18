@@ -21,6 +21,7 @@ final class ShowController extends AbstractController
         private DungeonRepository $dungeonRepo,
     ) {}
 
+    #[OA\Tag(name: 'Dungeons')]
     #[OA\Get(
         summary: 'Show a dungeon',
         description: 'Shows a dungeon.',

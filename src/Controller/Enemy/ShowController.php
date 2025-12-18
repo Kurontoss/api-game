@@ -21,6 +21,7 @@ final class ShowController extends AbstractController
         private EnemyRepository $enemyRepo,
     ) {}
 
+    #[OA\Tag(name: 'Enemies')]
     #[OA\Get(
         summary: 'Show an enemy',
         description: 'Shows an enemy.',

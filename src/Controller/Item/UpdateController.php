@@ -29,6 +29,7 @@ final class UpdateController extends AbstractController
         private ItemAssembler $assembler,
     ) {}
 
+    #[OA\Tag(name: 'Items')]
     #[OA\Patch(
         summary: 'Update an item',
         description: 'Updates an item. Requires admin privileges.',

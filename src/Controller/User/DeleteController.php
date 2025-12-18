@@ -20,6 +20,7 @@ final class DeleteController extends AbstractController
         private UserRepository $userRepo,
     ) {}
 
+    #[OA\Tag(name: 'Users')]
     #[OA\Delete(
         summary: 'Delete a user',
         description: 'Deletes a user with a given id. Requires the currently logged in user to be the user which is to be deleted.',

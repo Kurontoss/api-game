@@ -33,6 +33,7 @@ final class EatController extends AbstractController
         private KnightRepository $knightRepo,
     ) {}
 
+    #[OA\Tag(name: 'Items')]
     #[OA\Post(
         summary: 'Eat an item',
         description: 'Specified knight eats the specified item and regenerates hp.',

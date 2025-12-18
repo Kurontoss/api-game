@@ -31,6 +31,7 @@ final class CreateController extends AbstractController
         private LootPoolAssembler $assembler,
     ) {}
 
+    #[OA\Tag(name: 'Loot Pools')]
     #[OA\Post(
         summary: 'Create an loot pool',
         description: 'Creates a new loot pool. Requires admin privileges.',

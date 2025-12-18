@@ -33,6 +33,7 @@ final class RegisterController extends AbstractController
         private UserAssembler $assembler,
     ) {}
 
+    #[OA\Tag(name: 'Users')]
     #[OA\Post(
         summary: 'Register a user',
         description: 'Registers a new user.',

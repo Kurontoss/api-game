@@ -28,6 +28,7 @@ final class CreateController extends AbstractController
         private ItemAssembler $assembler,
     ) {}
 
+    #[OA\Tag(name: 'Items')]
     #[OA\Post(
         summary: 'Create an item',
         description: 'Creates a new item. Requires admin privileges.',

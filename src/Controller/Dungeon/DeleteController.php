@@ -19,6 +19,7 @@ final class DeleteController extends AbstractController
         private DungeonRepository $dungeonRepo,
     ) {}
 
+    #[OA\Tag(name: 'Dungeons')]
     #[OA\Delete(
         summary: 'Delete a dungeon',
         description: 'Deletes a dungeon with a given id. Requires admin privileges.',

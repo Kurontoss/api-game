@@ -28,6 +28,7 @@ final class UpdateController extends AbstractController
         private DungeonAssembler $assembler,
     ) {}
 
+    #[OA\Tag(name: 'Dungeons')]
     #[OA\Patch(
         summary: 'Update a dungeon',
         description: 'Updates a dungeon. Requires admin privileges.',

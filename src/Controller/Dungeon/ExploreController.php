@@ -38,6 +38,7 @@ final class ExploreController extends AbstractController
         private KnightRepository $knightRepo,
     ) {}
 
+    #[OA\Tag(name: 'Dungeons')]
     #[OA\Post(
         summary: 'Explore a dungeon',
         description: 'Explores a dungeon with a specified knight.',

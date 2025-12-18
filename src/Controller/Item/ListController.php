@@ -19,6 +19,7 @@ final class ListController extends AbstractController
         private ItemRepository $itemRepo,
     ) {}
 
+    #[OA\Tag(name: 'Items')]
     #[OA\Get(
         summary: 'List all items',
         description: 'Lists all items.',

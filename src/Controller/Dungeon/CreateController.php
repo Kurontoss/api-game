@@ -27,6 +27,7 @@ final class CreateController extends AbstractController
         private DungeonAssembler $assembler,
     ) {}
 
+    #[OA\Tag(name: 'Dungeons')]
     #[OA\Post(
         summary: 'Create a dungeon',
         description: 'Creates a new dungeon. Requires admin privileges.',

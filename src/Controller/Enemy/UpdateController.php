@@ -30,6 +30,7 @@ final class UpdateController extends AbstractController
         private EnemyAssembler $assembler,
     ) {}
 
+    #[OA\Tag(name: 'Enemies')]
     #[OA\Patch(
         summary: 'Update an enemy',
         description: 'Updates an enemy. Requires admin privileges.',

@@ -35,6 +35,7 @@ final class UpdateController extends AbstractController
         private UserAssembler $assembler,
     ) {}
 
+    #[OA\Tag(name: 'Users')]
     #[OA\Patch(
         summary: 'Update a user',
         description: 'Updates a user. Requires the currently logged in user to be the user which is to be updated.',

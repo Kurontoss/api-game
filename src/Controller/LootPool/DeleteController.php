@@ -19,6 +19,7 @@ final class DeleteController extends AbstractController
         private LootPoolRepository $lootPoolRepo,
     ) {}
 
+    #[OA\Tag(name: 'Loot Pools')]
     #[OA\Delete(
         summary: 'Delete a loot pool',
         description: 'Deletes a loot pool with a given id. Requires admin privileges.',

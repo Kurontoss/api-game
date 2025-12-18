@@ -28,6 +28,7 @@ final class UpdateController extends AbstractController
         private KnightAssembler $assembler,
     ) {}
 
+    #[OA\Tag(name: 'Knights')]
     #[OA\Patch(
         summary: 'Update a knight',
         description: 'Updates a knight. Requires the logged in user to be the same as the knight\'s user.',

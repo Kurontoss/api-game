@@ -12,6 +12,59 @@ nelmio_api_doc:
                     scheme: bearer
                     bearerFormat: JWT
         
+        tags:
+            - name: Auth
+              description: Authentication and Authorization
+            - name: Users
+              description: User endpoints
+            - name: Knights
+              description: Knight endpoints
+            - name: Dungeons
+              description: Dungeon endpoints
+            - name: Items
+              description: Item endpoints
+            - name: Loot Pools
+              description: Loot pool endpoints
+            - name: Enemies
+              description: Enemy endpoints
+          
+        paths:
+          /api/login:
+            post:
+              tags:
+                - Auth
+              summary: Obtain JWT token
+              description: Authenticate user and return a JWT token
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      required:
+                        - email
+                        - password
+                      properties:
+                        email:
+                          type: string
+                          example: user@example.com
+                        password:
+                          type: string
+                          example: password
+              responses:
+                '200':
+                  description: JWT token
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          token:
+                            type: string
+                            example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+                '401':
+                  description: Invalid credentials
+        
         security:
             - Bearer: []
     areas:

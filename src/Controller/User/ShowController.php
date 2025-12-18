@@ -21,6 +21,7 @@ final class ShowController extends AbstractController
         private UserRepository $userRepo,
     ) {}
 
+    #[OA\Tag(name: 'Users')]
     #[OA\Get(
         summary: 'Show a user',
         description: 'Shows a user.',

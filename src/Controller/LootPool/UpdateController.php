@@ -32,6 +32,7 @@ final class UpdateController extends AbstractController
         private LootPoolAssembler $assembler,
     ) {}
 
+    #[OA\Tag(name: 'Loot Pools')]
     #[OA\Patch(
         summary: 'Update a loot pool',
         description: 'Updates a loot pool. Requires admin privileges.',

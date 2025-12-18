@@ -19,6 +19,7 @@ final class ListController extends AbstractController
         private LootPoolRepository $lootPoolRepo,
     ) {}
     
+    #[OA\Tag(name: 'Loot Pools')]
     #[OA\Get(
         summary: 'List all loot pools',
         description: 'Lists all loot pools.',

@@ -26,6 +26,7 @@ final class CreateController extends AbstractController
         private KnightAssembler $assembler,
     ) {}
 
+    #[OA\Tag(name: 'Knights')]
     #[OA\Post(
         summary: 'Create a knight',
         description: 'Creates a new knight. Knight\'s user is set to the current user',

@@ -29,6 +29,7 @@ final class CreateController extends AbstractController
         private EnemyAssembler $assembler,
     ) {}
 
+    #[OA\Tag(name: 'Enemies')]
     #[OA\Post(
         summary: 'Create an enemy',
         description: 'Creates a new enemy. Requires admin privileges.',

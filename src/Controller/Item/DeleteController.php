@@ -19,6 +19,7 @@ final class DeleteController extends AbstractController
         private ItemRepository $itemRepo,
     ) {}
 
+    #[OA\Tag(name: 'Items')]
     #[OA\Delete(
         summary: 'Delete an item',
         description: 'Deletes an item with a given id. Requires admin privileges.',

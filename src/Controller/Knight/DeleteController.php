@@ -19,6 +19,7 @@ final class DeleteController extends AbstractController
         private KnightRepository $knightRepo,
     ) {}
 
+    #[OA\Tag(name: 'Knights')]
     #[OA\Delete(
         summary: 'Delete a knight',
         description: 'Deletes a knight with a given id. Requires the logged in user to be the same as the knight\'s user.',

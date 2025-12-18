@@ -19,6 +19,7 @@ final class DeleteController extends AbstractController
         private EnemyRepository $enemyRepo,
     ) {}
 
+    #[OA\Tag(name: 'Enemies')]
     #[OA\Delete(
         summary: 'Delete an enemy',
         description: 'Deletes an enemy with a given id. Requires admin privileges.',
