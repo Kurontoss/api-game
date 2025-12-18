@@ -103,7 +103,7 @@ final class UpdateController extends AbstractController
         Request $request,
         int $id,
     ): JsonResponse {
-        if ($this->getUser()->getId() !== $id) {
+        if ($this->getUser()->getId() !== $id && !$this->isGranted('ROLE_ADMIN')) {
             throw new AccessDeniedHttpException('Not allowed to update this user');
         }
 

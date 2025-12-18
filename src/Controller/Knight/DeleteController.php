@@ -63,7 +63,7 @@ final class DeleteController extends AbstractController
     ): JsonResponse {
         $knight = $this->knightRepo->find($id);
 
-        if ($this->getUser() !== $knight->getUser()) {
+        if ($this->getUser() !== $knight->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             throw new AccessDeniedHttpException('Not authorized to delete this knight');
         }
 

@@ -118,7 +118,7 @@ final class UpdateController extends AbstractController
             throw new NotFoundHttpException('Knight not found');
         }
 
-        if ($this->getUser() !== $knight->getUser()) {
+        if ($this->getUser() !== $knight->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             throw new AccessDeniedHttpException('Not authorized to delete this knight');
         }
 

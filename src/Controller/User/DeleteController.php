@@ -64,7 +64,7 @@ final class DeleteController extends AbstractController
     ): JsonResponse {
         $user = $this->userRepo->find($id);
 
-        if ($this->getUser()->getId() !== $id) {
+        if ($this->getUser()->getId() !== $id && !$this->isGranted('ROLE_ADMIN')) {
             throw new AccessDeniedHttpException('The currently logged in user is not allowed to delete this user');
         }
 
