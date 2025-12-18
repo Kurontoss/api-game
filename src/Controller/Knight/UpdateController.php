@@ -7,8 +7,9 @@ use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Assembler\KnightAssembler;
@@ -118,7 +119,7 @@ final class UpdateController extends AbstractController
         }
 
         if ($this->getUser() !== $knight->getUser()) {
-            throw new AccessDeniedException('Not authorized to delete this knight');
+            throw new AccessDeniedHttpException('Not authorized to delete this knight');
         }
 
         $knight = $this->assembler->fromUpdateDTO($dto, $knight);

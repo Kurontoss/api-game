@@ -8,9 +8,10 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Assembler\UserAssembler;
@@ -102,7 +103,7 @@ final class UpdateController extends AbstractController
         int $id,
     ): JsonResponse {
         if ($this->getUser()->getId() !== $id) {
-            throw new AccessDeniedException('Not allowed to update this user');
+            throw new AccessDeniedHttpException('Not allowed to update this user');
         }
 
         $dto = $this->serializer->deserialize(

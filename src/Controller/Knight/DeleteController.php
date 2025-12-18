@@ -6,9 +6,9 @@ use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use App\DTO\ResponseErrorDTO;
 use App\Repository\KnightRepository;
@@ -64,7 +64,7 @@ final class DeleteController extends AbstractController
         $knight = $this->knightRepo->find($id);
 
         if ($this->getUser() !== $knight->getUser()) {
-            throw new AccessDeniedException('Not authorized to delete this knight');
+            throw new AccessDeniedHttpException('Not authorized to delete this knight');
         }
 
         if (!$knight) {

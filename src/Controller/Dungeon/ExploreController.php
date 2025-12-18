@@ -7,9 +7,9 @@ use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use App\DTO\Dungeon\ExploreDTO;
@@ -172,7 +172,7 @@ final class ExploreController extends AbstractController
         $knight = $this->knightRepo->find($dto->knightId);
 
         if ($knight->getUser() !== $this->getUser()) {
-            throw new AccessDeniedException('The currently logged in user is not this knight\'s onwer');
+            throw new AccessDeniedHttpException('The currently logged in user is not this knight\'s onwer');
         }
 
         try {

@@ -6,6 +6,7 @@ use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -64,7 +65,7 @@ final class DeleteController extends AbstractController
         $user = $this->userRepo->find($id);
 
         if ($this->getUser()->getId() !== $id) {
-            throw new AccessDeniedException('The currently logged in user is not allowed to delete this user');
+            throw new AccessDeniedHttpException('The currently logged in user is not allowed to delete this user');
         }
 
         if (!$user) {

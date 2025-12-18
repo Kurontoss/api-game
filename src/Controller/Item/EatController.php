@@ -7,9 +7,9 @@ use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use App\DTO\Item\EatDTO;
@@ -123,11 +123,11 @@ final class EatController extends AbstractController
         $knight = $this->knightRepo->find($dto->knightId);
 
         if ($knight->getUser() !== $this->getUser()) {
-            throw new AccessDeniedException('The currently logged in user is not this knight\'s onwer');
+            throw new AccessDeniedHttpException('The currently logged in user is not this knight\'s onwer');
         }
 
         if ($itemInstance->getKnight() !== $knight) {
-            throw new AccessDeniedException('This item doesn\'t belong to this knight');
+            throw new AccessDeniedHttpException('This item doesn\'t belong to this knight');
         }
 
         try {
