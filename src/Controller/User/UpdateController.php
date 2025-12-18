@@ -18,10 +18,10 @@ use App\Assembler\UserAssembler;
 use App\DTO\ResponseErrorDTO;
 use App\DTO\User\UpdateDTO;
 use App\Entity\User;
-use App\Exception\EmailAlreadyRegisteredException;
 use App\Repository\UserRepository;
 use App\Service\User\RegisterService;
 use App\Service\ValidationService;
+use App\Service\Validator\User\CreateUpdateDTOValidator;
 
 final class UpdateController extends AbstractController
 {
@@ -29,6 +29,7 @@ final class UpdateController extends AbstractController
         private SerializerInterface $serializer,
         private JWTTokenManagerInterface $jwt,
         private ValidationService $validationService,
+        private CreateUpdateDTOValidator $updateDTOValidator,
         private RegisterService $registerService,
         private UserRepository $userRepo,
         private UserAssembler $assembler,
@@ -114,6 +115,7 @@ final class UpdateController extends AbstractController
         );
 
         $response = $this->validationService->validate($dto);
+        $response->errors = array_merge($response->errors, $this->updateDTOValidator->validate($dto));
 
         if (count($response->errors) > 0) {
             return new JsonResponse(
@@ -130,11 +132,7 @@ final class UpdateController extends AbstractController
 
         $user = $this->assembler->fromUpdateDTO($dto, $user);
 
-        try {
-            $this->registerService->update($user);
-        } catch (EmailAlreadyRegisteredException $e) {
-            throw new BadRequestHttpException('Email is already registered');
-        }
+        $this->registerService->update($user);
 
         $this->userRepo->save($user);
 

@@ -16,10 +16,10 @@ use App\Assembler\UserAssembler;
 use App\DTO\ResponseErrorDTO;
 use App\DTO\User\CreateDTO;
 use App\Entity\User;
-use App\Exception\EmailAlreadyRegisteredException;
 use App\Repository\UserRepository;
 use App\Service\User\RegisterService;
 use App\Service\ValidationService;
+use App\Service\Validator\User\CreateUpdateDTOValidator;
 
 final class RegisterController extends AbstractController
 {
@@ -27,6 +27,7 @@ final class RegisterController extends AbstractController
         private SerializerInterface $serializer,
         private JWTTokenManagerInterface $jwt,
         private ValidationService $validationService,
+        private CreateUpdateDTOValidator $createDTOValidator,
         private RegisterService $registerService,
         private UserRepository $userRepo,
         private UserAssembler $assembler,
@@ -65,15 +66,6 @@ final class RegisterController extends AbstractController
                         type: ResponseErrorDTO::class
                     )
                 )
-            ),
-            new OA\Response(
-                response: JsonResponse::HTTP_BAD_REQUEST,
-                description: 'Bad request',
-                content: new OA\JsonContent(
-                    ref: new Model(
-                        type: ResponseErrorDTO::class
-                    )
-                )
             )
         ]
     )]
@@ -89,6 +81,7 @@ final class RegisterController extends AbstractController
         );
 
         $response = $this->validationService->validate($dto);
+        $response->errors = array_merge($response->errors, $this->createDTOValidator->validate($dto));
 
         if (count($response->errors) > 0) {
             return new JsonResponse(
@@ -99,11 +92,7 @@ final class RegisterController extends AbstractController
 
         $user = $this->assembler->fromCreateDTO($dto);
 
-        try {
-            $this->registerService->register($user);
-        } catch (EmailAlreadyRegisteredException $e) {
-            throw new BadRequestHttpException('Email is already registered');
-        }
+        $this->registerService->register($user);
 
         $this->userRepo->save($user);
 
