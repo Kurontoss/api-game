@@ -1,0 +1,135 @@
+<?php
+
+namespace App\Tests\Service;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\TestCase;
+
+use App\Entity\Item\Item;
+use App\Entity\Item\ItemInstance;
+use App\Entity\LootPool;
+use App\Repository\Item\ItemInstanceRepository;
+use App\Service\LootService;
+use App\Service\RandomNumberGeneratorService;
+
+class LootServiceTest extends TestCase
+{
+    public function testDropReturnsItemInstanceWhenChanceHits(): void
+    {
+        $randomNumberGeneratorStub = $this->createStub(RandomNumberGeneratorService::class);
+        
+        $randomNumberGeneratorStub
+            ->method('generateFloat')
+            ->willReturn(0.5);
+        
+        $randomNumberGeneratorStub
+            ->method('generateIntFromRange')
+            ->willReturn(1);
+        
+        $service = new LootService($randomNumberGeneratorStub);
+
+        $item = new Item();
+
+        $lootPool = $this->createConfiguredStub(LootPool::class, [
+            'getItems' => new ArrayCollection([$item]),
+            'getChances' => [1.0],
+            'getMinAmounts' => [1],
+            'getMaxAmounts' => [1],
+        ]);
+
+        $result = $service->drop($lootPool);
+
+        $this->assertInstanceOf(ItemInstance::class, $result);
+        $this->assertSame($item, $result->getItem());
+        $this->assertEquals(1, $result->getAmount());
+    }
+
+    public function testDropReturnsNullWhenItemIsNull(): void
+    {
+        $randomNumberGeneratorStub = $this->createStub(RandomNumberGeneratorService::class);
+        
+        $randomNumberGeneratorStub
+            ->method('generateFloat')
+            ->willReturn(0.5);
+
+        $randomNumberGeneratorStub
+            ->method('generateIntFromRange')
+            ->willReturn(1);
+        
+        $service = new LootService($randomNumberGeneratorStub);
+
+        $item = new Item();
+
+        $lootPool = $this->createConfiguredStub(LootPool::class, [
+            'getItems' => new ArrayCollection([null]),
+            'getChances' => [1.0],
+            'getMinAmounts' => [1],
+            'getMaxAmounts' => [1],
+        ]);
+
+        $result = $service->drop($lootPool);
+
+        $this->assertNull($result);
+    }
+
+    public function testDropReturnsCorrectItemFromMultipleItems(): void
+    {
+        $randomNumberGeneratorStub = $this->createStub(RandomNumberGeneratorService::class);
+        
+        $randomNumberGeneratorStub
+            ->method('generateFloat')
+            ->willReturn(0.67);
+
+        $randomNumberGeneratorStub
+            ->method('generateIntFromRange')
+            ->willReturn(1);
+        
+        $service = new LootService($randomNumberGeneratorStub);
+
+        $item1 = new Item();
+        $item2 = new Item();
+
+        $lootPool = $this->createConfiguredStub(LootPool::class, [
+            'getItems' => new ArrayCollection([$item1, $item2]),
+            'getChances' => [0.6, 0.4],
+            'getMinAmounts' => [1, 1],
+            'getMaxAmounts' => [1, 1],
+        ]);
+
+        $result = $service->drop($lootPool);
+
+        $this->assertInstanceOf(ItemInstance::class, $result);
+        $this->assertSame($item2, $result->getItem());
+        $this->assertEquals(1, $result->getAmount());
+    }
+
+    public function testDropReturnsCorrectAmountOfItems(): void
+    {
+        $randomNumberGeneratorStub = $this->createStub(RandomNumberGeneratorService::class);
+        
+        $randomNumberGeneratorStub
+            ->method('generateFloat')
+            ->willReturn(0.5);
+
+        $randomNumberGeneratorStub
+            ->method('generateIntFromRange')
+            ->willReturn(3);
+        
+        $service = new LootService($randomNumberGeneratorStub);
+
+        $item = new Item();
+
+        $lootPool = $this->createConfiguredStub(LootPool::class, [
+            'getItems' => new ArrayCollection([$item]),
+            'getChances' => [1.0],
+            'getMinAmounts' => [1],
+            'getMaxAmounts' => [10],
+        ]);
+
+        $result = $service->drop($lootPool);
+
+        $this->assertInstanceOf(ItemInstance::class, $result);
+        $this->assertSame($item, $result->getItem());
+        $this->assertEquals(3, $result->getAmount());
+    }
+}

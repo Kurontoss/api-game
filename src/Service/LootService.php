@@ -4,34 +4,39 @@ namespace App\Service;
 
 use App\Entity\Item\ItemInstance;
 use App\Entity\LootPool;
-use App\Repository\Item\ItemInstanceRepository;
+use App\Service\RandomNumberGeneratorService;
 
 class LootService
 {
     public function __construct(
-        private ItemInstanceRepository $itemInstanceRepo,
+        private RandomNumberGeneratorService $randomNumberGenerator,
     ) {}
 
     public function drop(
         LootPool $lootPool,
     ): ?ItemInstance {
-        $chance = (double)rand(1, 10000) / 10000;
+        $chance = $this->randomNumberGenerator->generateFloat();
+        $index = null;
 
-        for ($i = 0; $i < count($lootPool->getItems()); $i++) {
+        foreach ($lootPool->getItems() as $i => $item) {
             $chance -= $lootPool->getChances()[$i];
             if ($chance <= 0) {
+                $index = $i;
                 break;
             }
         }
 
-        if ($lootPool->getItems()[$i] === null) {
+        if ($index === null || $lootPool->getItems()[$index] === null) {
             return null;
         }
 
-        $amount = rand($lootPool->getMinAmounts()[$i], $lootPool->getMaxAmounts()[$i]);
+        $amount = $this->randomNumberGenerator->generateIntFromRange(
+            $lootPool->getMinAmounts()[$index],
+            $lootPool->getMaxAmounts()[$index]
+        );
 
         $itemInstance = new ItemInstance();
-        $itemInstance->setItem($lootPool->getItems()[$i]);
+        $itemInstance->setItem($lootPool->getItems()[$index]);
         $itemInstance->setAmount($amount);
 
         return $itemInstance;
