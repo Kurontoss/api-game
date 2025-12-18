@@ -12,7 +12,7 @@ use App\Validator\Constraints as AppAssert;
 class UpdateDTO
 {
     #[Groups(['loot_pool:write'])]
-    #[OA\Property(type: 'string', maxLength: 255)]
+    #[OA\Property(type: 'string', maxLength: 255, nullable: true)]
     #[Assert\Type('string')]
     #[Assert\Length(max: 255)]
     public $name;
@@ -21,6 +21,7 @@ class UpdateDTO
     #[OA\Property(
         type: 'array',
         minItems: 1,
+        nullable: true,
         items: new OA\Items(
             type: 'integer',
             example: 42
@@ -37,6 +38,7 @@ class UpdateDTO
     #[OA\Property(
         type: 'array',
         minItems: 1,
+        nullable: true,
         items: new OA\Items(
             type: 'number',
             format: 'float',
@@ -59,6 +61,7 @@ class UpdateDTO
     #[OA\Property(
         type: 'array',
         minItems: 1,
+        nullable: true,
         items: new OA\Items(
             type: 'integer',
             minimum: 1
@@ -75,6 +78,7 @@ class UpdateDTO
     #[Groups(['loot_pool:write'])]
     #[OA\Property(
         type: 'array',
+        nullable: true,
         minItems: 1,
         items: new OA\Items(
             type: 'integer',

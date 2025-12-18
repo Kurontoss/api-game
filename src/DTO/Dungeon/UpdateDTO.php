@@ -9,19 +9,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UpdateDTO
 {
     #[Groups(['dungeon:write'])]
-    #[OA\Property(type: 'string', maxLength: 255)]
+    #[OA\Property(type: 'string', maxLength: 255, nullable: true)]
     #[Assert\Type('string')]
     #[Assert\Length(max: 255)]
     public $name;
 
     #[Groups(['dungeon:write'])]
-    #[OA\Property(type: 'integer', minimum: 1)]
+    #[OA\Property(type: 'integer', minimum: 1, nullable: true)]
     #[Assert\Type('integer')]
     #[Assert\Positive]
     public $level;
 
     #[Groups(['dungeon:write'])]
-    #[OA\Property(type: 'integer', minimum: 0)]
+    #[OA\Property(type: 'integer', minimum: 0, nullable: true)]
     #[Assert\Type('integer')]
     #[Assert\PositiveOrZero]
     public $exp;

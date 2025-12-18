@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class UpdateDTO
 {
     #[Groups(['knight:write'])]
-    #[OA\Property(type: 'string', maxLength: 255)]
+    #[OA\Property(type: 'string', maxLength: 255, nullable: true)]
     #[Assert\Type('string')]
     #[Assert\Length(max: 255)]
     public $name;
