@@ -14,19 +14,25 @@ use App\Service\RandomNumberGeneratorService;
 
 class LootServiceTest extends TestCase
 {
+    protected $randomNumberGeneratorStub;
+    protected $lootService;
+
+    protected function setUp(): void
+    {
+        $this->randomNumberGeneratorStub = $this->createStub(RandomNumberGeneratorService::class);
+        $this->lootService = new LootService($this->randomNumberGeneratorStub);
+    }
+
     public function testDropReturnsItemInstanceWhenChanceHits(): void
     {
-        $randomNumberGeneratorStub = $this->createStub(RandomNumberGeneratorService::class);
-        
-        $randomNumberGeneratorStub
+        // Given
+        $this->randomNumberGeneratorStub
             ->method('generateFloat')
             ->willReturn(0.5);
         
-        $randomNumberGeneratorStub
+        $this->randomNumberGeneratorStub
             ->method('generateIntFromRange')
             ->willReturn(1);
-        
-        $service = new LootService($randomNumberGeneratorStub);
 
         $item = new Item();
 
@@ -37,8 +43,10 @@ class LootServiceTest extends TestCase
             'getMaxAmounts' => [1],
         ]);
 
-        $result = $service->drop($lootPool);
+        // When
+        $result = $this->lootService->drop($lootPool);
 
+        // Then
         $this->assertInstanceOf(ItemInstance::class, $result);
         $this->assertSame($item, $result->getItem());
         $this->assertEquals(1, $result->getAmount());
@@ -46,17 +54,14 @@ class LootServiceTest extends TestCase
 
     public function testDropReturnsNullWhenItemIsNull(): void
     {
-        $randomNumberGeneratorStub = $this->createStub(RandomNumberGeneratorService::class);
-        
-        $randomNumberGeneratorStub
+        // Given
+        $this->randomNumberGeneratorStub
             ->method('generateFloat')
             ->willReturn(0.5);
 
-        $randomNumberGeneratorStub
+        $this->randomNumberGeneratorStub
             ->method('generateIntFromRange')
             ->willReturn(1);
-        
-        $service = new LootService($randomNumberGeneratorStub);
 
         $item = new Item();
 
@@ -67,24 +72,23 @@ class LootServiceTest extends TestCase
             'getMaxAmounts' => [1],
         ]);
 
-        $result = $service->drop($lootPool);
+        // When
+        $result = $this->lootService->drop($lootPool);
 
+        // Then
         $this->assertNull($result);
     }
 
     public function testDropReturnsCorrectItemFromMultipleItems(): void
     {
-        $randomNumberGeneratorStub = $this->createStub(RandomNumberGeneratorService::class);
-        
-        $randomNumberGeneratorStub
+        // Given
+        $this->randomNumberGeneratorStub
             ->method('generateFloat')
             ->willReturn(0.67);
 
-        $randomNumberGeneratorStub
+        $this->randomNumberGeneratorStub
             ->method('generateIntFromRange')
             ->willReturn(1);
-        
-        $service = new LootService($randomNumberGeneratorStub);
 
         $item1 = new Item();
         $item2 = new Item();
@@ -96,8 +100,10 @@ class LootServiceTest extends TestCase
             'getMaxAmounts' => [1, 1],
         ]);
 
-        $result = $service->drop($lootPool);
+        // When
+        $result = $this->lootService->drop($lootPool);
 
+        // Then
         $this->assertInstanceOf(ItemInstance::class, $result);
         $this->assertSame($item2, $result->getItem());
         $this->assertEquals(1, $result->getAmount());
@@ -105,18 +111,15 @@ class LootServiceTest extends TestCase
 
     public function testDropReturnsCorrectAmountOfItems(): void
     {
-        $randomNumberGeneratorStub = $this->createStub(RandomNumberGeneratorService::class);
-        
-        $randomNumberGeneratorStub
+        // Given
+        $this->randomNumberGeneratorStub
             ->method('generateFloat')
             ->willReturn(0.5);
 
-        $randomNumberGeneratorStub
+        $this->randomNumberGeneratorStub
             ->method('generateIntFromRange')
             ->willReturn(3);
         
-        $service = new LootService($randomNumberGeneratorStub);
-
         $item = new Item();
 
         $lootPool = $this->createConfiguredStub(LootPool::class, [
@@ -126,8 +129,10 @@ class LootServiceTest extends TestCase
             'getMaxAmounts' => [10],
         ]);
 
-        $result = $service->drop($lootPool);
+        // When
+        $result = $this->lootService->drop($lootPool);
 
+        // Then
         $this->assertInstanceOf(ItemInstance::class, $result);
         $this->assertSame($item, $result->getItem());
         $this->assertEquals(3, $result->getAmount());
