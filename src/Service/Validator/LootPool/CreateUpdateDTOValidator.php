@@ -5,12 +5,12 @@ namespace App\Service\Validator\LootPool;
 use App\DTO\ErrorDTO;
 use App\DTO\LootPool\CreateDTO;
 use App\DTO\LootPool\UpdateDTO;
-use App\Repository\DungeonRepository;
+use App\Repository\LootPoolRepository;
 
 class CreateUpdateDTOValidator
 {
     public function __construct(
-        private DungeonRepository $dungeonRepo,
+        private LootPoolRepository $lootPoolRepo,
     ) {}
 
     public function validate(CreateDTO|UpdateDTO $dto): array
@@ -23,7 +23,7 @@ class CreateUpdateDTOValidator
                 continue;
             }
             
-            $item = $this->dungeonRepo->find($dto->items[$i]);
+            $item = $this->lootPoolRepo->find($dto->items[$i]);
 
             if (!$item) {
                 $errors[] = new ErrorDTO(
