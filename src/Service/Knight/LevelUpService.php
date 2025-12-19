@@ -11,10 +11,10 @@ class LevelUpService
     ): void {
         if ($knight->getExp() >= $knight->getExpToNextLevel()) {
             $knight->setExp($knight->getExp() - $knight->getExpToNextLevel());
-            $knight->setExpToNextLevel($knight->getExpToNextLevel() * 1.5);
+            $knight->setExpToNextLevel((int)floor($knight->getExpToNextLevel() * 1.5));
             $knight->setLevel($knight->getLevel() + 1);
 
-            $knight->setMaxHp($knight->getMaxHp() * 1.2);
+            $knight->setMaxHp((int)floor($knight->getMaxHp() * 1.2));
 
             $this->levelUp($knight);
         }
