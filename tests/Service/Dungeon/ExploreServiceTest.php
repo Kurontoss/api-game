@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Service;
+namespace App\Tests\Service\Dungeon;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
@@ -161,7 +161,7 @@ class ExploreServiceTest extends TestCase
         $dungeon = new Dungeon();
         $dungeon->setLevel(5);
 
-        // Expect
+        // Then
         $this->expectException(LevelTooLowException::class);
 
         // When
