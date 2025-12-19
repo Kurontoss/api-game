@@ -101,6 +101,4 @@ class EnemyFightServiceTest extends TestCase
         $this->assertSame($item, $fight->item);
         $this->assertSame($knight, $item->getKnight());
     }
-
-
 }
