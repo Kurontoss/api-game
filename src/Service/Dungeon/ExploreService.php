@@ -33,7 +33,7 @@ class ExploreService
         $battleStart->index = 0;
         $battleStart->knight = clone $knight;
         $battleStart->exp = 0;
-        $battleStart->items = [];
+        $battleStart->item = null;
 
         $battleSummary = new BattleSummaryDTO();
         $battleSummary->fights = [$battleStart];
@@ -56,7 +56,7 @@ class ExploreService
             $battleSummary->items[] = $fight->item;
         }
 
-        if ($fight->isWon) {
+        if (isset($fight) && $fight->isWon) {
             $battleSummary->exp += $dungeon->getExp();
             $knight->setExp($knight->getExp() + $dungeon->getExp());
             $this->levelUpService->levelUp($knight);
@@ -65,7 +65,7 @@ class ExploreService
         $battleSummary->items = $this->mergeService->merge($battleSummary->items, true);
 
         $inventory = $knight->getInventory()->toArray();
-        $mergedInventory = $this->mergeService->merge($inventory);
+        $mergedInventory = $this->mergeService->merge($inventory ?: []);
         $knight->setInventory(new ArrayCollection($mergedInventory));
 
         return $battleSummary;

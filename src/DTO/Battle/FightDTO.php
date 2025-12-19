@@ -27,4 +27,20 @@ class FightDTO
 
     #[Groups(['fight:read'])]
     public bool $isWon;
+
+    public function __construct(
+        int $index = 0,
+        ?Enemy $enemy = null,
+        ?Knight $knight = null,
+        int $exp = 0,
+        ?ItemInstance $item = null,
+        bool $isWon = false,
+    ) {
+        $this->index = $index;
+        $this->enemy = $enemy;
+        $this->knight = $knight;
+        $this->exp = $exp;
+        $this->item = $item;
+        $this->isWon = $isWon;
+    }
 }
