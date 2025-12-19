@@ -2,51 +2,65 @@
 
 namespace App\Tests\Service\User;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
 use App\Service\User\RegisterService;
 
 class RegisterServiceTest extends TestCase
 {
-    public function testRegisterSetsHashedPasswordAndRole(): void
+    private RegisterService $registerService;
+    private MockObject $passwordHasherMock;
+
+    protected function setUp(): void
     {
-        $passwordHasherStub = $this->createStub(UserPasswordHasherInterface::class);
-        $passwordHasherStub
-            ->method('hashPassword')
-            ->willReturn('hashed_password');
-        
-        $userRepoStub = $this->createStub(UserRepository::class);
+        $this->passwordHasherMock = $this->createMock(UserPasswordHasherInterface::class);
 
-        $service = new RegisterService($passwordHasherStub, $userRepoStub);
-
-        $user = new User();
-        $user->setPassword('password');
-
-        $service->register($user);
-
-        $this->assertEquals('hashed_password', $user->getPassword(), 'Password should be hashed');
-        $this->assertContains('ROLE_USER', $user->getRoles(), 'User should have ROLE_USER');
+        $this->service = new RegisterService(
+            $this->passwordHasherMock,
+        );
     }
 
-    public function testUpdateSetsHashedPassword(): void
+    public function testRegisterHashesPasswordAndSetsRole(): void
     {
-        $passwordHasherStub = $this->createStub(UserPasswordHasherInterface::class);
-        $passwordHasherStub
-            ->method('hashPassword')
-            ->willReturn('hashed_password');
-        
-        $userRepoStub = $this->createStub(UserRepository::class);
-
-        $service = new RegisterService($passwordHasherStub, $userRepoStub);
-
+        // Given
         $user = new User();
-        $user->setPassword('password');
+        $user->setPassword('plain-password');
 
-        $service->update($user);
+        $this->passwordHasherMock
+            ->expects($this->once())
+            ->method('hashPassword')
+            ->with($user, 'plain-password')
+            ->willReturn('hashed-password');
 
-        $this->assertEquals('hashed_password', $user->getPassword(), 'Password should be hashed');
+        // When
+        $this->service->register($user);
+
+        // Then
+        $this->assertEquals('hashed-password', $user->getPassword());
+        $this->assertEquals(['ROLE_USER'], $user->getRoles());
+    }
+
+    public function testUpdateHashesPasswordButDoesNotChangeRoles(): void
+    {
+        // Given
+        $user = new User();
+        $user->setPassword('old-password');
+        $user->setRoles(['ROLE_ADMIN']);
+
+        $this->passwordHasherMock
+            ->expects($this->once())
+            ->method('hashPassword')
+            ->with($user, 'old-password')
+            ->willReturn('new-hashed-password');
+
+        // When
+        $this->service->update($user);
+
+        // Then
+        $this->assertEquals('new-hashed-password', $user->getPassword());
+        $this->assertEquals(['ROLE_ADMIN'], $user->getRoles());
     }
 }

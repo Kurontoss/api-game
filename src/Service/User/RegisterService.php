@@ -5,13 +5,11 @@ namespace App\Service\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
 
 class RegisterService
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
-        private UserRepository $userRepo,
     ) {}
 
     public function register(
