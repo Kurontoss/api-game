@@ -8,13 +8,11 @@ use App\Entity\Knight;
 use App\Repository\Item\ItemInstanceRepository;
 use App\Repository\KnightRepository;
 use App\Service\LootService;
-use App\Service\Item\MergeService;
 
 class EnemyFightService
 {
     public function __construct(
         private LootService $lootService,
-        private MergeService $mergeService,
         private ItemInstanceRepository $itemInstanceRepo,
         private KnightRepository $knightRepo,
     ) {}
