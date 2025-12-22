@@ -1,0 +1,26 @@
+# Git
+.git
+.gitignore
+
+# Docker
+docker-compose.yml
+docker/
+
+# Symfony
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+
+# JWT
+/config/jwt/*.pem
+
+# Phpunit
+/phpunit.xml
+/.phpunit.cache/
+
+# Editor
+.editorconfig
