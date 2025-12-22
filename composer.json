@@ -83,6 +83,10 @@
         }
     },
     "require-dev": {
+        "behat/behat": "^3.29",
+        "behat/mink": "^1.13",
+        "behat/mink-browserkit-driver": "^2.3",
+        "friends-of-behat/symfony-extension": "^2.6",
         "phpunit/phpunit": "^12.5",
         "symfony/debug-bundle": "7.4.*"
     }
